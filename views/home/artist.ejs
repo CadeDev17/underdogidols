@@ -1,0 +1,103 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+	<!-- main content -->
+	<main class="main">
+		<div class="container-fluid">
+			<div class="row row--grid">
+				<div class="col-12">
+					<div class="article article--page">
+						<!-- article content -->
+						<div class="article__content">
+							<% if (errorMessage) { %>
+								<p class="sign__error"><%= errorMessage %></p>
+							<% } else if (successMessage) { %>
+								<p class="sign__success"><%= successMessage %></p>
+							<% } %>
+							<div class="article__artist">
+								<img src="/<%= artist.userProfileImage %>" alt="">
+								<div>
+									<h1><%= artist.name %></h1>
+									<span><%= artist.userType %></span>
+									<ul>
+										<li>Instagram: <a><%= artist.instagram %></a></li>
+										<li>TikTok: <a><%= artist.tiktok %></a></li>
+										<li>Preferred Genre: <%= artist.preferredGenre %></li>
+										<% if (userType === 'RecordLabelCompany') { %>
+											<li class="contact-artist">CONTACT ARTIST</li>
+											<li class="msg-textarea">
+												<form action="/contact/<%= artist.name %>" method="POST">
+													<label for="message">Type your message here:</label>
+													<textarea name="message" id="message"></textarea>
+													<button class="send__btn" id="send-artist-email" type="submit">Send Message</button>
+												</form>
+											</li>
+										<% } else if (userType === 'Advertiser') { %>
+											<li class="contact-artist">CONTACT ARTIST</li>
+											<% if (advertiserContactsAvailable > 0) { %>
+												<li class="msg-textarea">
+													<form action="/contact/<%= artist.name %>" method="POST">
+														<label for="message">Type your message here:</label>
+														<textarea name="message" id="message"></textarea>
+														<button class="send__btn" id="send-artist-email" type="submit">Send Message</button>
+													</form>
+												</li>
+											<% } else { %>
+												<li class="msg-textarea">
+													<span style="color:red;font-weight:bold">You Have Reached Your Daily Contacting Limit</span>
+												</li>
+											<% } %>
+										<% } %>
+									</ul>
+								</div>
+							</div>
+
+							<h4>Bio:</h4>
+							<p><%= artist.bio %></p>
+
+
+						</div>
+						<!-- end article content -->
+					</div>
+				</div>
+			</div>
+
+			<!-- releases -->
+			<section class="row row--grid">
+				<!-- title -->
+				<div class="col-12">
+					<div class="main__title">
+						<h2>Releases</h2>
+					</div>
+				</div>
+				<!-- end title -->
+
+				<% if (artist.songs.length >= 1) { %>
+					<% for (let song of artist.songs) { %>
+						<div id="season-album">
+							<div>
+								<div class="album__cover">
+									<iframe width="560" height="315" src="https://www.youtube.com/embed/<%= song.youtubeSongId %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								</div>
+								<div class="album__title" id="song-season-details">
+									<div>
+										<h3><a href="/release/<%= song.songTitle %>/<%= song.artistName %>"><%= song.songTitle %></a></h3>
+										<span><a href="/artist/<%= song.artistName %>"><%= song.artistName %></a></span>
+									</div>
+									<div>
+										<span class="single-item__time top-votes">Votes: <%= song.votes %></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					<% } %>
+				<% } else { %>
+					<div class="album">
+						<p class="no__songs">This user has not added any songs yet.</p>
+					</div>	
+				<% } %>
+			</section>
+			<!-- end releases -->
+		</div>
+	</main>
+	<!-- end main content -->
+<%- include('../includes/end.ejs') %>

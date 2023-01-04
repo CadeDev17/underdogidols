@@ -1,0 +1,44 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+	<!-- main content -->
+	<main class="main">
+		<div class="row row--grid">
+			<!-- breadcrumb -->
+			<div class="col-12">
+				<ul class="breadcrumb">
+					<li class="breadcrumb__item"><a href="index.html">Home</a></li>
+					<li class="breadcrumb__item breadcrumb__item--active">Seasons</li>
+				</ul>
+			</div>
+			<!-- end breadcrumb -->
+
+			<!-- title -->
+			<div class="col-12">
+				<div class="main__title main__title--page">
+					<h1>All Seasons</h1>
+				</div>
+			</div>
+			<!-- end title -->
+		</div>
+
+		<div class="row row--grid">
+			<div class="col-12">
+				<div class="row row--grid">
+					<div class="col-12 col-md-6 col-xl-4">
+						<div class="event" data-bg="img/events/event1.jpg">
+							<h3 class="event__title"><a href="/season/1">Season One</a></h3>
+							<p class="event__address">December 1st, 2022 - December 31st, 2022</p>
+						</div>
+					</div>
+					<div class="col-12 col-md-6 col-xl-4">
+						<div class="event" data-bg="img/events/event1.jpg">
+							<h3 class="event__title"><a href="/season/2">Season Two</a></h3>
+							<p class="event__address">December 1st, 2022 - December 31st, 2022</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<!-- end main content -->
+<%- include('../includes/end.ejs') %>

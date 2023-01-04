@@ -1,0 +1,236 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+	<!-- main content -->
+	<main class="main">
+		<div class="container-fluid">
+			<div class="row row--grid">
+				<!-- breadcrumb -->
+				<div class="col-12">
+					<ul class="breadcrumb">
+						<li class="breadcrumb__item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb__item breadcrumb__item--active">Profile</li>
+					</ul>
+				</div>
+				<!-- end breadcrumb -->
+
+				<% if (errorMessage) { %>
+					<div class="sign__error"><%= errorMessage %></div>
+				<% } %>
+
+				<!-- title -->
+				<div class="col-12">
+					<div class="main__title main__title--page">
+						<h1>Profile</h1>
+					</div>
+				</div>
+				<!-- end title -->
+			</div>
+
+			<div class="row row--grid">
+				<div class="col-12">
+					<div class="profile">
+						<div class="profile__user">
+							<div class="profile__avatar">
+								<img src="/<%= userProfileImage %>" alt="">
+							</div>
+							<div class="profile__meta">
+								<h3><%= username %></h3>
+							</div>
+						</div>
+
+						<!-- tabs nav -->
+						<ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Profile</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Contacted Artists</a>
+							</li>
+							
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Settings</a>
+							</li>
+						</ul>
+						<!-- end tabs nav -->
+					</div>
+
+					<!-- content tabs -->
+					<div class="tab-content">
+						<div class="tab-pane fade show active" id="tab-1" role="tabpanel">
+							<div class="row row--grid">
+								<div class="col-12 col-lg-6 col-xl-3">
+									<div class="stats">
+										<span>Contact Information</span>
+										<p><b>Address: <%= companyAddress %></b></p>
+										<p><b>Email: <%= email %></b></p>
+										<p><b>Phone Number: <%= phoneNumber %></b></p>
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,13.18V11A8,8,0,0,0,4,11v2.18A3,3,0,0,0,2,16v2a3,3,0,0,0,3,3H8a1,1,0,0,0,1-1V14a1,1,0,0,0-1-1H6V11a6,6,0,0,1,12,0v2H16a1,1,0,0,0-1,1v6a1,1,0,0,0,1,1h3a3,3,0,0,0,3-3V16A3,3,0,0,0,20,13.18ZM7,15v4H5a1,1,0,0,1-1-1V16a1,1,0,0,1,1-1Zm13,3a1,1,0,0,1-1,1H17V15h2a1,1,0,0,1,1,1Z"/></svg>
+									</div>
+								</div>
+
+								<div class="col-12 col-lg-6 col-xl-3">
+									<div class="stats">
+										<span>Record Label</span>
+										<p><b><%= recordLabel %></b></p>
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9,10a1,1,0,0,0-1,1v2a1,1,0,0,0,2,0V11A1,1,0,0,0,9,10Zm12,1a1,1,0,0,0,1-1V6a1,1,0,0,0-1-1H3A1,1,0,0,0,2,6v4a1,1,0,0,0,1,1,1,1,0,0,1,0,2,1,1,0,0,0-1,1v4a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V14a1,1,0,0,0-1-1,1,1,0,0,1,0-2ZM20,9.18a3,3,0,0,0,0,5.64V17H10a1,1,0,0,0-2,0H4V14.82A3,3,0,0,0,4,9.18V7H8a1,1,0,0,0,2,0H20Z"/></svg>
+									</div>
+								</div>
+
+								<div class="col-12 col-lg-6 col-xl-3">
+									<div class="stats">
+										<span>Preferred Genre</span>
+										<p><b><%= preferredGenre %></b></p>
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6,11a1,1,0,1,0,1,1A1,1,0,0,0,6,11Zm12,0a1,1,0,1,0,1,1A1,1,0,0,0,18,11Zm2-6H4A3,3,0,0,0,1,8v8a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V8A3,3,0,0,0,20,5Zm1,11a1,1,0,0,1-1,1H4a1,1,0,0,1-1-1V8A1,1,0,0,1,4,7H20a1,1,0,0,1,1,1ZM12,9a3,3,0,1,0,3,3A3,3,0,0,0,12,9Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,12,13Z"/></svg>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane fade" id="tab-2" role="tabpanel">
+							<div class="row row--grid">
+								<div class="col-12">
+									<div class="dashbox">
+										<div class="dashbox__table-wrap">
+											<div class="dashbox__table-scroll">
+												<table class="main__table">
+													<thead>
+														<tr>
+															<th><a href="#" class="active">Artist Name </a></th>
+														</tr>
+													</thead>
+													<tbody>
+														<% if (contactedArtists.length > 0) { %>
+															<% contactedArtists.forEach(artist => { %>
+																<tr>	
+																	<td>
+																		<div class="main__table-text"><a href="/artist/<%= artist.artistName %>"><%= artist.artistName %></a></div>
+																	</td>
+																</tr>
+															<% }) %>
+														<% } else { %>
+															<tr>
+																<td>
+																	<p class="no__songs">You have not liked any artists yet.</p>
+																</td>
+															</tr>
+														<% } %>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane fade" id="tab-3" role="tabpanel">
+							<div class="row row--grid">
+								<!-- details form -->
+								<div class="col-12 col-lg-6">
+									<form action="/edit-profile" method="POST" enctype="multipart/form-data" class="sign__form">
+		
+										<div class="sign__group">
+											<label for="userProfileImage">Profile Picture:</label>
+											<input type="file" name="userProfileImage" id="ProfileImage">
+										</div>
+
+										<div class="sign__group">
+											<label for="name">Name:</label>
+											<input type="text" name="name" id="name" class="sign__input" placeholder="Display Name" value="<%= username %>">
+										</div>
+		
+										<div class="sign__group">
+											<label for="companyAddress">Company Address:</label>
+											<input type="text" name="companyAddress" id="companyAddress" class="sign__input" value="<%= companyAddress %>">
+										</div>
+		
+										<div class="sign__group">
+											<label for="phoneNumber">Phone Number:</label>
+											<input type="text" name="phoneNumber" id="phoneNumber" class="sign__input" value="<%= phoneNumber %>">
+										</div>
+		
+										<div class="sign__group">
+											<label for="email">Email:</label>
+											<input type="text" name="email" id="email" class="sign__input" value="<%= email %>">
+										</div>
+										<div class="sign__group">
+											<label for="recordLabel">Record Label:</label>
+											<input type="text" name="recordLabel" id="recordLabel" class="sign__input" value="<%= recordLabel %>">
+										</div>
+		
+										<div class="sign__group">
+											<label for="genre" class="sign__label">Select Perferred Genre:</label>
+											<select name="genre" id="genre" class="sign__select">
+												<option value="All genres">All Genres</option>
+												<option value="Alternative">Alternative</option>
+												<option value="Blues">Blues</option>
+												<option value="Classical">Classical</option>
+												<option value="Country">Country</option>
+												<option value="Electronic">Electronic</option>
+												<option value="HipHopRap">Hip-Hop/Rap</option>
+												<option value="Indie">Indie</option>
+												<option value="Jazz">Jazz</option>
+												<option value="Latino">Latino</option>
+												<option value="R&B">R&B/Soul</option>
+												<option value="Rock">Rock</option>
+											</select>
+										</div>
+										
+										<button class="sign__btn" type="submit">Submit Changes</button>
+									</form>
+								</div>
+								<!-- end details form -->
+
+								<!-- password form -->
+								<div class="col-12 col-lg-6">
+									<form action="/change-password" method="POST" class="sign__form sign__form--profile">
+										<div class="row">
+											<div class="col-12">
+												<h4 class="sign__title">Change password</h4>
+											</div>
+
+											<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+												<div class="sign__group">
+													<label class="sign__label" for="oldpass">Old password</label>
+													<input id="oldpass" type="password" name="oldpass" class="sign__input">
+												</div>
+											</div>
+
+											<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+												<div class="sign__group">
+													<label class="sign__label" for="newpass">New password</label>
+													<input id="newpass" type="password" name="newpass" class="sign__input">
+												</div>
+											</div>
+
+											<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+												<div class="sign__group">
+													<label class="sign__label" for="confirmpass">Confirm new password</label>
+													<input id="confirmpass" type="password" name="confirmpass" class="sign__input">
+												</div>
+											</div>
+
+											<div class="col-12">
+												<button class="sign__btn" type="submit">Change</button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<!-- end password form -->
+
+								<div class="col-12 col-lg-6">
+									<div class="sign__form update-subscription">
+										<a href="https://billing.stripe.com/p/login/test_bIYeYXbyRcRk2ac000" target="_blank">Delete/Update Subscription Information</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- end content tabs -->
+				</div>
+			</div>	
+		</div>
+	</main>
+	<!-- end main content -->
+<%- include('../includes/end.ejs') %>

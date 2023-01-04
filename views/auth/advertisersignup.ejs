@@ -1,0 +1,153 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+	<!-- main content -->
+	<main class="main">
+		<div class="container-fluid">
+			<div class="row row--grid">
+				<!-- breadcrumb -->
+				<div class="col-12">
+					<ul class="breadcrumb">
+						<li class="breadcrumb__item"><a href="/">Home</a></li>
+						<li class="breadcrumb__item breadcrumb__item--active">Sign up</li>
+					</ul>
+				</div>
+				<!-- end breadcrumb -->
+
+				<!-- registration form -->
+				<div class="col-12">
+					<div class="sign">
+						<% if (errorMessage) { %>
+							<div class="sign__error"><%= errorMessage %></div>
+						<% } %>
+						<div class="sign__content">
+							<form action="/signup/<%= userType %>" method="POST" class="sign__form" id="sign__form--container" enctype="multipart/form-data">
+								<div class="sec1">
+									<a href="/" class="sign__logo">
+										<img src="img/logo.svg" alt="">
+									</a>
+	
+									<div class="sign__group">
+										<input type="text" name="name" id="name" class="sign__input" placeholder="Name">
+									</div>
+	
+									<div class="sign__group">
+										<input type="text" name="companyName" id="companyName" class="sign__input" placeholder="Company Name">
+									</div>
+	
+									<div class="sign__group">
+										<input type="text" name="companyAddress" id="companyAddress" class="sign__input" placeholder="Company Address">
+									</div>
+	
+									<div class="sign__group">
+										<input type="text" name="email" id="email" class="sign__input" placeholder="Company Email">
+									</div>
+
+									<div class="sign__group">
+										<label for="homeState" class="sign__label">Company's Home State</label>
+										<select name="homeState" id="homeState" class="sign__select">
+											<option value="AL">Alabama</option>
+											<option value="AK">Alaska</option>
+											<option value="AZ">Arizona</option>
+											<option value="AR">Arkansas</option>
+											<option value="CA">California</option>
+											<option value="CO">Colorado</option>
+											<option value="CT">Connecticut</option>
+											<option value="DE">Delaware</option>
+											<option value="DC">District Of Columbia</option>
+											<option value="FL">Florida</option>
+											<option value="GA">Georgia</option>
+											<option value="HI">Hawaii</option>
+											<option value="ID">Idaho</option>
+											<option value="IL">Illinois</option>
+											<option value="IN">Indiana</option>
+											<option value="IA">Iowa</option>
+											<option value="KS">Kansas</option>
+											<option value="KY">Kentucky</option>
+											<option value="LA">Louisiana</option>
+											<option value="ME">Maine</option>
+											<option value="MD">Maryland</option>
+											<option value="MA">Massachusetts</option>
+											<option value="MI">Michigan</option>
+											<option value="MN">Minnesota</option>
+											<option value="MS">Mississippi</option>
+											<option value="MO">Missouri</option>
+											<option value="MT">Montana</option>
+											<option value="NE">Nebraska</option>
+											<option value="NV">Nevada</option>
+											<option value="NH">New Hampshire</option>
+											<option value="NJ">New Jersey</option>
+											<option value="NM">New Mexico</option>
+											<option value="NY">New York</option>
+											<option value="NC">North Carolina</option>
+											<option value="ND">North Dakota</option>
+											<option value="OH">Ohio</option>
+											<option value="OK">Oklahoma</option>
+											<option value="OR">Oregon</option>
+											<option value="PA">Pennsylvania</option>
+											<option value="RI">Rhode Island</option>
+											<option value="SC">South Carolina</option>
+											<option value="SD">South Dakota</option>
+											<option value="TN">Tennessee</option>
+											<option value="TX">Texas</option>
+											<option value="UT">Utah</option>
+											<option value="VT">Vermont</option>
+											<option value="VA">Virginia</option>
+											<option value="WA">Washington</option>
+											<option value="WV">West Virginia</option>
+											<option value="WI">Wisconsin</option>
+											<option value="WY">Wyoming</option>
+										</select>
+									</div>
+								</div>
+								<div class="sec2">
+									<div class="sign__group">
+										<input type="text" name="phoneNumber" id="phoneNumber" class="sign__input" placeholder="Phone Number">
+									</div>
+	
+									<div class="sign__group">
+										<input type="password" name="password" id="password" class="sign__input" placeholder="Password">
+									</div>
+	
+									<div class="sign__group">
+										<input type="password" name="confirmPassword" id="confirmPassword" class="sign__input" placeholder="Confirm Password">
+									</div>
+	
+									<div class="sign__group">
+										<label for="companyURL">Desired URL that users will be directed too</label>
+										<input type="text" name="companyURL" id="companyURL" class="sign__input" placeholder="URL">
+									</div>
+	
+									<!-- <div class="sign__group">
+										<label for="genre" class="sign__label">Select Perferred Genre:</label>
+										<select name="genre" id="genre" class="sign__select">
+											<option value="All genres">All Genres</option>
+											<option value="Alternative">Alternative</option>
+											<option value="Blues">Blues</option>
+											<option value="Classical">Classical</option>
+											<option value="Country">Country</option>
+											<option value="Electronic">Electronic</option>
+											<option value="HipHopRap">Hip-Hop/Rap</option>
+											<option value="Indie">Indie</option>
+											<option value="Jazz">Jazz</option>
+											<option value="Latino">Latino</option>
+											<option value="R&B">R&B/Soul</option>
+											<option value="Rock">Rock</option>
+										</select>
+									</div> -->
+									
+									<button class="sign__btn" type="submit">Sign up</button>
+	
+									<span class="sign__delimiter">or</span>
+	
+									<span class="sign__text">Already have an account? <a href="/signin">Sign in!</a></span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- end registration form -->
+			</div>
+		</div>
+	</main>
+	<!-- end main content -->
+<%- include('../includes/end.ejs') %>

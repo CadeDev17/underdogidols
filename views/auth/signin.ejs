@@ -1,0 +1,81 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+	<!-- main content -->
+	<main class="main">
+		<div class="container-fluid">
+			<div class="row row--grid">
+				<!-- breadcrumb -->
+				<div class="col-12">
+					<ul class="breadcrumb">
+						<li class="breadcrumb__item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb__item breadcrumb__item--active">Sign in</li>
+					</ul>
+				</div>
+				<!-- end breadcrumb -->
+
+				<!-- sign in -->
+				<div class="col-12">
+					<div class="sign">
+						<% if (errorMessage) { %>
+							<div class="sign__error"><%= errorMessage %></div>
+						<% } %>
+						<div class="sign__content">
+							<!-- authorization form -->
+							<form action="/signin" method="POST" class="sign__form">
+								<a href="/" class="sign__logo">
+									<img src="img/logo.svg" alt="">
+								</a>
+
+								<div id="fan-signin">
+									<a>FAN SIGNIN (Click Here)</a>
+								</div>
+
+								<a href="/auth/facebook" id="fb-login">Sign in with FaceBook</a>
+
+								<div class="sign__group">
+									<input type="text" name="email" id="email" class="sign__input" placeholder="Email">
+								</div>
+
+								<div class="sign__group">
+									<input type="password" name="password" id="password" class="sign__input" placeholder="Password">
+								</div>
+								
+								<button class="sign__btn" type="submit">Sign in</button>
+
+								<span class="sign__delimiter">or</span>
+
+								<span class="sign__text">Don't have an account? <a href="/signup">Sign up!</a></span>
+
+								<span class="sign__text"><a href="/forgot">Forgot password?</a></span>
+							</form>
+							<!-- end authorization form -->
+						</div>
+					</div>
+				</div>
+				<!-- end sign in -->
+			</div>
+		</div>
+	</main>
+	<!-- end main content -->
+	<script>
+		window.fbAsyncInit = function() {
+		  FB.init({
+			appId      : '{your-app-id}',
+			cookie     : true,
+			xfbml      : true,
+			version    : '{api-version}'
+		  });
+			
+		  FB.AppEvents.logPageView();   
+			
+		};
+	  
+		(function(d, s, id){
+		   var js, fjs = d.getElementsByTagName(s)[0];
+		   if (d.getElementById(id)) {return;}
+		   js = d.createElement(s); js.id = id;
+		   js.src = "https://connect.facebook.net/en_US/sdk.js";
+		   fjs.parentNode.insertBefore(js, fjs);
+		 }(document, 'script', 'facebook-jssdk'));
+	</script>
+<%- include('../includes/end.ejs') %>

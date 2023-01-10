@@ -56,19 +56,19 @@ const fileFilter = (req, file, cb) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('userProfileImage'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/artist', express.static(path.join(__dirname, 'public')));
-app.use('/release', express.static(path.join(__dirname, 'public')));
-app.use('/release/:artistName', express.static(path.join(__dirname, 'public')));
-app.use('/cast-vote', express.static(path.join(__dirname, 'public')));
-app.use('/cast-vote/:songName', express.static(path.join(__dirname, 'public')));
 app.use('/voting/:songName/:artistName', express.static(path.join(__dirname, 'public')));
-app.use('/season', express.static(path.join(__dirname, 'public')));
-app.use('/season/:seasonNumber', express.static(path.join(__dirname, 'public')));
-app.use('/checkout', express.static(path.join(__dirname, 'public')));
 app.use('/forgot', express.static(path.join(__dirname, 'public')));
-app.use('/signup', express.static(path.join(__dirname, 'public')));
-app.use('/contact', express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
+// app.use('/artist', express.static(path.join(__dirname, 'public')));
+// app.use('/release', express.static(path.join(__dirname, 'public')));
+// app.use('/release/:artistName', express.static(path.join(__dirname, 'public')));
+// app.use('/cast-vote', express.static(path.join(__dirname, 'public')));
+// app.use('/cast-vote/:songName', express.static(path.join(__dirname, 'public')));
+// app.use('/season', express.static(path.join(__dirname, 'public')));
+// app.use('/season/:seasonNumber', express.static(path.join(__dirname, 'public')));
+// app.use('/checkout', express.static(path.join(__dirname, 'public')));
+// app.use('/signup', express.static(path.join(__dirname, 'public')));
+// app.use('/contact', express.static(path.join(__dirname, 'public')));
 
 app.use(
   session({
@@ -146,6 +146,16 @@ app.get('/facebook/callback', passport.authenticate('facebook', {
   successRedirect: '/',
   failureRedirect: '/signup'
 }))
+
+app.post('/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    req.session.destroy(err => {
+      console.log(err)
+      res.redirect('/')
+    })
+  });
+});
 
 passport.serializeUser(function(user, done) {
   done(null, user)

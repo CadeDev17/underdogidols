@@ -419,51 +419,55 @@ exports.getSongForVoting = (req, res, next) => {
 
 exports.postCastVote = (req, res, next) => {
     const songName = req.params.songName
-    let isExistingSong = req.user.songs.filter(userSongs => userSongs.songTitle === songName)
-    Song.find({ season: currentSeason })
-        .then(songs => {
-            let sortedSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
-            const song = songs.filter(filteredSong => filteredSong.songTitle === songName)
-            if (isExistingSong.length === 0){
-                song[0].votes++
-                song[0].save()
-            } else {
-                song[0].save()
-                let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
-                let topFiveSongs = topSongs.slice(0, 5)
-                res.render('home/voting', {
-                    pageTitle: 'UnderdogIdols Voting',
-                    songs: songs,
-                    topFiveSongs: topFiveSongs,
-                    errorMessage: 'Can not vote multiple times for the same song.'
-                })
-                return
-            }
-            User.find({ name: song[0].artistName })
-                .then(user => {
-                    let correctSong = user[0].songs.filter(votedSong => votedSong.songTitle === songName)
+    User.find({ email: req.session.passport.user[0].email})
+        .then(user => {
+            isExistingSong = user[0].songs.filter(userSongs => userSongs.songTitle === songName)
+            votingUser = user[0]
+            Song.find({ season: currentSeason })
+                .then(songs => {
+                    let sortedSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                    const song = songs.filter(filteredSong => filteredSong.songTitle === songName)
                     if (isExistingSong.length === 0){
-                        correctSong[0].votes++
-                        req.user.addSong(correctSong[0])
-                        user[0].save()
-                        let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
-                        let topFiveSongs = topSongs.slice(0, 5)
-                        res.render('home/voting', {
-                            pageTitle: 'UnderdogIdols Voting',
-                            songs: songs,
-                            topFiveSongs: topFiveSongs,
-                            errorMessage: ''
-                        })
+                        song[0].votes++
+                        song[0].save()
                     } else {
+                        song[0].save()
                         let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
                         let topFiveSongs = topSongs.slice(0, 5)
                         res.render('home/voting', {
                             pageTitle: 'UnderdogIdols Voting',
                             songs: songs,
                             topFiveSongs: topFiveSongs,
-                            errorMessage: ''
+                            errorMessage: 'Can not vote multiple times for the same song.'
                         })
+                        return
                     }
+                    User.find({ name: song[0].artistName })
+                        .then(user => {
+                            let correctSong = user[0].songs.filter(votedSong => votedSong.songTitle === songName)
+                            if (isExistingSong.length === 0){
+                                correctSong[0].votes++
+                                votingUser.addSong(correctSong[0])
+                                user[0].save()
+                                let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                                let topFiveSongs = topSongs.slice(0, 5)
+                                res.render('home/voting', {
+                                    pageTitle: 'UnderdogIdols Voting',
+                                    songs: songs,
+                                    topFiveSongs: topFiveSongs,
+                                    errorMessage: ''
+                                })
+                            } else {
+                                let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                                let topFiveSongs = topSongs.slice(0, 5)
+                                res.render('home/voting', {
+                                    pageTitle: 'UnderdogIdols Voting',
+                                    songs: songs,
+                                    topFiveSongs: topFiveSongs,
+                                    errorMessage: ''
+                                })
+                            }
+                        })
                 })
         })
 }
@@ -543,7 +547,7 @@ exports.postGetAdCheckout = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: [
                 {
-                  price: 'price_1MHVvFBb37tvGgw4ZNJ5QdIP',
+                  price: 'price_1MOak3Bb37tvGgw4rue7bp0L',
                   quantity: 1,
                 },
               ],
@@ -558,7 +562,7 @@ exports.postGetAdCheckout = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: [
                 {
-                  price: 'price_1MI0vEBb37tvGgw4KnhM7R9y',
+                  price: 'price_1MOaj5Bb37tvGgw4eTYSgGKa',
                   quantity: 1,
                 },
               ],
@@ -573,7 +577,7 @@ exports.postGetAdCheckout = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: [
                 {
-                  price: 'price_1MI0vuBb37tvGgw4KCxEHlf8',
+                  price: 'price_1MOagyBb37tvGgw48vIPWxVz',
                   quantity: 1,
                 },
               ],

@@ -22,6 +22,10 @@ $(document).ready(function () {
 	$('.copy-link').on('click', function(event) {
 		event.preventDefault()
 		navigator.clipboard.writeText($(this).attr("href"))
+		$('.copy-link').text('Promo Link Copied!')
+		setTimeout(() => {
+			$('.copy-link').text('Promote Song on Social Media')
+		}, 1500)
 	});
 
 	/*==============================

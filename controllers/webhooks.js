@@ -7,7 +7,6 @@ exports.handleWebhooks = (request, response) => {
     const sig = request.headers['stripe-signature'];
 
     let event;
-    let customerEmail;
 
     try {
         event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);

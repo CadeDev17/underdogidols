@@ -4157,31 +4157,31 @@ body::-webkit-scrollbar-thumb {
   max-width: 500px;
 }
 .plan--red .plan__title {
-  color: #eb5757;
+  color: #d1d1d1;
 }
 .plan--red .plan__list li.green svg {
-  fill: #eb5757;
+  fill: #d1d1d1;
 }
 .plan--red .plan__btn {
-  color: #eb5757;
+  color: #d1d1d1;
 }
 .plan--red .plan__btn:hover {
-  background-color: #eb5757;
+  background-color: #d1d1d1;
 }
 .plan--green .plan__title {
-  color: #25a56a;
+  color: #8b3507;
 }
 .plan--purple .plan__title {
-  color: #8051d4;
+  color: #fec302;
 }
 .plan--purple .plan__list li.green svg {
-  fill: #8051d4;
+  fill: #fec302;
 }
 .plan--purple .plan__btn {
-  color: #8051d4;
+  color: #fec302;
 }
 .plan--purple .plan__btn:hover {
-  background-color: #8051d4;
+  background-color: #fec302;
 }
 .plan__title {
   position: relative;
@@ -4269,7 +4269,7 @@ body::-webkit-scrollbar-thumb {
   color: #fff;
 }
 .plan__list li.green svg {
-  fill: #25a56a;
+  fill: #8b3507;
 }
 .plan__price {
   position: relative;
@@ -4297,7 +4297,7 @@ body::-webkit-scrollbar-thumb {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  color: #25a56a;
+  color: #8b3507;
   font-size: 14px;
   position: relative;
   z-index: 2;
@@ -4308,7 +4308,7 @@ body::-webkit-scrollbar-thumb {
 }
 .plan__btn:hover {
   color: #fff;
-  background-color: #25a56a;
+  background-color: #8b3507;
 }
 @media (min-width: 768px) {
   .plan {

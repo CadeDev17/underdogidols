@@ -199,19 +199,19 @@ exports.postSignin = (req, res, next) => {
         });
 }
 
-exports.postSignout = (req, res, next) => {
-  if (req.session.passport.user[0].userType === 'Fan') {
-    req.logout(function(err) {
-      if (err) { return next(err); }
-      res.redirect('/')
-    })
-  } else {
-    req.session.destroy(err => {
-        console.log(err);
-        res.redirect('/');
-      });
-  }
-}
+// exports.postSignout = (req, res, next) => {
+//   if (req.session.passport.user[0].userType === 'Fan') {
+//     req.logout(function(err) {
+//       if (err) { return next(err); }
+//       res.redirect('/')
+//     })
+//   } else {
+//     req.session.destroy(err => {
+//         console.log(err);
+//         res.redirect('/');
+//       });
+//   }
+// }
 
 exports.postChangePassword = (req, res, next) => {
     const newPass = req.body.newpass

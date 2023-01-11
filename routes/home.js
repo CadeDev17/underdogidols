@@ -11,13 +11,13 @@ router.get('/', homeController.getIndex)
 
 router.get('/artists', isAuth, homeController.getArtists)
 router.get('/localArtists', isAuth, homeController.getLocalArtists)
-router.get('/artist/:artistName', homeController.getArtist)
+router.get('/artist/:artistName', isAuth, homeController.getArtist)
 router.post('/contact/:artistName', homeController.postContactArtist)
 
 
-router.get('/releases', homeController.getReleases)
-router.get('/localReleases', homeController.getLocalReleases)
-router.get('/release/:songName/:artistName', homeController.getRelease)
+router.get('/releases', isAuth, homeController.getReleases)
+router.get('/localReleases', isAuth, homeController.getLocalReleases)
+router.get('/release/:songName/:artistName', isAuth, homeController.getRelease)
 
 
 router.get('/seasons', homeController.getSeasons)

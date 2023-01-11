@@ -270,6 +270,7 @@ body::-webkit-scrollbar-thumb {
   border-bottom: 1px solid #222227;
   z-index: 101;
 }
+
 .header__content {
   display: flex;
   flex-direction: row;
@@ -388,6 +389,10 @@ body::-webkit-scrollbar-thumb {
   color:#25a56a
 }
 
+#nav-toggle span{
+  margin: 1px;
+  border: 2px solid black;
+}
 
 .header__btn {
   position: absolute;
@@ -396,6 +401,10 @@ body::-webkit-scrollbar-thumb {
   display: block;
   right: 15px;
   top: 24px;
+}
+
+.header__btn span {
+  color: black
 }
 
 .header__search {
@@ -1745,8 +1754,9 @@ body::-webkit-scrollbar-thumb {
   .main__nav svg {
     width: 30px;
     height: auto;
-    fill: #c0c0c0;
+    fill: black;
     transition: fill 0.5s ease;
+    margin-top: 25px
   }
   .main__nav:hover svg {
     fill: #25a56a;
@@ -1761,7 +1771,7 @@ body::-webkit-scrollbar-thumb {
     bottom: 15px;
   }
   .main__nav--hero svg {
-    fill: #fff;
+    fill: black;
   }
   .main__nav--hero.main__nav--prev {
     right: 95px;

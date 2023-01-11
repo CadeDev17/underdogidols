@@ -91,6 +91,18 @@ const userSchema = new Schema({
       },
       artistName: {
         type: String
+      },
+      adTitle: {
+        type: String
+      },
+      adDescription: {
+        type: String
+      },
+      adAffiliateLink: {
+        type: String
+      },
+      adBackground: {
+        type: String
       }
     }
   ]

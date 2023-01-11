@@ -44,9 +44,7 @@ function scheduleReset() {
         scheduleReset();
     }, t);
 }
-
 scheduleReset();
-
 
 exports.getIndex = (req, res, next) => {
     if (req.session.userType === 'RecordLabelCompany') {
@@ -553,7 +551,7 @@ exports.postGetAdCheckout = async (req, res, next) => {
                 },
               ],
             mode: 'subscription',
-            success_url: req.protocol + '://' + req.get('host') + `/checkout/success?session_id={CHECKOUT_SESSION_ID}&pmtOption=${pmtOption}`,
+            success_url: req.protocol + '://' + req.get('host') + `/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: req.protocol + '://' + req.get('host') + '/checkout/cancel'
         })
         res.redirect(session.url)
@@ -655,6 +653,24 @@ exports.createAdvertisement = (req, res, next) => {
     const isGoldAd = Boolean(req.body.isGoldAd)
     const homeState = req.body.homeState
 
+    if (req.user.songs.length > 0) {
+        res.render('home/advertiserprofile', {
+            pageTitle: "Advertiser Profile",
+            userType: req.user.userType,
+            username: req.user.name,
+            email: req.user.email,
+            errorMessage: 'You can only create one advertisement.',
+            phoneNumber: req.user.phoneNumber,
+            companyAddress: req.user.companyAddress,
+            sessionId: '',
+            isBronzeAd: req.user.isBronzeAd,
+            isSilverAd: req.user.isSilverAd,
+            isGoldAd: req.user.isGoldAd,
+            homeState: req.user.homeState,
+            currentSeason: currentSeason
+        })
+    }
+
     if (isBronzeAd){
         const ad = new Ad({
             adLogo: req.file ? req.file.path : 'img/home/slide1.jpg',
@@ -662,6 +678,13 @@ exports.createAdvertisement = (req, res, next) => {
             adAffiliateLink: affiliateLink,
         })
         ad.save()
+        req.user.songs.push(
+            {
+                adTitle: adTitle,
+                adAffiliateLink: affiliateLink
+            }
+        )
+        req.user.save()
         res.redirect('/profile')
     } else {
         const ad = new Ad({
@@ -675,6 +698,15 @@ exports.createAdvertisement = (req, res, next) => {
             adHomeState: homeState
         })
         ad.save()
+        req.user.songs.push(
+            {
+                adTitle: adTitle,
+                adDescription: adDescription,
+                adAffiliateLink: affiliateLink,
+                adBackground: req.file ? req.file.path : 'img/home/slide1.jpg'
+            }
+        )
+        req.user.save()
         res.redirect('/profile')
     }
 }

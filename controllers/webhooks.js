@@ -20,6 +20,10 @@ exports.handleWebhooks = (request, response) => {
             const chargeSucceeded = event.data.object;
             handleSuccessfulPayments(chargeSucceeded)
             break;
+        case 'customer.subscription.deleted':
+            const subscriptionDeleted = event.data.object;
+            handleDeletedSubscription(subscriptionDeleted)
+            break;
     }
     
     response.send();
@@ -49,4 +53,8 @@ const handleSuccessfulPayments = (chargeSucceeded) => {
             }
             user[0].save()
         })
+}
+
+const handleDeletedSubscription = (subscriptionDeleted) => {
+    console.log(subscriptionDeleted)
 }

@@ -132,6 +132,7 @@ exports.getArtist = (req, res, next) => {
     if (req.user.userType === 'Advertiser') {
         User.findOne({ name: req.user.name })
             .then(advertiser => {
+                console.log(advertiser)
                 User.findOne({ name: artistName })
                     .then(artist => {
                         res.render('home/artist', {

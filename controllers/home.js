@@ -310,10 +310,18 @@ exports.postEditProfile = (req, res, next) => {
 exports.getReleases = (req, res, next) => {
     Song.find({ season: currentSeason })
         .then(songs => {
-            res.render('home/releases', {
-                pageTitle: "Underdog Artists",
-                songs: songs
-            })
+            let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+            let topFiveSongs = topSongs.slice(0, 5)
+            Ad.find()
+                .then(ads => {
+                    res.render('home/releases', {
+                        pageTitle: "Underdog Artists",
+                        songs: songs,
+                        ads: ads,
+                        currentSeason: currentSeason,
+                        topFiveSongs: topFiveSongs
+                    })
+                })
         })
 }
 
@@ -669,6 +677,7 @@ exports.createAdvertisement = (req, res, next) => {
             homeState: req.user.homeState,
             currentSeason: currentSeason
         })
+        return
     }
 
     if (isBronzeAd){
@@ -691,7 +700,7 @@ exports.createAdvertisement = (req, res, next) => {
             adTitle: adTitle,
             adDescription: adDescription,
             adAffiliateLink: affiliateLink,
-            adBackground: req.file ? req.file.path : 'img/home/slide1.jpg',
+            adBackground: req.file ? req.file.path : 'images/logo.png',
             isBronzeAd: isBronzeAd,
             isSilverAd: isSilverAd,
             isGoldAd: isGoldAd,

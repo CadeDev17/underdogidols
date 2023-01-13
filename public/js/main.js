@@ -163,7 +163,7 @@ $(document).ready(function () {
 		}
 	});
 
-	$('.main__carousel--podcasts').owlCarousel({
+	$('.main__carousel--releases').owlCarousel({
 		mouseDrag: true,
 		touchDrag: true,
 		dots: true,
@@ -184,11 +184,11 @@ $(document).ready(function () {
 				margin: 30,
 			},
 			992 : {
-				items: 3,
+				items: 2,
 				margin: 30,
 			},
 			1200 : {
-				items: 3,
+				items: 2,
 				margin: 30,
 				mouseDrag: false,
 			},
@@ -283,6 +283,43 @@ $(document).ready(function () {
 			},
 			1900 : {
 				items: 3,
+				margin: 30,
+			},
+		}
+	});
+
+	$('.premiumAd--releases').owlCarousel({
+		mouseDrag: false,
+		touchDrag: false,
+		dots: false,
+		loop: true,
+		autoplay: true,
+		autoplayTimeout: 5000,
+		autoplayHoverPause: true,
+		smartSpeed: 600,
+		margin: 20,
+		responsive : {
+			0 : {
+				items: 1,
+			},
+			576 : {
+				items: 2,
+				margin: 20,
+			},
+			768 : {
+				items: 2,
+				margin: 30,
+			},
+			992 : {
+				items: 2,
+				margin: 30,
+			},
+			1200 : {
+				items: 2,
+				margin: 30,
+			},
+			1900 : {
+				items: 2,
 				margin: 30,
 			},
 		}

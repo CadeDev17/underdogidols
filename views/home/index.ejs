@@ -6,7 +6,7 @@
 			<!-- releases -->
 			<section class="row row--grid">
 
-				<iframe width="560" height="315" style="margin: 50px auto 0;" src="https://www.youtube.com/embed/uTTrHHrTeHs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				<iframe width="800" height="515" style="margin: 50px auto 0;" src="https://www.youtube.com/embed/uTTrHHrTeHs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 				<!-- title -->
 				<div class="col-12">
@@ -43,7 +43,7 @@
 					<div class="premiumAd owl-carousel" id="hero">
 						<% ads.forEach(ad => { %>
 							<% if (ad.isGoldAd) { %>
-								<div class="hero__slide-contestant" data-bg="img/home/slide1.jpg">
+								<div class="event" data-bg="<%= ad.adBackground %>">
 									<h1 class="hero__title--contestant"><%= ad.adTitle %></h1>
 									<p class="hero__text"><%= ad.adDescription %></p>
 									<div class="hero__btns">

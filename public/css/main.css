@@ -2989,6 +2989,31 @@ body::-webkit-scrollbar-thumb {
     font-size: 26px;
   }
 }
+
+/*==============================
+	Pagination
+==============================*/
+.pagination {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: #8c32c1;
+  padding: 0.5rem;
+  border: 1px solid #8c32c1;
+  margin: 0 1rem;
+  border-radius: 5px;
+}
+
+.pagination a:hover,
+.pagination a:active,
+.pagination a.active {
+  background: #8c32c1;
+  color: white;
+}
+
 /*==============================
 	Single
 ==============================*/

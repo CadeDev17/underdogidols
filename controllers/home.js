@@ -11,6 +11,8 @@ const currentSeason = 2
 const nextSeason = currentSeason + 1
 const previousSeason = currentSeason - 1
 
+const ITEMS_PER_PAGE = 2
+
 const transporter = nodemailer.createTransport(
     sendgridTransport({
       auth: {
@@ -98,14 +100,30 @@ exports.getIndex = (req, res, next) => {
 }
 
 exports.getArtists = (req, res, next) => {
-    User.find()
+    const page = +req.query.page || 1;
+    let totalArtists;
+
+    User.find({ userType: 'Contestant' })
+        .countDocuments()
+        .then(numArtists => {
+            totalArtists = numArtists;
+            return User.find({ userType: 'Contestant' })
+            .skip((page - 1) * ITEMS_PER_PAGE)
+            .limit(ITEMS_PER_PAGE);
+        })
         .then(artists => {
             Ad.find({ isSilverAd: true })
                 .then(silverAds => {
                     res.render('home/artists', {
                         pageTitle: "Underdog Artists",
                         artists: artists,
-                        silverAds: silverAds
+                        silverAds: silverAds,
+                        currentPage: page,
+                        hasNextPage: ITEMS_PER_PAGE * page < totalArtists,
+                        hasPreviousPage: page > 1,
+                        nextPage: page + 1,
+                        previousPage: page - 1,
+                        lastPage: Math.ceil(totalArtists / ITEMS_PER_PAGE)
                     })
                 })
         })
@@ -308,18 +326,34 @@ exports.postEditProfile = (req, res, next) => {
   }
 
 exports.getReleases = (req, res, next) => {
+    const page = +req.query.page || 1;
+    let totalSongs;
+
     Song.find({ season: currentSeason })
+        .countDocuments()
+        .then(numSongs => {
+            totalSongs = numSongs;
+            return Song.find({ season: currentSeason })
+            .skip((page - 1) * ITEMS_PER_PAGE)
+            .limit(ITEMS_PER_PAGE);
+        })
         .then(songs => {
             let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
             let topFiveSongs = topSongs.slice(0, 5)
             Ad.find()
                 .then(ads => {
                     res.render('home/releases', {
-                        pageTitle: "Underdog Artists",
+                        pageTitle: "Underdog Performances",
                         songs: songs,
                         ads: ads,
                         currentSeason: currentSeason,
-                        topFiveSongs: topFiveSongs
+                        topFiveSongs: topFiveSongs,
+                        currentPage: page,
+                        hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                        hasPreviousPage: page > 1,
+                        nextPage: page + 1,
+                        previousPage: page - 1,
+                        lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                     })
                 })
         })

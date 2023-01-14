@@ -159,7 +159,7 @@
 															<% if (song.season === currentSeason && isPremiumUser) { %>
 																<a class="single-item__export copy-link" href="/voting/<%= song.songTitle %>/<%= song.artistName %>">Promote Song on Social Media</a>
 															<% } else if (song.season === currentSeason && !isPremiumUser) { %>
-																<a class="single-item__export copy-link" href="/voting/<%= song.songTitle %>/<%= song.artistName %>">Promote Song on Social Media</a>
+																<a class="single-item__export copy-link" href="http:/localhost:3000/voting/<%= song.songTitle %>/<%= song.artistName %>">Promote Song on Social Media</a>
 															<% } else { %>
 																<p class="single-item__export">Votes: <%= song.votes %></p>
 															<% } %>

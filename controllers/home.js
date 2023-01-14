@@ -330,33 +330,37 @@ exports.getReleases = (req, res, next) => {
     let totalSongs;
 
     Song.find({ season: currentSeason })
-        .countDocuments()
-        .then(numSongs => {
-            totalSongs = numSongs;
-            return Song.find({ season: currentSeason })
-            .skip((page - 1) * ITEMS_PER_PAGE)
-            .limit(ITEMS_PER_PAGE);
-        })
-        .then(songs => {
-            let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
-            let topFiveSongs = topSongs.slice(0, 5)
-            Ad.find()
-                .then(ads => {
-                    res.render('home/releases', {
-                        pageTitle: "Underdog Performances",
-                        songs: songs,
-                        ads: ads,
-                        currentSeason: currentSeason,
-                        topFiveSongs: topFiveSongs,
-                        currentPage: page,
-                        hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
-                        hasPreviousPage: page > 1,
-                        nextPage: page + 1,
-                        previousPage: page - 1,
-                        lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
-                    })
+        .then(allSongs => {
+            Song.find({ season: currentSeason })
+                .countDocuments()
+                .then(numSongs => {
+                    totalSongs = numSongs;
+                    return Song.find({ season: currentSeason })
+                    .skip((page - 1) * ITEMS_PER_PAGE)
+                    .limit(ITEMS_PER_PAGE);
+                })
+                .then(songs => {
+                    let topSongs = allSongs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                    let topFiveSongs = topSongs.slice(0, 5)
+                    Ad.find()
+                        .then(ads => {
+                            res.render('home/releases', {
+                                pageTitle: "Underdog Performances",
+                                songs: songs,
+                                ads: ads,
+                                currentSeason: currentSeason,
+                                topFiveSongs: topFiveSongs,
+                                currentPage: page,
+                                hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                                hasPreviousPage: page > 1,
+                                nextPage: page + 1,
+                                previousPage: page - 1,
+                                lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                            })
+                        })
                 })
         })
+
 }
 
 exports.getLocalReleases = (req, res, next) => {

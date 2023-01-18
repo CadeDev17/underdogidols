@@ -27,19 +27,19 @@
 									</a>
 	
 									<div class="sign__group">
-										<input type="text" name="name" id="name" class="sign__input" placeholder="Name">
+										<input type="text" name="name" id="name" class="sign__input" placeholder="Name" value="<%= oldInput.name %>">
 									</div>
 	
 									<div class="sign__group">
-										<input type="text" name="companyName" id="companyName" class="sign__input" placeholder="Company Name">
+										<input type="text" name="companyName" id="companyName" class="sign__input" placeholder="Company Name" value="<%= oldInput.companyName %>">
 									</div>
 	
 									<div class="sign__group">
-										<input type="text" name="companyAddress" id="companyAddress" class="sign__input" placeholder="Company Address">
+										<input type="text" name="companyAddress" id="companyAddress" class="sign__input" placeholder="Company Address" value="<%= oldInput.companyAddress %>">
 									</div>
 	
 									<div class="sign__group">
-										<input type="text" name="email" id="email" class="sign__input" placeholder="Company Email">
+										<input type="text" name="email" id="email" class="sign__input" placeholder="Company Email" value="<%= oldInput.email %>">
 									</div>
 
 									<div class="sign__group">
@@ -101,7 +101,7 @@
 								</div>
 								<div class="sec2">
 									<div class="sign__group">
-										<input type="text" name="phoneNumber" id="phoneNumber" class="sign__input" placeholder="Phone Number">
+										<input type="text" name="phoneNumber" id="phoneNumber" class="sign__input" placeholder="Phone Number" value="<%= oldInput.phoneNumber %>">
 									</div>
 	
 									<div class="sign__group">
@@ -114,26 +114,8 @@
 	
 									<div class="sign__group">
 										<label for="companyURL">Desired URL that users will be directed too</label>
-										<input type="text" name="companyURL" id="companyURL" class="sign__input" placeholder="URL">
+										<input type="text" name="companyURL" id="companyURL" class="sign__input" placeholder="URL" value="<%= oldInput.companyURL %>">
 									</div>
-	
-									<!-- <div class="sign__group">
-										<label for="genre" class="sign__label">Select Perferred Genre:</label>
-										<select name="genre" id="genre" class="sign__select">
-											<option value="All genres">All Genres</option>
-											<option value="Alternative">Alternative</option>
-											<option value="Blues">Blues</option>
-											<option value="Classical">Classical</option>
-											<option value="Country">Country</option>
-											<option value="Electronic">Electronic</option>
-											<option value="HipHopRap">Hip-Hop/Rap</option>
-											<option value="Indie">Indie</option>
-											<option value="Jazz">Jazz</option>
-											<option value="Latino">Latino</option>
-											<option value="R&B">R&B/Soul</option>
-											<option value="Rock">Rock</option>
-										</select>
-									</div> -->
 									
 									<button class="sign__btn" type="submit">Sign up</button>
 	
@@ -150,4 +132,4 @@
 		</div>
 	</main>
 	<!-- end main content -->
-<%- include('../includes/end.ejs') %>
+<%- include('../includes/end.ejs', {ads: ads}) %>

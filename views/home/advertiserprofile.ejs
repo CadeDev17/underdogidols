@@ -216,16 +216,11 @@
 							</div>
 						<% } %>
 
-						<div class="tab-pane fade" id="tab-5" role="tabpanel">
+						<div class="tab-pane fade sign__form--profile" id="tab-5" role="tabpanel">
 							<div class="row row--grid">
 								<!-- details form -->
 								<div class="col-12 col-lg-6">
 									<form action="/edit-profile" method="POST" enctype="multipart/form-data" class="sign__form">
-		
-										<div class="sign__group">
-											<label for="userProfileImage">Profile Picture:</label>
-											<input type="file" name="userProfileImage" id="ProfileImage">
-										</div>
 
 										<div class="sign__group">
 											<label for="name">Name:</label>
@@ -286,6 +281,43 @@
 											</div>
 										</div>
 									</form>
+
+									<% if (isGoldAd) { %>
+										<form action="/edit-ad" method="POST" class="sign__form sign__form--profile">
+											<div class="row">
+												<div class="col-12">
+													<h4 class="sign__title">Edit Advertisement</h4>
+												</div>
+												<% for (ad of ads) { %>
+													<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+														<div class="sign__group">
+															<label class="sign__label" for="newAdTitle">Song Title</label>
+															<input id="newAdTitle" type="text" name="newAdTitle" class="sign__input" value="<%= ad.adTitle %>">
+														</div>
+													</div>
+
+													<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+														<div class="sign__group">
+															<label class="sign__label" for="newAffiliateLink">Ad Url</label>
+															<input id="newAffiliateLink" type="text" name="newAffiliateLink" class="sign__input" value="<%= ad.adAffiliateLink %>">
+														</div>
+													</div>
+
+													<div class="col-12 col-md-6 col-lg-12 col-xl-12">
+														<div class="sign__group">
+															<label for="newAdDescription">Description:</label>
+															<textarea type="text" name="newAdDescription" class="sign__input">
+																<%= ad.adDescription %>
+															</textarea>
+														</div>
+													</div>
+												<% } %>
+												<div class="col-12">
+													<button class="sign__btn" type="submit">Update Ad</button>
+												</div>
+											</div>
+										</form>
+									<% } %>
 								</div>
 								<!-- end password form -->
 								
@@ -303,4 +335,4 @@
 		</div>
 	</main>
 	<!-- end main content -->
-<%- include('../includes/end.ejs') %>
+	<%- include('../includes/end.ejs', {ads: allAds}) %>

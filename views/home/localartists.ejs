@@ -25,11 +25,13 @@
 				<div class="col-12">
 					<div class="main__carousel-wrap">
 						<div class="main__carousel main__carousel--events owl-carousel" id="events">
-							<% for (let ad of silverAds) { %>
-								<div class="event" data-bg="<%= ad.adBackground %>">
-									<h3 class="event__title"><a href="<%= ad.affiliateLink %>"><%= ad.adTitle %></a></h3>
-									<p class="event__address"><%= ad.adDescription %> </p>
-								</div>
+							<% for (let ad of ads) { %>
+								<% if (ad.isSilverAd) { %>
+									<div class="event" data-bg="<%= ad.adBackground %>">
+										<h3 class="event__title"><a href="<%= ad.affiliateLink %>"><%= ad.adTitle %></a></h3>
+										<p class="event__address"><%= ad.adDescription %> </p>
+									</div>
+								<% } %>
 							<% } %>
 						</div>
 
@@ -97,4 +99,4 @@
 	</main>
 	<!-- end main content -->
 
-<%- include('../includes/end.ejs') %>
+<%- include('../includes/end.ejs', {ads: ads}) %>

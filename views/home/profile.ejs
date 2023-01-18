@@ -316,7 +316,7 @@
 						<div class="tab-pane fade" id="tab-4" role="tabpanel">
 							<div class="row row--grid">
 								<!-- details form -->
-								<div class="col-12 col-lg-6">
+								<div class="col-12 col-lg-6 edit-profile">
 									<form action="/edit-profile" method="POST" enctype="multipart/form-data" class="sign__form">
 		
 										<div class="sign__group">
@@ -371,7 +371,7 @@
 								</div>
 								<!-- end details form -->
 
-								<!-- password form -->
+								<!-- password and edit-song form -->
 								<div class="col-12 col-lg-6">
 									<form action="/change-password" method="POST" class="sign__form sign__form--profile">
 										<div class="row">
@@ -405,8 +405,62 @@
 											</div>
 										</div>
 									</form>
+
+									<% if (isPremiumUser) { %>
+										<form action="/edit-song" method="POST" class="sign__form sign__form--profile">
+											<div class="row">
+												<div class="col-12">
+													<h4 class="sign__title">Edit Song (For The Current Season ONLY)</h4>
+												</div>
+												<% for (song of userSongs) { %>
+													<% if (song.season === currentSeason) { %>
+														<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+															<div class="sign__group">
+																<label class="sign__label" for="newTitle">Song Title</label>
+																<input id="newTitle" type="text" name="newTitle" class="sign__input" value="<%= song.songTitle %>">
+															</div>
+														</div>
+
+														<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+															<div class="sign__group">
+																<div class="sign__group">
+																	<label for="newGenre" class="sign__label">Genre</label>
+																	<select name="newGenre" class="sign__select">
+																		<option value="<%= song.songGenre %>" selected><%= song.songGenre %></option>
+																		<option value="All genres">All Genres</option>
+																		<option value="Alternative">Alternative</option>
+																		<option value="Blues">Blues</option>
+																		<option value="Classical">Classical</option>
+																		<option value="Country">Country</option>
+																		<option value="Electronic">Electronic</option>
+																		<option value="HipHopRap">Hip-Hop/Rap</option>
+																		<option value="Indie">Indie</option>
+																		<option value="Jazz">Jazz</option>
+																		<option value="Latino">Latino</option>
+																		<option value="R&B">R&B/Soul</option>
+																		<option value="Rock">Rock</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+
+														<div class="col-12 col-md-6 col-lg-12 col-xl-12">
+															<div class="sign__group">
+																<label class="sign__label" for="newSongUrl">Song Url</label>
+																<input id="newSongUrl" type="text" name="newSongUrl" class="sign__input" value="https://www.youtube.com/watch?v=<%= song.youtubeSongId %>">
+															</div>
+														</div>
+
+													<% } %>
+												<% } %>
+												<div class="col-12">
+													<button class="sign__btn" type="submit">Update Song</button>
+												</div>
+											</div>
+										</form>
+									<% } %>
 								</div>
-								<!-- end password form -->
+								<!-- end password and edit-song form -->
 
 								<div class="col-12 col-lg-6">
 									<div class="sign__form update-subscription">
@@ -422,4 +476,4 @@
 		</div>
 	</main>
 	<!-- end main content -->
-<%- include('../includes/end.ejs') %>
+<%- include('../includes/end.ejs', {ads: ads}) %>

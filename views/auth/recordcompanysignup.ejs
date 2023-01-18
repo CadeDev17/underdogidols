@@ -32,24 +32,24 @@
 									</div>
 
 									<div class="sign__group">
-										<input type="text" name="name" id="name" class="sign__input" placeholder="Company Name">
+										<input type="text" name="name" id="name" class="sign__input" placeholder="Company Name" value="<%= oldInput.name %>">
 									</div>
 
 									<div class="sign__group">
-										<input type="text" name="recordLabel" id="recordLabel" class="sign__input" placeholder="Record Label/Music Group Name">
+										<input type="text" name="recordLabel" id="recordLabel" class="sign__input" placeholder="Record Label/Music Group Name" value="<%= oldInput.recordLabel %>">
 									</div>
 
 									<div class="sign__group">
-										<input type="text" name="companyAddress" id="companyAddress" class="sign__input" placeholder="Company Address">
+										<input type="text" name="companyAddress" id="companyAddress" class="sign__input" placeholder="Company Address" value="<%= oldInput.companyAddress %>">
 									</div>
 
 									<div class="sign__group">
-										<input type="text" name="phoneNumber" id="phoneNumber" class="sign__input" placeholder="Phone Number">
+										<input type="text" name="phoneNumber" id="phoneNumber" class="sign__input" placeholder="Phone Number" value="<%= oldInput.phoneNumber %>">
 									</div>
 								</div>
 								<div class="sec2">
 									<div class="sign__group">
-										<input type="text" name="email" id="email" class="sign__input" placeholder="Company Email">
+										<input type="text" name="email" id="email" class="sign__input" placeholder="Company Email" value="<%= oldInput.email %>">
 									</div>
 	
 									<div class="sign__group">
@@ -93,4 +93,4 @@
 		</div>
 	</main>
 	<!-- end main content -->
-<%- include('../includes/end.ejs') %>
+<%- include('../includes/end.ejs', {ads: ads}) %>

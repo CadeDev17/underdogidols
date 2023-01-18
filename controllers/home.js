@@ -69,7 +69,8 @@ exports.getIndex = (req, res, next) => {
                             currSeasonTopSongs: currSeasonTopSongs.slice(0, 6),
                             prevSeasonTopSongs: prevSeasonTopSongs.slice(0, 6),
                             userType: req.user.userType,
-                            artists: artists
+                            artists: artists,
+                            ads: ''
                         })
                 })
             })
@@ -112,12 +113,14 @@ exports.getArtists = (req, res, next) => {
             .limit(ITEMS_PER_PAGE);
         })
         .then(artists => {
-            Ad.find({ isSilverAd: true })
-                .then(silverAds => {
+            Ad.find()
+                .then(ads => {
                     res.render('home/artists', {
                         pageTitle: "Underdog Artists",
+                        selectedByGenre: false,
+                        genreSelected: '',
                         artists: artists,
-                        silverAds: silverAds,
+                        ads: ads,
                         currentPage: page,
                         hasNextPage: ITEMS_PER_PAGE * page < totalArtists,
                         hasPreviousPage: page > 1,
@@ -129,15 +132,119 @@ exports.getArtists = (req, res, next) => {
         })
 }
 
+exports.postGetArtistsByName = (req, res, next) => {
+    const searchedContestant = req.body.searchedContestant
+    const page = +req.query.page || 1;
+    let totalArtists;
+    if (searchedContestant !== undefined) {
+        User.find({ userType: 'Contestant', name: searchedContestant})
+            .then(artists => {
+                Ad.find()
+                    .then(ads => {
+                        res.render('home/artists', {
+                            pageTitle: "Underdog Performances",
+                            selectedByGenre: true,
+                            genreSelected: '',
+                            artists: artists,
+                            ads: ads,
+                            currentSeason: currentSeason
+                        })
+                    })
+            })
+    } else {
+        User.find({ userType: 'Contestant' })
+            .countDocuments()
+            .then(numArtists => {
+                totalArtists = numArtists;
+                return User.find({ userType: 'Contestant' })
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE);
+            })
+            .then(artists => {
+                Ad.find()
+                    .then(ads => {
+                        res.render('home/artists', {
+                            pageTitle: "Underdog Artists",
+                            selectedByGenre: false,
+                            genreSelected: '',
+                            artists: artists,
+                            ads: ads,
+                            currentPage: page,
+                            hasNextPage: ITEMS_PER_PAGE * page < totalArtists,
+                            hasPreviousPage: page > 1,
+                            nextPage: page + 1,
+                            previousPage: page - 1,
+                            lastPage: Math.ceil(totalArtists / ITEMS_PER_PAGE)
+                        })
+                    })
+            })
+    }
+}
+
+exports.postGetArtistsByGenre = (req, res, next) => {
+    const selectedGenre = req.body.genre
+    const page = +req.query.page || 1;
+    let totalSongs;
+    if (selectedGenre !== 'All genres') {
+        User.find({ userType: 'Contestant', preferredGenre: selectedGenre })
+            .then(allArtists => {
+                Ad.find()
+                    .then(ads => {
+                        res.render('home/artists', {
+                            pageTitle: "Underdog Performances",
+                            selectedByGenre: true,
+                            genreSelected: selectedGenre,
+                            artists: allArtists,
+                            ads: ads,
+                            currentSeason: currentSeason,
+                            currentPage: page,
+                            hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                            hasPreviousPage: page > 1,
+                            nextPage: page + 1,
+                            previousPage: page - 1,
+                            lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                        })
+                    })
+            })
+    } else {
+        User.find({ userType: 'Contestant' })
+        .countDocuments()
+        .then(numArtists => {
+            totalArtists = numArtists;
+            return User.find({ userType: 'Contestant' })
+            .skip((page - 1) * ITEMS_PER_PAGE)
+            .limit(ITEMS_PER_PAGE);
+        })
+        .then(artists => {
+            Ad.find()
+                .then(ads => {
+                    res.render('home/artists', {
+                        pageTitle: "Underdog Artists",
+                        selectedByGenre: false,
+                        genreSelected: '',
+                        artists: artists,
+                        ads: ads,
+                        currentPage: page,
+                        hasNextPage: ITEMS_PER_PAGE * page < totalArtists,
+                        hasPreviousPage: page > 1,
+                        nextPage: page + 1,
+                        previousPage: page - 1,
+                        lastPage: Math.ceil(totalArtists / ITEMS_PER_PAGE)
+                    })
+                })
+        })
+    }
+}
+
 exports.getLocalArtists = (req, res, next) => {
     User.find({ homeState: req.user.homeState })
         .then(artists => {
-            Ad.find({ isSilverAd: true })
-                .then(silverAds => {
+            Ad.find()
+                .then(ads => {
                     res.render('home/localartists', {
                         pageTitle: "Underdog Artists",
                         artists: artists,
-                        silverAds: silverAds
+                        ads: ads
                     })
                 })
         })
@@ -157,7 +264,8 @@ exports.getArtist = (req, res, next) => {
                             userType: req.user.userType ? req.user.userType : '' ,
                             errorMessage: '',
                             successMessage: '',
-                            advertiserContactsAvailable: advertiser.contactsAvailable
+                            advertiserContactsAvailable: advertiser.contactsAvailable,
+                            ads: ''
                         })
                     })
             })
@@ -170,7 +278,8 @@ exports.getArtist = (req, res, next) => {
                     userType: req.user.userType ? req.user.userType : '' ,
                     errorMessage: '',
                     successMessage: '',
-                    advertiserContactsAvailable: 20
+                    advertiserContactsAvailable: 20,
+                    ads: ''
                 })
             })
     }
@@ -238,7 +347,8 @@ exports.getProfile = (req, res, next) => {
                     isPremiumUser: req.user.isPremiumUser,
                     goldAds: goldAds,
                     sessionId: '',
-                    currentSeason: currentSeason
+                    currentSeason: currentSeason,
+                    ads: ''
                 })
             })
     } else if (req.user.userType === 'RecordLabelCompany') {
@@ -256,24 +366,30 @@ exports.getProfile = (req, res, next) => {
             userProfileImage: req.user.userProfileImage,
             contactedArtists: req.user.songs,
             sessionId: '',
-            currentSeason: currentSeason
+            currentSeason: currentSeason,
+            ads: ''
         })
     } else if (req.user.userType === 'Advertiser'){
-        res.render('home/advertiserprofile', {
-            pageTitle: "Advertiser Profile",
-            userType: req.user.userType,
-            username: req.user.name,
-            email: req.user.email,
-            errorMessage: '',
-            phoneNumber: req.user.phoneNumber,
-            companyAddress: req.user.companyAddress,
-            sessionId: '',
-            isBronzeAd: req.user.isBronzeAd,
-            isSilverAd: req.user.isSilverAd,
-            isGoldAd: req.user.isGoldAd,
-            homeState: req.user.homeState,
-            currentSeason: currentSeason
-        })
+        Ad.find()
+            .then(allAds => {
+                res.render('home/advertiserprofile', {
+                    pageTitle: "Advertiser Profile",
+                    userType: req.user.userType,
+                    username: req.user.name,
+                    email: req.user.email,
+                    ads: req.user.songs,
+                    allAds: allAds,
+                    errorMessage: '',
+                    phoneNumber: req.user.phoneNumber,
+                    companyAddress: req.user.companyAddress,
+                    sessionId: '',
+                    isBronzeAd: req.user.isBronzeAd,
+                    isSilverAd: req.user.isSilverAd,
+                    isGoldAd: req.user.isGoldAd,
+                    homeState: req.user.homeState,
+                    currentSeason: currentSeason,
+                })
+            })
     }
 }
 
@@ -326,9 +442,9 @@ exports.postEditProfile = (req, res, next) => {
   }
 
 exports.getReleases = (req, res, next) => {
+    const selectedGenre = req.query.genre
     const page = +req.query.page || 1;
     let totalSongs;
-
     Song.find({ season: currentSeason })
         .then(allSongs => {
             Song.find({ season: currentSeason })
@@ -346,6 +462,7 @@ exports.getReleases = (req, res, next) => {
                         .then(ads => {
                             res.render('home/releases', {
                                 pageTitle: "Underdog Performances",
+                                selectedByGenre: false,
                                 songs: songs,
                                 ads: ads,
                                 currentSeason: currentSeason,
@@ -360,7 +477,138 @@ exports.getReleases = (req, res, next) => {
                         })
                 })
         })
+}
 
+exports.postGetReleasesByGenre = (req, res, next) => {
+    const searchedSong = req.body.searchedSong
+    const selectedGenre = req.body.genre
+    const page = +req.query.page || 1;
+    let totalSongs;
+    if (selectedGenre !== 'All genres') {
+        Song.find({ season: currentSeason, songGenre: selectedGenre })
+            .then(allSongs => {
+                let topSongs = allSongs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                let topFiveSongs = topSongs.slice(0, 5)
+                Ad.find()
+                    .then(ads => {
+                        res.render('home/releases', {
+                            pageTitle: "Underdog Performances",
+                            selectedByGenre: true,
+                            genreSelected: selectedGenre,
+                            songs: allSongs,
+                            ads: ads,
+                            currentSeason: currentSeason,
+                            topFiveSongs: topFiveSongs,
+                            currentPage: page,
+                            hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                            hasPreviousPage: page > 1,
+                            nextPage: page + 1,
+                            previousPage: page - 1,
+                            lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                        })
+                    })
+            })
+    } else {
+        Song.find({ season: currentSeason })
+            .then(allSongs => {
+                Song.find({ season: currentSeason })
+                    .countDocuments()
+                    .then(numSongs => {
+                        totalSongs = numSongs;
+                        return Song.find({ season: currentSeason })
+                        .skip((page - 1) * ITEMS_PER_PAGE)
+                        .limit(ITEMS_PER_PAGE);
+                    })
+                    .then(songs => {
+                        let topSongs = allSongs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                        let topFiveSongs = topSongs.slice(0, 5)
+                        Ad.find()
+                            .then(ads => {
+                                res.render('home/releases', {
+                                    pageTitle: "Underdog Performances",
+                                    selectedByGenre: false,
+                                    songs: songs,
+                                    ads: ads,
+                                    currentSeason: currentSeason,
+                                    topFiveSongs: topFiveSongs,
+                                    currentPage: page,
+                                    hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                                    hasPreviousPage: page > 1,
+                                    nextPage: page + 1,
+                                    previousPage: page - 1,
+                                    lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                                })
+                            })
+                    })
+            })
+    }
+}
+
+exports.postGetReleasesBySongName = (req, res, next) => {
+    const searchedSong = req.body.searchedSong
+    const page = +req.query.page || 1;
+    let totalSongs;
+    if (searchedSong !== undefined) {
+        Song.find()
+            .then(songs => {
+                Song.find({ season: currentSeason, songTitle: searchedSong })
+                    .then(selectedSong => {
+                        let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                        let topFiveSongs = topSongs.slice(0, 5)
+                        Ad.find()
+                            .then(ads => {
+                                res.render('home/releases', {
+                                    pageTitle: "Underdog Performances",
+                                    selectedByGenre: true,
+                                    genreSelected: '',
+                                    songs: selectedSong,
+                                    ads: ads,
+                                    currentSeason: currentSeason,
+                                    topFiveSongs: topFiveSongs,
+                                    currentPage: page,
+                                    hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                                    hasPreviousPage: page > 1,
+                                    nextPage: page + 1,
+                                    previousPage: page - 1,
+                                    lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                                })
+                            })
+                    })
+            })
+    } else {
+        Song.find({ season: currentSeason })
+            .then(allSongs => {
+                Song.find({ season: currentSeason })
+                    .countDocuments()
+                    .then(numSongs => {
+                        totalSongs = numSongs;
+                        return Song.find({ season: currentSeason })
+                        .skip((page - 1) * ITEMS_PER_PAGE)
+                        .limit(ITEMS_PER_PAGE);
+                    })
+                    .then(songs => {
+                        let topSongs = allSongs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                        let topFiveSongs = topSongs.slice(0, 5)
+                        Ad.find()
+                            .then(ads => {
+                                res.render('home/releases', {
+                                    pageTitle: "Underdog Performances",
+                                    selectedByGenre: false,
+                                    songs: songs,
+                                    ads: ads,
+                                    currentSeason: currentSeason,
+                                    topFiveSongs: topFiveSongs,
+                                    currentPage: page,
+                                    hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                                    hasPreviousPage: page > 1,
+                                    nextPage: page + 1,
+                                    previousPage: page - 1,
+                                    lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                                })
+                            })
+                    })
+            })
+    }
 }
 
 exports.getLocalReleases = (req, res, next) => {
@@ -372,7 +620,8 @@ exports.getLocalReleases = (req, res, next) => {
             })
             res.render('home/localreleases', {
                 pageTitle: "Underdog Artists",
-                localSongsArr: localSongsArr
+                localSongsArr: localSongsArr,
+                ads: ''
             })
         })
 }
@@ -388,7 +637,8 @@ exports.getRelease = (req, res, next) => {
                         res.render('home/release', {
                             pageTitle: "Underdog Release",
                             artist: artist[0],
-                            youtubeSongId: song[0].youtubeSongId
+                            youtubeSongId: song[0].youtubeSongId,
+                            ads: ''
                         })
                     }
                 })
@@ -397,7 +647,8 @@ exports.getRelease = (req, res, next) => {
 
 exports.getSeasons = (req, res, next) => {
     res.render('home/seasons', {
-        pageTitle: "Underdog Seasons"
+        pageTitle: "Underdog Seasons",
+         ads: ''
     })
 }
 
@@ -413,7 +664,8 @@ exports.getSeason = (req, res, next) => {
                         pageTitle: 'UnderdogIdols Seasons',
                         topFiveSongs: topFiveSongs,
                         artists: artists,
-                        seasonNumber: seasonNumber
+                        seasonNumber: seasonNumber,
+                        ads: ''
                     })
                 })
         })
@@ -437,7 +689,8 @@ exports.getVoting = (req, res, next) => {
                         songs: songs,
                         topFiveSongs: topFiveSongs,
                         artists: artists,
-                        errorMessage: ''
+                        errorMessage: '',
+                        ads: ''
                     })
             })
         })
@@ -455,7 +708,8 @@ exports.getSongForVoting = (req, res, next) => {
                             pageTitle: "Underdog Voting",
                             artist: artist[0],
                             song: song[0],
-                            youtubeSongId: song[0].youtubeSongId
+                            youtubeSongId: song[0].youtubeSongId,
+                            ads: ''
                         })
                     }
                 })
@@ -483,7 +737,8 @@ exports.postCastVote = (req, res, next) => {
                             pageTitle: 'UnderdogIdols Voting',
                             songs: songs,
                             topFiveSongs: topFiveSongs,
-                            errorMessage: 'Can not vote multiple times for the same song.'
+                            errorMessage: 'Can not vote multiple times for the same song.',
+                            ads: ''
                         })
                         return
                     }
@@ -500,7 +755,8 @@ exports.postCastVote = (req, res, next) => {
                                     pageTitle: 'UnderdogIdols Voting',
                                     songs: songs,
                                     topFiveSongs: topFiveSongs,
-                                    errorMessage: ''
+                                    errorMessage: '',
+                                    ads: ''
                                 })
                             } else {
                                 let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
@@ -509,7 +765,8 @@ exports.postCastVote = (req, res, next) => {
                                     pageTitle: 'UnderdogIdols Voting',
                                     songs: songs,
                                     topFiveSongs: topFiveSongs,
-                                    errorMessage: ''
+                                    errorMessage: '',
+                                    ads: ''
                                 })
                             }
                         })
@@ -698,31 +955,36 @@ exports.createAdvertisement = (req, res, next) => {
     const isSilverAd = Boolean(req.body.isSilverAd)
     const isGoldAd = Boolean(req.body.isGoldAd)
     const homeState = req.body.homeState
-
+    console.log(req.user.songs.length)
     if (req.user.songs.length > 0) {
-        res.render('home/advertiserprofile', {
-            pageTitle: "Advertiser Profile",
-            userType: req.user.userType,
-            username: req.user.name,
-            email: req.user.email,
-            errorMessage: 'You can only create one advertisement.',
-            phoneNumber: req.user.phoneNumber,
-            companyAddress: req.user.companyAddress,
-            sessionId: '',
-            isBronzeAd: req.user.isBronzeAd,
-            isSilverAd: req.user.isSilverAd,
-            isGoldAd: req.user.isGoldAd,
-            homeState: req.user.homeState,
-            currentSeason: currentSeason
-        })
-        return
-    }
-
-    if (isBronzeAd){
+        Ad.find()
+            .then(allAds => {
+                res.render('home/advertiserprofile', {
+                    pageTitle: "Advertiser Profile",
+                    userType: req.user.userType,
+                    username: req.user.name,
+                    email: req.user.email,
+                    errorMessage: 'You can only create one advertisement.',
+                    phoneNumber: req.user.phoneNumber,
+                    companyAddress: req.user.companyAddress,
+                    sessionId: '',
+                    allAds: allAds,
+                    isBronzeAd: req.user.isBronzeAd,
+                    isSilverAd: req.user.isSilverAd,
+                    isGoldAd: req.user.isGoldAd,
+                    homeState: req.user.homeState,
+                    currentSeason: currentSeason
+                })
+                return
+            })
+    } else if (isBronzeAd) {
         const ad = new Ad({
-            adLogo: req.file ? req.file.path : 'img/home/slide1.jpg',
+            adLogo: req.file ? req.file.path : 'images/logo.png',
             adTitle: adTitle,
             adAffiliateLink: affiliateLink,
+            isBronzeAd: isBronzeAd,
+            isSilverAd: isSilverAd,
+            isGoldAd: isGoldAd,
         })
         ad.save()
         req.user.songs.push(
@@ -750,7 +1012,7 @@ exports.createAdvertisement = (req, res, next) => {
                 adTitle: adTitle,
                 adDescription: adDescription,
                 adAffiliateLink: affiliateLink,
-                adBackground: req.file ? req.file.path : 'img/home/slide1.jpg'
+                adBackground: req.file ? req.file.path : 'images/logo.png'
             }
         )
         req.user.save()

@@ -11,6 +11,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const multer = require('multer')
 const passport = require('passport')
 const facebookStrategy = require('passport-facebook').Strategy
+const csrf = require('csurf')
 
 const User = require('./models/user')
 const homeRoutes = require('./routes/home')
@@ -26,6 +27,7 @@ const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions'
 });
+const csrfProtection = csrf()
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -69,9 +71,15 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isLoggedIn ? req.session.isLoggedIn : req.session.passport ? req.session.passport.user[0].fanLoggedIn : false;
-  res.locals.userTypeLocals = req.session.userType ? req.session.userType : req.session.passport ? req.session.passport.user[0].userType : '';
+  if (req.session.passport){
+    res.locals.isAuthenticated = req.session.passport.user[0].fanLoggedIn
+    res.locals.userTypeLocals = req.session.passport.user[0].userType
+  } else {
+    res.locals.isAuthenticated = req.session.isLoggedIn
+    res.locals.userTypeLocals = req.session.userType
+  }
 
+  // res.locals.csrfToken = req.csrfToken()
 
   if (req.session.userType === 'Advertiser') {
     res.locals.isGoldAd = req.session.user.isGoldAd

@@ -80,35 +80,14 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="partners owl-carousel">
-					<a href="https://www.udemy.com/course/understanding-typescript/learn/lecture/16" class="partners__img">
-						<img src="images/2022-12-24T04:05:08.212Z-IMG_1140.jpg" alt="">
-						<span>Bronze Ad #1</span>
-					</a>
-
-					<a href="https://www.udemy.com/course/understanding-typescript/learn/lecture/16" class="partners__img">
-						<img src="images/2022-12-24T04:05:08.212Z-IMG_1140.jpg" alt="">
-						<span>Bronze Ad #2</span>
-					</a>
-
-					<a href="https://www.udemy.com/course/understanding-typescript/learn/lecture/16" class="partners__img">
-						<img src="images/2022-12-24T04:05:08.212Z-IMG_1140.jpg" alt="">
-						<span>Bronze Ad #3</span>
-					</a>
-
-					<a href="https://www.udemy.com/course/understanding-typescript/learn/lecture/16" class="partners__img">
-						<img src="images/2022-12-24T04:05:08.212Z-IMG_1140.jpg" alt="">
-						<span>Bronze Ad #4</span>
-					</a>
-
-					<a href="https://www.udemy.com/course/understanding-typescript/learn/lecture/16" class="partners__img">
-						<img src="images/2022-12-24T04:05:08.212Z-IMG_1140.jpg" alt="">
-						<span>Bronze Ad #5</span>
-					</a>
-
-					<a href="https://www.udemy.com/course/understanding-typescript/learn/lecture/16" class="partners__img">
-						<img src="images/2022-12-24T04:05:08.212Z-IMG_1140.jpg" alt="">
-						<span>Bronze Ad #6</span>
-					</a>
+					<% for (ad of ads) { %>
+						<% if (ad.isBronzeAd) { %>
+							<a href="<%= ad.adAffiliateLink %>" class="partners__img">
+								<img src="<%= ad.adLogo %>" alt="">
+								<span><%= ad.adTitle %></span>
+							</a>
+						<% } %>
+					<% } %>
 				</div>
 			</div>
 		</div>

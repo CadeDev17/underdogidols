@@ -25,11 +25,13 @@
 				<div class="col-12">
 					<div class="main__carousel-wrap">
 						<div class="main__carousel main__carousel--events owl-carousel" id="events">
-							<% for (let ad of silverAds) { %>
-								<div class="event" data-bg="<%= ad.adBackground %>">
-									<h3 class="event__title"><a href="<%= ad.affiliateLink %>"><%= ad.adTitle %></a></h3>
-									<p class="event__address"><%= ad.adDescription %> </p>
-								</div>
+							<% for (let ad of ads) { %>
+								<% if (ad.isSilverAd) { %>
+									<div class="event" data-bg="<%= ad.adBackground %>">
+										<h3 class="event__title"><a href="<%= ad.affiliateLink %>"><%= ad.adTitle %></a></h3>
+										<p class="event__address"><%= ad.adDescription %> </p>
+									</div>
+								<% } %>
 							<% } %>
 						</div>
 
@@ -52,24 +54,30 @@
 			<div class="row row--grid">
 				<div class="col-12">
 					<div class="main__filter">
-						<form action="#" class="main__filter-search">
-							<input type="text" placeholder="Search...">
-							<button type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"/></svg></button>
+						<form action="/artists-by-name" method="POST" class="main__filter-search">
+							<input type="text" name="searchedContestant" placeholder="Search...">
+							<button type="submit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"/></svg></button>
 						</form>
-						<select class="main__select" name="years">
-							<option value="All genres">All genres</option>
-							<option value="1">Alternative</option>
-							<option value="2">Blues</option>
-							<option value="3">Classical</option>
-							<option value="4">Country</option>
-							<option value="5">Electronic</option>
-							<option value="6">Hip-Hop/Rap</option>
-							<option value="7">Indie</option>
-							<option value="8">Jazz</option>
-							<option value="8">Latino</option>
-							<option value="8">R&B/Soul</option>
-							<option value="8">Rock</option>
-						</select>
+
+						<form action="/artists-by-genre" method="POST">
+							<div class="main__filter-wrap">
+								<select class="main__select" id="genre-select" name="genre">
+									<option class="option" value="All genres">All Genres</option>
+									<option value="Alternative">Alternative</option>
+									<option value="Blues">Blues</option>
+									<option value="Classical">Classical</option>
+									<option value="Country">Country</option>
+									<option value="Electronic">Electronic</option>
+									<option value="HipHopRap">Hip-Hop/Rap</option>
+									<option value="Indie">Indie</option>
+									<option value="Jazz">Jazz</option>
+									<option value="Latino">Latino</option>
+									<option value="R&B">R&B/Soul</option>
+									<option value="Rock">Rock</option>
+								</select>
+								<button type="submit" id="genre-search">Find Genre</button>
+							</div>
+						</form>
 
 						<div class="slider-radio">
 							<input type="radio" name="grade" id="newest" checked="checked"><label for="newest">Newest</label>
@@ -77,23 +85,43 @@
 					</div>
 
 					<div class="row row--grid">
-						<% artists.forEach(artist => { %>
-							<% if (artist.userType === 'Contestant') { %>
-								<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-									<a href="/artist/<%= artist.name %>" class="artist" id="find-artist">
-										<div class="artist__cover">
-											<img src="<%= artist.userProfileImage %>" alt="">
-										</div>
-										<h3 class="artist__title"><%= artist.name %></h3>
-									</a>
-								</div>
-							<% } %>
-						<% }) %>
+						<% if (artists.length > 0) { %>
+							<% artists.forEach(artist => { %>
+								<% if (artist.userType === 'Contestant') { %>
+									<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+										<a href="/artist/<%= artist.name %>" class="artist" id="find-artist">
+											<div class="artist__cover">
+												<img src="<%= artist.userProfileImage %>" alt="">
+											</div>
+											<h3 class="artist__title"><%= artist.name %></h3>
+										</a>
+									</div>
+								<% } %>
+							<% }) %>
+						<% } else { %>
+							<h1>Could Not Find Any Artists By That Specific Name.</h1>
+						<% } %>
 					</div>
 				</div>
 			</div>
 			<!-- end artists -->
-			<%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+			<% if (!selectedByGenre) { %>
+				<section class="pagination">
+					<% if (currentPage !== 1 && previousPage !== 1) { %>
+						<a href="/artists?page=1">1</a>
+					<% } %>
+					<% if (hasPreviousPage) { %>
+						<a href="/artists?page=<%= previousPage %>"><%= previousPage %></a>
+					<% } %>
+					<a href="/artists?page=<%= currentPage %>" class="active"><%= currentPage %></a>
+					<% if (hasNextPage) { %>
+						<a href="/artists?page=<%= nextPage %>"><%= nextPage %></a>
+					<% } %>
+					<% if (lastPage !== currentPage && nextPage !== lastPage) { %>
+						<a href="/artists?page=<%= lastPage %>"><%= lastPage %></a>
+					<% } %>
+				</section>
+			<% } %>
 		</div>
 	</main>
 	<!-- end main content -->

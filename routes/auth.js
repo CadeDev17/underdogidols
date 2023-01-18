@@ -83,6 +83,44 @@ router.post('/change-password',
     authController.postChangePassword
 )
 
+router.post('/edit-song',
+    [
+        body('newTitle')
+        .isString()
+        .isLength({ min: 3 })
+        .withMessage('Song title must be at least 3 characters')
+        .trim(),
+        body('newSongUrl')
+        .custom((value, {req}) => {
+            if (!value.includes('https://youtu.be/')){
+            throw new Error("Shared YouTube song URL must start like this ('https://youtu.be/') and can be found when clicking the 'Share' button on your youtube video.");
+            }
+            return true
+        })
+        .isString(),
+        body('newGenre').isString()
+    ],
+    isAuth,
+    authController.postEditSong
+)
+
+router.post('/edit-ad',
+[
+    body('newAffiliateLink')
+      .isString(),
+    body('newAdTitle')
+    .isString()
+    .isLength({ min: 3 })
+    .withMessage('Advertisement title must be at least 3 characters')
+    .trim(),
+    body('newDescription')
+      .isLength({ max: 50 })
+      .isString(),
+  ],
+  isAuth,
+  authController.postEditAd
+)
+
 router.get('/forgot', authController.getForgot)
 
 router.post('/forgot', authController.postForgot)

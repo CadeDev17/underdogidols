@@ -6,9 +6,12 @@ const sendgridTransport = require('nodemailer-sendgrid-transport');
 
 
 const User = require('../models/user');
+const Song = require('../models/song')
+const Ad = require('../models/ad')
 const { isContext } = require('vm');
 
 const PREMIUM_SUBSCRIPTION = 'prod_N0ndsPTMEa8OqO'
+const currentSeason = 2
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({
@@ -32,25 +35,51 @@ exports.postGetCorrectSignup = (req, res, next) => {
         res.render('auth/contestantsignup', {
             pageTitle: "Underdog Signup",
             errorMessage: '',
-            userType: userType
+            userType: userType,
+            ads: '',
+            oldInput: {
+              name: '',
+              instagram: '',
+              tiktok: '',
+              bio: '',
+              email: ''
+            }
         })
     } else if (userType === 'Fan') {
       res.render('auth/fansignup', {
         pageTitle: "Underdog Signup",
         errorMessage: '',
-        userType: userType
+        userType: userType,
+        ads: ''
       })
     } else if (userType === 'RecordLabelCompany') {
       res.render('auth/recordcompanysignup', {
         pageTitle: "Underdog Signup",
         errorMessage: '',
-        userType: userType
+        userType: userType,
+        ads: '',
+        oldInput: {
+          name: '',
+          recordLabel: '',
+          companyAddress: '',
+          phoneNumber: '',
+          email: ''
+        }
       })
     } else if (userType === 'Advertiser') {
       res.render('auth/advertisersignup', {
         pageTitle: "Underdog Signup",
         errorMessage: '',
-        userType: userType
+        userType: userType,
+        ads: '',
+        oldInput: {
+          name: '',
+          companyName: '',
+          companyAddress: '',
+          phoneNumber: '',
+          companyURL: '',
+          email: ''
+        }
       })
     }
 }
@@ -73,10 +102,55 @@ exports.postSignup = (req, res, next) => {
   
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.render('auth/signup', {
-      pageTitle: 'Signup',
-      errorMessage: errors.array()[0].msg
-    });
+    if (userType === 'Fan') {
+      return res.render('auth/fansignup.ejs', {
+        pageTitle: 'Signup',
+        errorMessage: errors.array()[0].msg
+      });
+    } else if (userType === 'Contestant') {
+      return res.render('auth/contestantsignup.ejs', {
+        pageTitle: 'Signup',
+        userType: 'Contestant',
+        ads: '',
+        errorMessage: errors.array()[0].msg,
+        oldInput: {
+          name: name,
+          instagram: instagram,
+          tiktok: tiktok,
+          bio: bio,
+          email: email
+        }
+      });
+    } else if (userType === 'RecordLabelCompany') {
+      return res.render('auth/recordcompanysignup.ejs', {
+        pageTitle: 'Signup',
+        userType: 'RecordLabelCompany',
+        ads: '',
+        errorMessage: errors.array()[0].msg,
+        oldInput: {
+          name: name,
+          recordLabel: recordLabel,
+          companyAddress: companyAddress,
+          phoneNumber: phoneNumber,
+          email: email
+        }
+      });
+    } else if (userType === 'Advertiser') {
+      return res.render('auth/advertisersignup.ejs', {
+        pageTitle: 'Signup',
+        userType: 'Advertiser',
+        ads: '',
+        errorMessage: errors.array()[0].msg,
+        oldInput: {
+          name: name,
+          companyName: companyName,
+          companyAddress: companyAddress,
+          phoneNumber: phoneNumber,
+          companyURL: companyURL,
+          email: email
+        }
+      })
+    }
   }
   bcrypt
   .hash(password, 12)
@@ -94,7 +168,8 @@ exports.postSignup = (req, res, next) => {
           bio: bio,
           userProfileImage: req.file ? req.file.path : 'img/avatar.svg',
           isPremiumUser: false,
-          songs: []
+          songs: [],
+          ads: ''
       })
       return user.save()
     } else if (userType === 'Fan') {
@@ -102,7 +177,8 @@ exports.postSignup = (req, res, next) => {
         email: email,
         password: hashedPassword,
         userType: userType,
-        songs: []
+        songs: [],
+        ads: ''
       })
       return user.save()
     } else if (userType === 'RecordLabelCompany') {
@@ -116,7 +192,8 @@ exports.postSignup = (req, res, next) => {
         companyAddress: companyAddress,
         recordLabel: recordLabel,
         userProfileImage: 'img/avatar.svg',
-        songs: []
+        songs: [],
+        ads: ''
       })
       return user.save()
     } else if (userType === 'Advertiser') {
@@ -131,7 +208,8 @@ exports.postSignup = (req, res, next) => {
         companyAddress: companyAddress,
         phoneNumber: phoneNumber,
         contactsAvailable: 0,
-        songs: []
+        songs: [],
+        ads: ''
       })
       return user.save()
     }
@@ -199,20 +277,6 @@ exports.postSignin = (req, res, next) => {
         });
 }
 
-// exports.postSignout = (req, res, next) => {
-//   if (req.session.passport.user[0].userType === 'Fan') {
-//     req.logout(function(err) {
-//       if (err) { return next(err); }
-//       res.redirect('/')
-//     })
-//   } else {
-//     req.session.destroy(err => {
-//         console.log(err);
-//         res.redirect('/');
-//       });
-//   }
-// }
-
 exports.postChangePassword = (req, res, next) => {
     const newPass = req.body.newpass
     bcrypt.compare(req.body.oldpass, req.user.password)
@@ -232,11 +296,60 @@ exports.postChangePassword = (req, res, next) => {
 
 }
 
+exports.postEditSong = (req, res, next) => {
+  const newTitle = req.body.newTitle
+  const newGenre = req.body.newGenre
+  const newSongUrl = req.body.newSongUrl
+  const newYoutubeSongId = newSongUrl.split('=')
+  User.findById(req.user._id)
+    .then(user => {
+      user.songs.forEach(userSong => {
+        if (userSong.season === currentSeason) {
+          Song.find({ youtubeSongId: userSong.youtubeSongId })
+            .then(correctSong => {
+              correctSong[0].songTitle = newTitle
+              correctSong[0].songGenre = newGenre
+              correctSong[0].youtubeSongId = newYoutubeSongId[newYoutubeSongId.length - 1]
+              correctSong[0].save()
+            })
+            userSong.songTitle = newTitle
+            userSong.songGenre = newGenre
+            userSong.youtubeSongId = newYoutubeSongId[newYoutubeSongId.length - 1]
+        }
+        user.save()
+        res.redirect('/profile')
+      })
+    })
+}
+
+exports.postEditAd = (req, res, next) => {
+  const newAdTitle = req.body.newAdTitle
+  const newAdDescription = req.body.newAdDescription.trim()
+  const newAffiliateLink = req.body.newAffiliateLink
+  User.find({ userType: 'Advertiser', name: req.user.name })
+    .then(user => {
+      Ad.find({ adTitle: user[0].songs[0].adTitle })
+        .then(correctAd => {
+          correctAd[0].adTitle = newAdTitle
+          correctAd[0].adDescription = newAdDescription
+          correctAd[0].adAffiliateLink = newAffiliateLink
+          correctAd[0].save()
+        })
+    
+      user[0].songs[0].adTitle = newAdTitle
+      user[0].songs[0].adDescription = newAdDescription
+      user[0].songs[0].adAffiliateLink = newAffiliateLink
+      user[0].save()
+      res.redirect('/profile')
+    })
+}
+
 exports.getForgot = (req, res, next) => {
     res.render('auth/forgot', {
         pageTitle: 'Forgot Password',
         errorMessage: '',
-        successMessage: ''
+        successMessage: '',
+        ads: ''
     })
 }
 
@@ -318,47 +431,47 @@ exports.postReset = (req, res, next) => {
     });
   };
   
-  exports.getNewPassword = (req, res, next) => {
-    const token = req.params.token;
-    User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } })
-      .then(user => {
-        res.render('auth/new-password', {
-          pageTitle: 'New Password',
-          errorMessage: '',
-          userId: user._id.toString(),
-          passwordToken: token
-        });
-      })
-      .catch(err => {
-        new Error(err);
+exports.getNewPassword = (req, res, next) => {
+  const token = req.params.token;
+  User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } })
+    .then(user => {
+      res.render('auth/new-password', {
+        pageTitle: 'New Password',
+        errorMessage: '',
+        userId: user._id.toString(),
+        passwordToken: token
       });
-  };
-  
-  exports.postNewPassword = (req, res, next) => {
-    const newPassword = req.body.newpassword;
-    const userId = req.body.userId;
-    const passwordToken = req.body.passwordToken;
-    let resetUser;
-  
-    User.findOne({
-      resetToken: passwordToken,
-      resetTokenExpiration: { $gt: Date.now() },
-      _id: userId
     })
-      .then(user => {
-        resetUser = user;
-        return bcrypt.hash(newPassword, 12);
-      })
-      .then(hashedPassword => {
-        resetUser.password = hashedPassword;
-        resetUser.resetToken = undefined;
-        resetUser.resetTokenExpiration = undefined;
-        return resetUser.save();
-      })
-      .then(result => {
-        res.redirect('/signin');
-      })
-      .catch(err => {
-        new Error(err);
-      });
-  };
+    .catch(err => {
+      new Error(err);
+    });
+};
+
+exports.postNewPassword = (req, res, next) => {
+  const newPassword = req.body.newpassword;
+  const userId = req.body.userId;
+  const passwordToken = req.body.passwordToken;
+  let resetUser;
+
+  User.findOne({
+    resetToken: passwordToken,
+    resetTokenExpiration: { $gt: Date.now() },
+    _id: userId
+  })
+    .then(user => {
+      resetUser = user;
+      return bcrypt.hash(newPassword, 12);
+    })
+    .then(hashedPassword => {
+      resetUser.password = hashedPassword;
+      resetUser.resetToken = undefined;
+      resetUser.resetTokenExpiration = undefined;
+      return resetUser.save();
+    })
+    .then(result => {
+      res.redirect('/signin');
+    })
+    .catch(err => {
+      new Error(err);
+    });
+};

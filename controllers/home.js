@@ -1,3 +1,4 @@
+require('dotenv').config()
 const User = require('../models/user')
 const Song = require('../models/song')
 const Ad = require('../models/ad')
@@ -5,7 +6,7 @@ const Ad = require('../models/ad')
 const { validationResult } = require('express-validator');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
-const stripe = require('stripe')('sk_test_51MExl4Bb37tvGgw4uz30OfIgeaj25SqwyLtHTW0E7yq5zZJCzs4ihjjEq17h3JP4iAUBQRx9Gzi9JfJULl8Y0twk00x3LBiZry')
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 const currentSeason = 2
 const nextSeason = currentSeason + 1
@@ -17,7 +18,7 @@ const transporter = nodemailer.createTransport(
     sendgridTransport({
       auth: {
         api_key:
-          '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'
+            process.env.NODEMAILER_API_KEY
       }
     })
   );
@@ -615,8 +616,11 @@ exports.getLocalReleases = (req, res, next) => {
     let localSongsArr = []
     User.find({ homeState: req.user.homeState, userType: 'Contestant' })
         .then(localArtists => {
+            console.log(localArtists)
             localArtists.forEach(artist => {
-                localSongsArr.push(artist.songs[0])
+                if (artist.songs.length > 0) {
+                    localSongsArr.push(artist.songs[0])
+                }
             })
             res.render('home/localreleases', {
                 pageTitle: "Underdog Artists",
@@ -781,28 +785,55 @@ exports.postGetCheckout = async (req, res, next) => {
     let genre = req.body.genre
     let pmtOption = req.body.paymentOption
     let hasAlreadyUploaded = user.songs.filter(song => song.season === currentSeason)
+    const errors = validationResult(req);
 
-    if (hasAlreadyUploaded.length > 0) {
-        return res.status(422).render('home/profile', {
-          pageTitle: "Underdog Profile",
-          username: user.name,
-          email: user.email,
-          preferredGenre: user.preferredGenre,
-          instagram: user.instagram,
-          tiktok: user.tiktok,
-          bio: user.bio,
-          userProfileImage: user.userProfileImage,
-          votes: user.votes,
-          errorMessage: 'You can only add one song per season',
-          userSongs: user.songs,
-          isPremiumUser: req.user.isPremiumUser,
-          currentSeason: currentSeason
-        });
+    if (!errors.isEmpty()) {
+      console.log(errors.array());
+      return Ad.find({ isGoldAd: true, adHomeState: req.user.homeState })
+                .then(goldAds => {
+                    res.status(422).render('home/profile', {
+                    pageTitle: "Underdog Profile",
+                    username: user.name,
+                    email: user.email,
+                    preferredGenre: user.preferredGenre,
+                    instagram: user.instagram,
+                    tiktok: user.tiktok,
+                    bio: user.bio,
+                    userProfileImage: user.userProfileImage,
+                    votes: user.votes,
+                    errorMessage: errors.array()[0].msg,
+                    userSongs: user.songs,
+                    currentSeason: currentSeason,
+                    goldAds: user.userType === "Contestant" ? goldAds : '',
+                    isPremiumUser: req.user.isPremiumUser,
+                    ads: ''
+                    })
+                });
+    } else if (hasAlreadyUploaded.length > 0) {
+        return Ad.find({ isGoldAd: true, adHomeState: req.user.homeState })
+            .then(goldAds => {
+                res.status(422).render('home/profile', {
+                pageTitle: "Underdog Profile",
+                username: user.name,
+                email: user.email,
+                preferredGenre: user.preferredGenre,
+                instagram: user.instagram,
+                tiktok: user.tiktok,
+                bio: user.bio,
+                userProfileImage: user.userProfileImage,
+                votes: user.votes,
+                errorMessage: errors.array()[0].msg,
+                userSongs: user.songs,
+                currentSeason: currentSeason,
+                goldAds: user.userType === "Contestant" ? goldAds : '',
+                isPremiumUser: req.user.isPremiumUser,
+                ads: ''
+                })
+            })
     } else {
         if (req.user.isPremiumUser) {
             res.redirect(`/checkout/success?&title=${title}&songUrl=${songUrl}&genre=${genre}`)
-        } 
-        else if (pmtOption === 'Single Upload'){
+        } else if (pmtOption === 'Single Upload') {
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
                 line_items: [
@@ -828,7 +859,7 @@ exports.postGetCheckout = async (req, res, next) => {
                 payment_method_types: ['card'],
                 line_items: [
                     {
-                      price: 'price_1MGm29Bb37tvGgw4XKleG2W4',
+                      price: 'price_1Hz3p1GUljPyCRPOZyhxhSsv',
                       quantity: 1,
                     },
                   ],
@@ -849,7 +880,7 @@ exports.postGetAdCheckout = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: [
                 {
-                  price: 'price_1MOak3Bb37tvGgw4rue7bp0L',
+                  price: 'price_1MRfYIGUljPyCRPOib7Ti5eB',
                   quantity: 1,
                 },
               ],
@@ -864,7 +895,7 @@ exports.postGetAdCheckout = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: [
                 {
-                  price: 'price_1MOaj5Bb37tvGgw4eTYSgGKa',
+                  price: 'price_1MRfZwGUljPyCRPOotPqUOsL',
                   quantity: 1,
                 },
               ],
@@ -879,7 +910,7 @@ exports.postGetAdCheckout = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: [
                 {
-                  price: 'price_1MOagyBb37tvGgw48vIPWxVz',
+                  price: 'price_1MRfbNGUljPyCRPOWvMBr2vf',
                   quantity: 1,
                 },
               ],
@@ -916,35 +947,45 @@ exports.getCheckoutSuccess = (req, res, next) => {
       });
     }
 
+
     if (youtubeSongUrl) {
-        let youtubeSongUrlArr = youtubeSongUrl.split('/')
-        let youtubeSongId = youtubeSongUrlArr[youtubeSongUrlArr.length - 1]
-        const newSong = new Song({
-            songTitle: title,
-            youtubeSongId: youtubeSongId,
-            songGenre: genre,
-            season: user.isPremiumUser ? currentSeason : currentSeason,
-            votes: 0,
-            dateCreated: new Date(),
-            artistName: user.name,
-        });
-        newSong
-        .save()
-        .then(result => {
-            // console.log(result);
-            user.addSong(newSong)
-            console.log('Created Song');
+        let youtubeSongId
+        if (youtubeSongUrl.includes('https://youtu.be/')) {
+            let youtubeSongUrlArr = youtubeSongUrl.split('/')
+            youtubeSongId = youtubeSongUrlArr[youtubeSongUrlArr.length - 1]
+        } else if (youtubeSongUrl.includes('https://www.youtube.com/watch?v=')) {
+            let youtubeSongUrlArr = youtubeSongUrl.split('=')
+            youtubeSongId = youtubeSongUrlArr[youtubeSongUrlArr.length - 1]
+        }
+        if (youtubeSongId) {
+            const newSong = new Song({
+                songTitle: title,
+                youtubeSongId: youtubeSongId,
+                songGenre: genre,
+                season: user.isPremiumUser ? currentSeason : currentSeason,
+                votes: 0,
+                dateCreated: new Date(),
+                artistName: user.name,
+            });
+            newSong
+            .save()
+            .then(result => {
+                // console.log(result);
+                user.addSong(newSong)
+                console.log('Created Song');
+                res.redirect('/profile');
+            })
+            .catch(err => {
+                if (err) {
+                console.log(err)
+                }
+            });
+        } else {
+            user.save()
             res.redirect('/profile');
-        })
-        .catch(err => {
-            if (err) {
-            console.log(err)
-            }
-        });
-    } else {
-        user.save()
-        res.redirect('/profile');
+        }
     }
+
 };
 
 exports.createAdvertisement = (req, res, next) => {

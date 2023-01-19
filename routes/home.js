@@ -47,9 +47,14 @@ router.post('/checkout',
       body('songUrl')
         .custom((value, {req}) => {
           if (!value.includes('https://youtu.be/')){
-            throw new Error("Shared YouTube song URL must start like this ('https://youtu.be/') and can be found when clicking the 'Share' button on your youtube video.");
+            if (!value.includes('https://www.youtube.com/watch?v=')){
+              throw new Error('Invalid Youtube Link. Make sure it begins with either "https://youtu.be/" or "https://www.youtube.com/watch?v="');
+            } else {
+              return true
+            }
+          } else {
+            return true
           }
-          return true
         })
         .isString(),
       body('genre').isString()

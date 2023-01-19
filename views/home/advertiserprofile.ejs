@@ -71,7 +71,7 @@
 										<span class="plan__price">$75<span> /month</span></span>
 										<ul class="plan__list">
 											<li class="green"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.71,7.21a1,1,0,0,0-1.42,0L9.84,14.67,6.71,11.53A1,1,0,1,0,5.29,13l3.84,3.84a1,1,0,0,0,1.42,0l8.16-8.16A1,1,0,0,0,18.71,7.21Z"/></svg> Contact 10 artists per day</li>
-											<li class="green"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.71,7.21a1,1,0,0,0-1.42,0L9.84,14.67,6.71,11.53A1,1,0,1,0,5.29,13l3.84,3.84a1,1,0,0,0,1.42,0l8.16-8.16A1,1,0,0,0,18.71,7.21Z"/></svg> Logo, company name and type of services located bottom of home page (rotary promotion)</li>
+											<li class="green"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.71,7.21a1,1,0,0,0-1.42,0L9.84,14.67,6.71,11.53A1,1,0,1,0,5.29,13l3.84,3.84a1,1,0,0,0,1.42,0l8.16-8.16A1,1,0,0,0,18.71,7.21Z"/></svg> Logo, company name and type of services located at the bottom of Home, Artists, Performances pages (rotary promotion)</li>
 											<li class="green"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.71,7.21a1,1,0,0,0-1.42,0L9.84,14.67,6.71,11.53A1,1,0,1,0,5.29,13l3.84,3.84a1,1,0,0,0,1.42,0l8.16-8.16A1,1,0,0,0,18.71,7.21Z"/></svg> Affordable option for smaller to medium local businesses for local artists.</li>
 											<li class="red"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"/></svg> Silver Ad Positions</li>
 											<li class="red"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"/></svg> Ability to contact 20 artists per day</li>
@@ -82,10 +82,10 @@
 										<button class="plan__btn" type="submit">Select plan</button>
 									</div>
 									<div>
-										<div class="red-box"></div>
-										<img class="basic-advertisement" src="../../images/basicadvertisement.png" alt="basic advertisement display on home screem" />
+										<img class="basic-advertisement" src="../../images/bronze-ad-1.png" alt="basic advertisement display on home screem" />
 									</div>
 								</div>
+								<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 								<input type="text" name="pmtOption" value="Bronze" style="display:none;" />
 							</form>
 						</div>
@@ -113,6 +113,7 @@
 										<img class="silver-advertisement" src="../../images/silveradvertisement2.png" alt="basic advertisement display on home screem" />
 									</div>
 								</div>
+								<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 								<input type="text" name="pmtOption" value="Silver" style="display:none;"  />
 							</form>
 						</div>
@@ -138,6 +139,7 @@
 										<img class="silver-advertisement" src="../../images/premiumadvertisement2.png" alt="basic advertisement display on home screem" />
 									</div>
 								</div>
+								<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 								<input type="text" name="pmtOption" value="Gold" style="display:none;"  />
 							</form>
 						</div>
@@ -194,6 +196,7 @@
 															<label for="affiliateLink">Affiliate Link (To track impressions/clicks): (3)</label>
 															<input type="text" name="affiliateLink" id="affiliateLink" class="sign__input" >
 														</div>
+														<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 														<input name="isBronzeAd" value="<%= isBronzeAd %>" style="display:none;">
 														<input name="isSilverAd" value="<%= isSilverAd %>" style="display:none;">
 														<input name="isGoldAd" value="<%= isGoldAd %>" style="display:none;">
@@ -242,6 +245,7 @@
 											<input type="text" name="email" id="email" class="sign__input" value="<%= email %>">
 										</div>
 										
+										<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 										<button class="sign__btn" type="submit">Submit Changes</button>
 									</form>
 								</div>
@@ -276,6 +280,7 @@
 												</div>
 											</div>
 
+											<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 											<div class="col-12">
 												<button class="sign__btn" type="submit">Change</button>
 											</div>
@@ -312,6 +317,7 @@
 														</div>
 													</div>
 												<% } %>
+												<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 												<div class="col-12">
 													<button class="sign__btn" type="submit">Update Ad</button>
 												</div>

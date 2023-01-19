@@ -304,6 +304,7 @@
 													</div>
 												<% } %>
 											</div>
+											<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 											<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 												<button class="sign__btn" id="submit-btn" type="submit">Submit Song</button>
 											</div>
@@ -366,6 +367,7 @@
 											</select>
 										</div>
 										
+										<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 										<button class="sign__btn" type="submit">Submit Changes</button>
 									</form>
 								</div>
@@ -400,6 +402,7 @@
 												</div>
 											</div>
 
+											<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 											<div class="col-12">
 												<button class="sign__btn" type="submit">Change</button>
 											</div>
@@ -453,6 +456,7 @@
 
 													<% } %>
 												<% } %>
+												<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 												<div class="col-12">
 													<button class="sign__btn" type="submit">Update Song</button>
 												</div>

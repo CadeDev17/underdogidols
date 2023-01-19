@@ -30,7 +30,7 @@
 									<a>FAN SIGNIN (Click Here)</a>
 								</div>
 
-								<a href="/auth/facebook" id="fb-login">Sign in with FaceBook</a>
+								<button class="loginBtn loginBtn--facebook" id="fb-login"><a href="/auth/facebook">Sign in with FaceBook</a></button>
 
 								<div class="sign__group">
 									<input type="text" name="email" id="email" class="sign__input" placeholder="Email">
@@ -46,6 +46,7 @@
 
 								<span class="sign__text">Don't have an account? <a href="/signup">Sign up!</a></span>
 
+								<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 								<span class="sign__text"><a href="/forgot">Forgot password?</a></span>
 							</form>
 							<!-- end authorization form -->

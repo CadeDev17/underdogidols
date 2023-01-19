@@ -1,5 +1,6 @@
+require('dotenv').config()
 const stripe = require('stripe')
-const endpointSecret = "whsec_ef3f75837fd0a0e0999e365496e753878587a5e1cc5aa48d1f1bcae062695440";
+const endpointSecret = process.env.STRIPE_WEBHOOK_ENDPOINTSECRET;
 
 const User = require('../models/user')
 

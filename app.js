@@ -1,7 +1,3 @@
-// TODO's
-// - Work on the different availabilities based on the usertype
-
-
 const mongoose = require('mongoose');
 const path = require('path');
 const express = require('express');
@@ -27,6 +23,7 @@ const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions'
 });
+
 const csrfProtection = csrf()
 
 app.set('view engine', 'ejs');
@@ -69,6 +66,8 @@ app.use(
     store: store
   })
 );
+  
+app.use(csrfProtection)
 
 app.use((req, res, next) => {
   if (req.session.passport){
@@ -79,7 +78,7 @@ app.use((req, res, next) => {
     res.locals.userTypeLocals = req.session.userType
   }
 
-  // res.locals.csrfToken = req.csrfToken()
+  res.locals.csrfToken = req.csrfToken()
 
   if (req.session.userType === 'Advertiser') {
     res.locals.isGoldAd = req.session.user.isGoldAd

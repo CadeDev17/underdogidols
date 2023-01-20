@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
 	"use strict"; // start of use strict
 
@@ -35,6 +34,22 @@ $(document).ready(function () {
 		event.preventDefault()
 		$('#fb-login').css("display", "block")
 		// <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false"></div>
+	})
+
+	/*==============================
+	Vote Button
+	==============================*/
+	$('.voteBtn').on('click', function(event) {
+		const songName = event.currentTarget.id
+		const csrfValue = $('#csrf')[0].defaultValue
+
+		axios.defaults.headers.post['X-CSRF-Token'] = csrfValue
+		axios.post(`http://localhost:3000/cast-vote/${songName}`)
+			.then(response => {
+				window.location.reload()
+				document.body.innerHTML = response.data
+			})
+		
 	})
 
 	/*==============================

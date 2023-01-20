@@ -700,6 +700,141 @@ exports.getVoting = (req, res, next) => {
         })
 }
 
+exports.postGetVotableByGenre = (req, res, next) => {
+    const selectedGenre = req.body.genre
+    const page = +req.query.page || 1;
+    let totalSongs;
+    if (selectedGenre !== 'All genres') {
+        Song.find({ season: currentSeason, songGenre: selectedGenre })
+            .then(allSongs => {
+                let topSongs = allSongs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                let topFiveSongs = topSongs.slice(0, 5)
+                Ad.find()
+                    .then(ads => {
+                        res.render('home/voting', {
+                            pageTitle: "Underdog Performances",
+                            errorMessage: '',
+                            selectedByGenre: true,
+                            genreSelected: selectedGenre,
+                            songs: allSongs,
+                            ads: ads,
+                            currentSeason: currentSeason,
+                            topFiveSongs: topFiveSongs,
+                            currentPage: page,
+                            hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                            hasPreviousPage: page > 1,
+                            nextPage: page + 1,
+                            previousPage: page - 1,
+                            lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                        })
+                    })
+            })
+    } else {
+        Song.find({ season: currentSeason })
+            .then(allSongs => {
+                Song.find({ season: currentSeason })
+                    .countDocuments()
+                    .then(numSongs => {
+                        totalSongs = numSongs;
+                        return Song.find({ season: currentSeason })
+                        .skip((page - 1) * ITEMS_PER_PAGE)
+                        .limit(ITEMS_PER_PAGE);
+                    })
+                    .then(songs => {
+                        let topSongs = allSongs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                        let topFiveSongs = topSongs.slice(0, 5)
+                        Ad.find()
+                            .then(ads => {
+                                res.render('home/voting', {
+                                    pageTitle: "Underdog Performances",
+                                    errorMessage: '',
+                                    selectedByGenre: false,
+                                    songs: songs,
+                                    ads: ads,
+                                    currentSeason: currentSeason,
+                                    topFiveSongs: topFiveSongs,
+                                    currentPage: page,
+                                    hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                                    hasPreviousPage: page > 1,
+                                    nextPage: page + 1,
+                                    previousPage: page - 1,
+                                    lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                                })
+                            })
+                    })
+            })
+    }
+}
+
+exports.postGetVotableBySongName = (req, res, next) => {
+    const searchedSong = req.body.searchedSong
+    const page = +req.query.page || 1;
+    let totalSongs;
+    if (searchedSong !== undefined) {
+        Song.find()
+            .then(songs => {
+                Song.find({ season: currentSeason, songTitle: searchedSong })
+                    .then(selectedSong => {
+                        let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                        let topFiveSongs = topSongs.slice(0, 5)
+                        Ad.find()
+                            .then(ads => {
+                                res.render('home/voting', {
+                                    pageTitle: "Underdog Performances",
+                                    errorMessage: '',
+                                    selectedByGenre: true,
+                                    genreSelected: '',
+                                    songs: selectedSong,
+                                    ads: ads,
+                                    currentSeason: currentSeason,
+                                    topFiveSongs: topFiveSongs,
+                                    currentPage: page,
+                                    hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                                    hasPreviousPage: page > 1,
+                                    nextPage: page + 1,
+                                    previousPage: page - 1,
+                                    lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                                })
+                            })
+                    })
+            })
+    } else {
+        Song.find({ season: currentSeason })
+            .then(allSongs => {
+                Song.find({ season: currentSeason })
+                    .countDocuments()
+                    .then(numSongs => {
+                        totalSongs = numSongs;
+                        return Song.find({ season: currentSeason })
+                        .skip((page - 1) * ITEMS_PER_PAGE)
+                        .limit(ITEMS_PER_PAGE);
+                    })
+                    .then(songs => {
+                        let topSongs = allSongs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                        let topFiveSongs = topSongs.slice(0, 5)
+                        Ad.find()
+                            .then(ads => {
+                                res.render('home/releases', {
+                                    pageTitle: "Underdog Performances",
+                                    errorMessage: '',
+                                    selectedByGenre: false,
+                                    songs: songs,
+                                    ads: ads,
+                                    currentSeason: currentSeason,
+                                    topFiveSongs: topFiveSongs,
+                                    currentPage: page,
+                                    hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                                    hasPreviousPage: page > 1,
+                                    nextPage: page + 1,
+                                    previousPage: page - 1,
+                                    lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                                })
+                            })
+                    })
+            })
+    }
+}
+
 exports.getSongForVoting = (req, res, next) => {
     const songName = req.params.songName
     const artistName = req.params.artistName

@@ -12,7 +12,7 @@ const currentSeason = 2
 const nextSeason = currentSeason + 1
 const previousSeason = currentSeason - 1
 
-const ITEMS_PER_PAGE = 2
+const ITEMS_PER_PAGE = 7
 
 const transporter = nodemailer.createTransport(
     sendgridTransport({
@@ -682,28 +682,57 @@ exports.getNews = (req, res, next) => {
 }
 
 exports.getVoting = (req, res, next) => {
+    const page = +req.query.page || 1;
+    let totalSongs;
+
+    let userVotedSongTitles = []
+    req.session.passport.user[0].songs.forEach(userVotedSong => {
+        userVotedSongTitles.push(userVotedSong.songTitle)
+    })
+
     User.find()
         .then(artists => {
             Song.find({ season: currentSeason })
+                .countDocuments()
+                .then(numSongs => {
+                    totalSongs = numSongs;
+                    return Song.find({ season: currentSeason })
+                    .skip((page - 1) * ITEMS_PER_PAGE)
+                    .limit(ITEMS_PER_PAGE);
+                })
                 .then(songs => {
                     let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
                     let topFiveSongs = topSongs.slice(0, 5)
                     res.render('home/voting', {
                         pageTitle: 'UnderdogIdols Voting',
                         songs: songs,
+                        selectedByGenre: false,
                         topFiveSongs: topFiveSongs,
+                        userVotedSongTitles: userVotedSongTitles,
                         artists: artists,
                         errorMessage: '',
-                        ads: ''
+                        ads: '',
+                        currentPage: page,
+                        hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                        hasPreviousPage: page > 1,
+                        nextPage: page + 1,
+                        previousPage: page - 1,
+                        lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                     })
             })
         })
 }
 
 exports.postGetVotableByGenre = (req, res, next) => {
+    let userVotedSongTitles = []
+    req.session.passport.user[0].songs.forEach(userVotedSong => {
+        userVotedSongTitles.push(userVotedSong.songTitle)
+    })
+
     const selectedGenre = req.body.genre
     const page = +req.query.page || 1;
     let totalSongs;
+    
     if (selectedGenre !== 'All genres') {
         Song.find({ season: currentSeason, songGenre: selectedGenre })
             .then(allSongs => {
@@ -720,6 +749,7 @@ exports.postGetVotableByGenre = (req, res, next) => {
                             ads: ads,
                             currentSeason: currentSeason,
                             topFiveSongs: topFiveSongs,
+                            userVotedSongTitles: userVotedSongTitles,
                             currentPage: page,
                             hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
                             hasPreviousPage: page > 1,
@@ -753,6 +783,7 @@ exports.postGetVotableByGenre = (req, res, next) => {
                                     ads: ads,
                                     currentSeason: currentSeason,
                                     topFiveSongs: topFiveSongs,
+                                    userVotedSongTitles: userVotedSongTitles,
                                     currentPage: page,
                                     hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
                                     hasPreviousPage: page > 1,
@@ -767,6 +798,11 @@ exports.postGetVotableByGenre = (req, res, next) => {
 }
 
 exports.postGetVotableBySongName = (req, res, next) => {
+    let userVotedSongTitles = []
+    req.session.passport.user[0].songs.forEach(userVotedSong => {
+        userVotedSongTitles.push(userVotedSong.songTitle)
+    })
+
     const searchedSong = req.body.searchedSong
     const page = +req.query.page || 1;
     let totalSongs;
@@ -788,6 +824,7 @@ exports.postGetVotableBySongName = (req, res, next) => {
                                     ads: ads,
                                     currentSeason: currentSeason,
                                     topFiveSongs: topFiveSongs,
+                                    userVotedSongTitles: userVotedSongTitles,
                                     currentPage: page,
                                     hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
                                     hasPreviousPage: page > 1,
@@ -814,7 +851,7 @@ exports.postGetVotableBySongName = (req, res, next) => {
                         let topFiveSongs = topSongs.slice(0, 5)
                         Ad.find()
                             .then(ads => {
-                                res.render('home/releases', {
+                                res.render('home/voting', {
                                     pageTitle: "Underdog Performances",
                                     errorMessage: '',
                                     selectedByGenre: false,
@@ -822,6 +859,7 @@ exports.postGetVotableBySongName = (req, res, next) => {
                                     ads: ads,
                                     currentSeason: currentSeason,
                                     topFiveSongs: topFiveSongs,
+                                    userVotedSongTitles: userVotedSongTitles,
                                     currentPage: page,
                                     hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
                                     hasPreviousPage: page > 1,
@@ -857,33 +895,50 @@ exports.getSongForVoting = (req, res, next) => {
 
 exports.postCastVote = (req, res, next) => {
     const songName = req.params.songName
+    // Getting the songs that the request session user had previously voted for
+    let userVotedSongTitles = []
+    req.session.passport.user[0].songs.forEach(userVotedSong => {
+        userVotedSongTitles.push(userVotedSong.songTitle)
+    })
+    // Finding request session user by email in user DB
     User.find({ email: req.session.passport.user[0].email})
         .then(user => {
-            isExistingSong = user[0].songs.filter(userSongs => userSongs.songTitle === songName)
             votingUser = user[0]
             Song.find({ season: currentSeason })
                 .then(songs => {
-                    let sortedSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
+                    // Finding the voted for song in the song DB
                     const song = songs.filter(filteredSong => filteredSong.songTitle === songName)
+                    // This answers if this song already been voted for by this user
+                    isExistingSong = user[0].songs.filter(userSongs => userSongs.songTitle === songName)
+                    // If it has NOT been previously voted on by this user, add a vote and save
                     if (isExistingSong.length === 0){
                         song[0].votes++
                         song[0].save()
+                        req.session.passport.user[0].songs.push(song[0])
+                        userVotedSongTitles.push(song[0].songTitle)
                     } else {
+                        // If the song HAS been voted on previously, save the song and re-render voting page w/ error msg
                         song[0].save()
                         let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
                         let topFiveSongs = topSongs.slice(0, 5)
                         res.render('home/voting', {
                             pageTitle: 'UnderdogIdols Voting',
+                            selectedByGenre: true,
                             songs: songs,
                             topFiveSongs: topFiveSongs,
+                            userVotedSongTitles: userVotedSongTitles,
                             errorMessage: 'Can not vote multiple times for the same song.',
                             ads: ''
                         })
                         return
                     }
+                    // The song object also holds vote count, here we are adding the vote there as well
+                    // Finding the user by the artist name of the song that is being voted on
                     User.find({ name: song[0].artistName })
                         .then(user => {
+                            // Finding the correct song (because users can have multiple songs)
                             let correctSong = user[0].songs.filter(votedSong => votedSong.songTitle === songName)
+                            // If song has NOT been voted on by the fan previously, then add a vote and save the song
                             if (isExistingSong.length === 0){
                                 correctSong[0].votes++
                                 votingUser.addSong(correctSong[0])
@@ -892,24 +947,31 @@ exports.postCastVote = (req, res, next) => {
                                 let topFiveSongs = topSongs.slice(0, 5)
                                 res.render('home/voting', {
                                     pageTitle: 'UnderdogIdols Voting',
+                                    selectedByGenre: true,
                                     songs: songs,
                                     topFiveSongs: topFiveSongs,
+                                    userVotedSongTitles: userVotedSongTitles,
                                     errorMessage: '',
                                     ads: ''
                                 })
                             } else {
+                                // If the song HAS been voted on previously, then just re-render the voting page
+                                // (I'm fairly certain that the error check for this will catch above in the Song.find() logic
+                                // so this may not even get read at all...)
                                 let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
                                 let topFiveSongs = topSongs.slice(0, 5)
                                 res.render('home/voting', {
                                     pageTitle: 'UnderdogIdols Voting',
+                                    selectedByGenre: true,
                                     songs: songs,
                                     topFiveSongs: topFiveSongs,
+                                    userVotedSongTitles: userVotedSongTitles,
                                     errorMessage: '',
                                     ads: ''
                                 })
                             }
                         })
-                })
+                })  
         })
 }
 

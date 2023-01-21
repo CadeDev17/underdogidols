@@ -2441,6 +2441,13 @@ body::-webkit-scrollbar-thumb {
   color: #8c32c1
 }
 
+.hasVotedBtn {
+  width: 30px;
+  margin-left: 25px;
+  cursor: pointer;
+  color: red;
+}
+
 .vote-container {
   display: flex;
   width: 100%;

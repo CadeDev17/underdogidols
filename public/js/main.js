@@ -40,6 +40,7 @@ $(document).ready(function () {
 	Vote Button
 	==============================*/
 	$('.voteBtn').on('click', function(event) {
+		event.preventDefault()
 		const songName = event.currentTarget.id
 		const csrfValue = $('#csrf')[0].defaultValue
 

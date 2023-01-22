@@ -3054,6 +3054,26 @@ body::-webkit-scrollbar-thumb {
 /*==============================
 	Single
 ==============================*/
+
+.release__cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.release__cover .release__cover--details {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 85%;
+}
+
 .single-item {
   display: flex;
   flex-direction: row;
@@ -3287,6 +3307,7 @@ body::-webkit-scrollbar-thumb {
 .single-item:hover .single-item__cover.play svg:last-child {
   opacity: 1;
 }
+
 /*==============================
 	Post
 ==============================*/
@@ -4314,7 +4335,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .basic-advertisement {
-  width: 700px;
+  width: 500px;
   border: 2px solid #8c32c1;
 }
 
@@ -5797,7 +5818,7 @@ body::-webkit-scrollbar-thumb {
   width: auto;
 }
 .sign__logo img {
-  width: 100px;
+  width: 150px;
 }
 .sign__title {
   font-size: 16px;

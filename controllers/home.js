@@ -12,7 +12,7 @@ const currentSeason = 2
 const nextSeason = currentSeason + 1
 const previousSeason = currentSeason - 1
 
-const ITEMS_PER_PAGE = 7
+const ITEMS_PER_PAGE = 5
 
 const transporter = nodemailer.createTransport(
     sendgridTransport({
@@ -303,7 +303,6 @@ exports.postContactArtist = (req, res, next) => {
                     artistName: artist[0].name
                 })
                 req.user.save()
-                console.log(req.user.songs)
             }
             res.render('home/artist', {
                 pageTitle: "Underdog Artist",
@@ -311,7 +310,8 @@ exports.postContactArtist = (req, res, next) => {
                 errorMessage: '',
                 userType: req.user.userType,
                 advertiserContactsAvailable: 20,
-                successMessage: 'Your message has been sent. Responses will be sent to your accounts email.'
+                successMessage: 'Your message has been sent. Responses will be sent to your accounts email.',
+                ads: ''
             })
             transporter.sendMail({
                 to: 'decryptr22@gmail.com',
@@ -481,7 +481,6 @@ exports.getReleases = (req, res, next) => {
 }
 
 exports.postGetReleasesByGenre = (req, res, next) => {
-    const searchedSong = req.body.searchedSong
     const selectedGenre = req.body.genre
     const page = +req.query.page || 1;
     let totalSongs;
@@ -616,7 +615,6 @@ exports.getLocalReleases = (req, res, next) => {
     let localSongsArr = []
     User.find({ homeState: req.user.homeState, userType: 'Contestant' })
         .then(localArtists => {
-            console.log(localArtists)
             localArtists.forEach(artist => {
                 if (artist.songs.length > 0) {
                     localSongsArr.push(artist.songs[0])

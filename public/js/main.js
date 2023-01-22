@@ -109,7 +109,7 @@ $(document).ready(function () {
 				margin: 30,
 			},
 			1200 : {
-				items: 4,
+				items: 5,
 				margin: 30,
 				mouseDrag: false,
 			},
@@ -147,7 +147,7 @@ $(document).ready(function () {
 		}
 	});
 
-	$('.main__carousel--store').owlCarousel({
+	$('.main__carousel--new-releases').owlCarousel({
 		mouseDrag: true,
 		touchDrag: true,
 		dots: true,
@@ -158,7 +158,7 @@ $(document).ready(function () {
 		autoHeight: true,
 		responsive: {
 			0 : {
-				items: 2,
+				items: 1,
 			},
 			576 : {
 				items: 3,
@@ -168,11 +168,11 @@ $(document).ready(function () {
 				margin: 30,
 			},
 			992 : {
-				items: 4,
+				items: 5,
 				margin: 30,
 			},
 			1200 : {
-				items: 5,
+				items: 6,
 				margin: 30,
 			},
 		}

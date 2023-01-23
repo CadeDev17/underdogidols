@@ -40,15 +40,15 @@ const handleSuccessfulPayments = (chargeSucceeded) => {
                     user[0].isPremiumUser = true
                     break;
 
-                case 7500:
+                case 29500:
                     user[0].isGoldAd = true
                     break;
 
-                case 4500:
+                case 19000:
                     user[0].isSilverAd = true
                     break;
 
-                case 1500:
+                case 7500:
                     user[0].isBronzeAd = true
                     break
             }

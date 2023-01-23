@@ -465,7 +465,7 @@ $(document).ready(function () {
 	/*==============================
 	Bg
 	==============================*/
-	$('.hero__slide, .event').each( function() {
+	$('.hero__slide, .event, .event--artists').each( function() {
 		if ($(this).attr("data-bg")){
 			$(this).css({
 				'background': 'url(' + $(this).data('bg') + ')',

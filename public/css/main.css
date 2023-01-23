@@ -2864,6 +2864,7 @@ body::-webkit-scrollbar-thumb {
 }
 .artist__cover img {
   width: 100%;
+  height: 100%;
   display: block;
   position: relative;
   z-index: 1;
@@ -2894,6 +2895,21 @@ body::-webkit-scrollbar-thumb {
 /*==============================
 	Event
 ==============================*/
+.event--artists {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  height: 300px;
+  border: 2px solid red;
+}
+
 .event {
   display: flex;
   flex-direction: column;

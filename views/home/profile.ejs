@@ -15,22 +15,40 @@
 
 				<!-- title -->
 				<div class="col-12">
-					<div class="main__title">
-						<h2>Sponsors Local To You:</h2>
-					</div>
+					<% if (goldAdsByState.length > 0) { %>
+						<div class="main__title">
+							<h2>Sponsors Local To You:</h2>
+						</div>
+					<% } else { %>
+						<div class="main__title">
+							<h2>Gold Sponsors:</h2>
+						</div>
+					<% } %>
 				</div>
 				<!-- end title -->
 
 				<div class="premiumAd owl-carousel" id="premAd-index-container">
-					<% goldAds.forEach(goldAd => { %>
-						<div class="hero__slide-contestant" data-bg="img/home/slide1.jpg">
-							<h1 class="hero__title--contestant"><%= goldAd.adTitle %></h1>
-							<p class="hero__text"><%= goldAd.adDescription %></p>
-							<div class="hero__btns">
-								<a href="<%= goldAd.affiliateLink %>" class="hero__btn hero__btn--green">Contact Us</a>
+					<% if (goldAdsByState.length > 0) { %>
+						<% goldAdsByState.forEach(goldAd => { %>
+							<div class="hero__slide-contestant" data-bg="img/home/slide1.jpg">
+								<h1 class="hero__title--contestant"><%= goldAd.adTitle %></h1>
+								<p class="hero__text"><%= goldAd.adDescription %></p>
+								<div class="hero__btns">
+									<a href="<%= goldAd.affiliateLink %>" class="hero__btn hero__btn--green">Contact Us</a>
+								</div>
 							</div>
-						</div>
-					<% }) %>
+						<% }) %>
+					<% } else { %>
+						<% goldAds.forEach(goldAd => { %>
+							<div class="hero__slide-contestant" data-bg="img/home/slide1.jpg">
+								<h1 class="hero__title--contestant"><%= goldAd.adTitle %></h1>
+								<p class="hero__text"><%= goldAd.adDescription %></p>
+								<div class="hero__btns">
+									<a href="<%= goldAd.affiliateLink %>" class="hero__btn hero__btn--green">Contact Us</a>
+								</div>
+							</div>
+						<% }) %>
+					<% } %>
 				</div>
 					<button class="main__nav-contestant main__nav--hero main__nav--prev" data-nav="#hero" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17,11H9.41l3.3-3.29a1,1,0,1,0-1.42-1.42l-5,5a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l5,5a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L9.41,13H17a1,1,0,0,0,0-2Z"/></svg></button>
 					<button class="main__nav-contestant main__nav--hero main__nav--next" data-nav="#hero" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.92,11.62a1,1,0,0,0-.21-.33l-5-5a1,1,0,0,0-1.42,1.42L14.59,11H7a1,1,0,0,0,0,2h7.59l-3.3,3.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0l5-5a1,1,0,0,0,.21-.33A1,1,0,0,0,17.92,11.62Z"/></svg></button>
@@ -90,7 +108,7 @@
 					<div class="tab-content">
 						<div class="tab-pane fade show active" id="tab-1" role="tabpanel">
 							<div class="row row--grid">
-								<div class="col-12 col-lg-6 col-xl-3">
+								<div class="col-12 col-lg-6 col-xl-5">
 									<div class="stats">
 										<span>Music Media Accounts</span>
 										<p><b>Instagram: @<%= instagram %></b></p>
@@ -107,7 +125,7 @@
 									</div>
 								</div>
 
-								<div class="col-12 col-lg-6 col-xl-3">
+								<div class="col-12 col-lg-6 col-xl-4">
 									<div class="stats">
 										<span>Preferred Genre</span>
 										<p><b><%= preferredGenre %></b></p>
@@ -157,8 +175,9 @@
 																<h4><%= song.songTitle %></h4>
 															</div>
 															<% if (song.season === currentSeason && isPremiumUser) { %>
-																<a class="single-item__export copy-link" href="/voting/<%= song.songTitle %>/<%= song.artistName %>">Promote Song on Social Media</a>
-															<% } else if (song.season === currentSeason && !isPremiumUser) { %>
+																<a class="single-item__export copy-link" href="http:/localhost:3000/voting/<%= song.songTitle %>/<%= song.artistName %>">Promote Song on Social Media</a>
+															<% } else if (song.season === currentSeason) { %>
+																<!-- <p class="single-item__export">Votes: <%= song.votes %></p> -->
 																<a class="single-item__export copy-link" href="http:/localhost:3000/voting/<%= song.songTitle %>/<%= song.artistName %>">Promote Song on Social Media</a>
 															<% } else { %>
 																<p class="single-item__export">Votes: <%= song.votes %></p>
@@ -231,7 +250,7 @@
 											<div class="sign__group">
 												<label class="pmt__title">$10 (Single Upload)</label>
 												<ul class="option-list">
-													<li>One single upload is $10.</li>
+													<li>Upload before the 7th of the current month in order to get entered into the current season's competition.</li>
 													<li>You can upload your performance after the 7th of the month, but your song will be entered into NEXT season's competition. (Unlike the premium membership).</li>
 													<li>You will not be able to edit the song after you complete your upload and paid for it (MAKE SURE YOU UPLOAD THE RIGHT CONTENT).</li>
 													<li>You will be able to access your social media promotional link after the 7th of the month (Premium members get instant access to promotional link).</li>

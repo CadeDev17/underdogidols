@@ -171,11 +171,12 @@
 															<label for="affiliateLink">Affiliate Link (To track impressions/clicks): (3)</label>
 															<input type="text" name="affiliateLink" id="affiliateLink" class="sign__input" >
 														</div>
+														<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 														<input name="isBronzeAd" value="<%= isBronzeAd %>" style="display:none;">
 														<input name="isSilverAd" value="<%= isSilverAd %>" style="display:none;">
 														<input name="isGoldAd" value="<%= isGoldAd %>" style="display:none;">
 														<input name="homeState" value="<%= homeState %>" style="display:none;">
-														<button class="sign__btn" type="submit">Submit Ad for Approval</button>
+														<button class="sign__btn" type="submit">Submit</button>
 													<% } else { %>
 														<div class="sign__group">
 															<label for="userProfileImage">Ad Background Image (Optional):</label>
@@ -201,7 +202,7 @@
 														<input name="isSilverAd" value="<%= isSilverAd %>" style="display:none;">
 														<input name="isGoldAd" value="<%= isGoldAd %>" style="display:none;">
 														<input name="homeState" value="<%= homeState %>" style="display:none;">
-														<button class="sign__btn" type="submit">Submit Ad for Approval</button>
+														<button class="sign__btn" type="submit">Submit</button>
 													<% } %>
 												</div>
 											</form>

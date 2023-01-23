@@ -12,7 +12,7 @@ const currentSeason = 2
 const nextSeason = currentSeason + 1
 const previousSeason = currentSeason - 1
 
-const ITEMS_PER_PAGE = 5
+const ITEMS_PER_PAGE = 10
 
 const transporter = nodemailer.createTransport(
     sendgridTransport({
@@ -330,27 +330,34 @@ exports.getProfile = (req, res, next) => {
         count = count + song.votes
     })
     if (req.user.userType === 'Contestant') {
-        Ad.find({ isGoldAd: true, adHomeState: req.user.homeState })
-            .then(goldAds => {
-                res.render('home/profile', {
-                    pageTitle: "Underdog Profile",
-                    userType: req.user.userType,
-                    username: req.user.name,
-                    email: req.user.email,
-                    preferredGenre: req.user.preferredGenre,
-                    errorMessage: '',
-                    instagram: req.user.instagram,
-                    tiktok: req.user.tiktok,
-                    bio: req.user.bio,
-                    votes: count,
-                    userProfileImage: req.user.userProfileImage,
-                    userSongs: req.user.songs,
-                    isPremiumUser: req.user.isPremiumUser,
-                    goldAds: goldAds,
-                    sessionId: '',
-                    currentSeason: currentSeason,
-                    ads: ''
-                })
+        User.find({ name: req.user.name })
+            .then(user => {
+                Ad.find({ isGoldAd: true })
+                    .then(goldAds => {
+                        Ad.find({ isGoldAd: true, adHomeState: req.user.homeState })
+                            .then(goldAdsByState => {
+                                res.render('home/profile', {
+                                    pageTitle: "Underdog Profile",
+                                    userType: req.user.userType,
+                                    username: req.user.name,
+                                    email: req.user.email,
+                                    preferredGenre: req.user.preferredGenre,
+                                    errorMessage: '',
+                                    instagram: req.user.instagram,
+                                    tiktok: req.user.tiktok,
+                                    bio: req.user.bio,
+                                    votes: count,
+                                    userProfileImage: req.user.userProfileImage,
+                                    userSongs: user[0].songs,
+                                    isPremiumUser: user[0].isPremiumUser,
+                                    goldAds: goldAds,
+                                    goldAdsByState: goldAdsByState,
+                                    sessionId: '',
+                                    currentSeason: currentSeason,
+                                    ads: ''
+                                })
+                            })
+                    })
             })
     } else if (req.user.userType === 'RecordLabelCompany') {
         res.render('home/recordlabelprofile', {
@@ -1017,7 +1024,7 @@ exports.postGetCheckout = async (req, res, next) => {
                 bio: user.bio,
                 userProfileImage: user.userProfileImage,
                 votes: user.votes,
-                errorMessage: errors.array()[0].msg,
+                errorMessage: 'Can only upload one song per season.',
                 userSongs: user.songs,
                 currentSeason: currentSeason,
                 goldAds: user.userType === "Contestant" ? goldAds : '',
@@ -1149,7 +1156,7 @@ exports.getCheckoutSuccess = (req, res, next) => {
             let youtubeSongUrlArr = youtubeSongUrl.split('/')
             youtubeSongId = youtubeSongUrlArr[youtubeSongUrlArr.length - 1]
         } else if (youtubeSongUrl.includes('https://www.youtube.com/watch?v=')) {
-            let youtubeSongUrlArr = youtubeSongUrl.split('=')
+            let youtubeSongUrlArr = youtubeSongUrl.split('v=')
             youtubeSongId = youtubeSongUrlArr[youtubeSongUrlArr.length - 1]
         }
         if (youtubeSongId) {
@@ -1157,7 +1164,7 @@ exports.getCheckoutSuccess = (req, res, next) => {
                 songTitle: title,
                 youtubeSongId: youtubeSongId,
                 songGenre: genre,
-                season: user.isPremiumUser ? currentSeason : currentSeason,
+                season: user.isPremiumUser ? currentSeason : nextSeason,
                 votes: 0,
                 dateCreated: new Date(),
                 artistName: user.name,
@@ -1179,6 +1186,9 @@ exports.getCheckoutSuccess = (req, res, next) => {
             user.save()
             res.redirect('/profile');
         }
+    } else {
+        user.save()
+        res.redirect('/profile')
     }
 
 };

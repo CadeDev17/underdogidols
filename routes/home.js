@@ -43,8 +43,8 @@ router.post('/checkout',
   [
       body('title')
       .isString()
-      .isLength({ min: 3 })
-      .withMessage('Song title must be at least 3 characters')
+      .isLength({ min: 3, max: 11 })
+      .withMessage('Song title must be between 3-11 characters long')
       .trim(),
       body('songUrl')
         .custom((value, {req}) => {
@@ -75,11 +75,12 @@ router.post('/createAdvertisement',
       .isString(),
     body('adTitle')
     .isString()
-    .isLength({ min: 3 })
-    .withMessage('Advertisement title must be at least 3 characters')
+    .isLength({ min: 3, max: 12 })
+    .withMessage('Advertisement title must be between 3-12 characters')
     .trim(),
     body('adDescription')
-      .isLength({ max: 50 })
+      .isLength({ max: 30 })
+      .withMessage('Advertisement descripiton must be less than 30 characters')
       .isString(),
   ],
   isAuth,

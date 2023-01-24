@@ -15,7 +15,7 @@
 
 					<div class="col-12">
 						<% for (let song of topFiveSongs) { %>
-							<div id="season-album">
+							<div id="season-albums">
 								<div>
 									<div class="album__cover">
 										<iframe width="560" height="315" src="https://www.youtube.com/embed/<%= song.youtubeSongId %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -26,7 +26,7 @@
 											<span><a href="/artist/<%= song.artistName %>"><%= song.artistName %></a></span>
 										</div>
 										<div>
-											<span class="single-item__time top-votes">Votes: <%= song.votes %></span>
+											<span class="single-item__time" id="top-votes">Votes: <%= song.votes %></span>
 										</div>
 									</div>
 								</div>

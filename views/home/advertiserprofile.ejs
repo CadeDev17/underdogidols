@@ -32,27 +32,39 @@
 						<div class="profile__user">
 							<div class="profile__meta">
 								<h3><%= username %></h3>
-                                <span>Advertiser</span>
+								<% if (isBronzeAd) { %>
+                                	<span style="color:#8b3507">Bronze Advertiser</span>
+								<% } else if (isSilverAd) { %>
+									<span style="color:#c0c0c0">Silver Advertiser</span>
+								<% } else if (isGoldAd) { %>
+									<span style="color:#fec302">Gold Advertiser</span>
+								<% } else { %>
+									<span>Advertiser</span>
+								<% } %>
 							</div>
 						</div>
 
 						<!-- tabs nav -->
 						<ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
-							<li class="nav-item">
-								<a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Sponsorship Option 1</a>
-							</li>
+							<% if (!isBronzeAd && !isSilverAd && !isGoldAd) { %>
+								<li class="nav-item">
+									<a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="false">Option 1</a>
+								</li>
 
-							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Sponsorship Option 2</a>
-							</li>
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Option 2</a>
+								</li>
 
-							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-2" aria-selected="false">Sponsorship Option 3</a>
-							</li>
-							
-							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#tab-4" role="tab" aria-controls="tab-4" aria-selected="false">Create Your Advertisement</a>
-							</li>
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-2" aria-selected="false">Option 3</a>
+								</li>
+							<% } %>
+
+							<% if (isBronzeAd || isSilverAd || isGoldAd) { %>
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="tab" href="#tab-4" role="tab" aria-controls="tab-4" aria-selected="false">Create Your Advertisement</a>
+								</li>
+							<% } %>
 
 							<li class="nav-item">
 								<a class="nav-link" data-toggle="tab" href="#tab-5" role="tab" aria-controls="tab-5" aria-selected="false">Settings</a>
@@ -63,7 +75,7 @@
 
 					<!-- content tabs -->
 					<div class="tab-content">
-						<div class="tab-pane fade show active" id="tab-1" role="tabpanel">
+						<div class="tab-pane fade show <% if(!isBronzeAd && !isSilverAd && !isGoldAd) { %> active <% } %>" id="tab-1" role="tabpanel">
 							<form action="/adcheckout" method="POST">
 								<div class="row row--grid" id="option-container">
 									<div class="plan plan--green">
@@ -145,67 +157,86 @@
 						</div>
 
 						<% if (isBronzeAd || isSilverAd || isGoldAd) { %>
-							<div class="tab-pane fade" id="tab-4" role="tabpanel">
+							<div class="tab-pane fade show <% if(isBronzeAd || isSilverAd || isGoldAd) { %> active <% } %>" id="tab-4" role="tabpanel">
 								<div class="row row--grid" id="option-container">
 									<div class="sign">
-										<% if (isGoldAd) { %>
-											<div class="create-ad-container">
-												<img class="silver-advertisement" src="../../images/premiumadvertisement1.png" alt="basic advertisement display on home screem" />
-											</div>
-										<% } %>
 										<div class="sign__content">
-											<form action="/createAdvertisement" method="POST" class="sign__form" id="sign__form--container" enctype="multipart/form-data">
-												<div class="sec1">
-													<% if (isBronzeAd) { %> 
-														<div class="sign__group">
-															<label for="userProfileImage" style="margin-right:10px;">Logo:</label>
-															<input type="file" name="userProfileImage" id="userProfileImage">
-														</div>
+											<% if (ads.length === 0) { %>
+												<form action="/createAdvertisement" method="POST" class="sign__form" id="sign__form--container" enctype="multipart/form-data">
+													<% if (isBronzeAd) { %>
+														<div class="sec1">
+															<div class="sign__group">
+																<label for="userProfileImage" style="margin-right:10px;">Logo:</label>
+																<input type="file" name="userProfileImage" id="userProfileImage">
+															</div>
 
-														<div class="sign__group">
-															<label for="adTitle">Company Name:</label>
-															<input type="text" name="adTitle" id="adTitle" class="sign__input">
-														</div>
+															<div class="sign__group">
+																<label for="adTitle">Company Name:</label>
+																<input type="text" name="adTitle" id="adTitle" class="sign__input">
+															</div>
 
-														<div class="sign__group">
-															<label for="affiliateLink">Affiliate Link (To track impressions/clicks): (3)</label>
-															<input type="text" name="affiliateLink" id="affiliateLink" class="sign__input" >
+															<div class="sign__group">
+																<label for="affiliateLink">Affiliate Link (To track impressions/clicks): (3)</label>
+																<input type="text" name="affiliateLink" id="affiliateLink" class="sign__input" >
+															</div>
+															<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+															<input name="isBronzeAd" value="<%= isBronzeAd %>" style="display:none;">
+															<input name="isSilverAd" value="<%= isSilverAd %>" style="display:none;">
+															<input name="isGoldAd" value="<%= isGoldAd %>" style="display:none;">
+															<input name="homeState" value="<%= homeState %>" style="display:none;">
+															<button class="sign__btn" type="submit">Submit</button>
 														</div>
-														<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-														<input name="isBronzeAd" value="<%= isBronzeAd %>" style="display:none;">
-														<input name="isSilverAd" value="<%= isSilverAd %>" style="display:none;">
-														<input name="isGoldAd" value="<%= isGoldAd %>" style="display:none;">
-														<input name="homeState" value="<%= homeState %>" style="display:none;">
-														<button class="sign__btn" type="submit">Submit</button>
 													<% } else { %>
-														<div class="sign__group">
-															<label for="userProfileImage">Ad Background Image (Optional):</label>
-															<input type="file" name="userProfileImage" id="userProfileImage">
+														<div class="sec1">
+															<div class="sign__group">
+																<label for="userProfileImage">Ad Background Image (Optional):</label>
+																<input type="file" name="userProfileImage" id="userProfileImage">
+															</div>
+							
+															
+															<div class="sign__group">
+																<label for="adTitle">Ad Title:</label>
+																<input type="text" name="adTitle" id="adTitle" class="sign__input">
+															</div>
+															
+															<div class="sign__group">
+																<label for="adDescription">Ad Description: (Max Length - 30 Characters)</label>
+																<textarea type="text" name="adDescription" id="adDescription" class="sign__input"></textarea>
+															</div>
+															<div class="sign__group">
+																<label for="affiliateLink">Affiliate Link (To track impressions/clicks):</label>
+																<input type="text" name="affiliateLink" id="affiliateLink" class="sign__input" >
+															</div>
+															<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+															<input name="isBronzeAd" value="<%= isBronzeAd %>" style="display:none;">
+															<input name="isSilverAd" value="<%= isSilverAd %>" style="display:none;">
+															<input name="isGoldAd" value="<%= isGoldAd %>" style="display:none;">
+															<input name="homeState" value="<%= homeState %>" style="display:none;">
+															<button class="sign__btn" type="submit">Submit</button>
 														</div>
-						
-														
-														<div class="sign__group">
-															<label for="adTitle">Ad Title: (1)</label>
-															<input type="text" name="adTitle" id="adTitle" class="sign__input">
-														</div>
-														
-														<div class="sign__group">
-															<label for="adDescription">Ad Description: (2)</label>
-															<textarea type="text" name="adDescription" id="adDescription" class="sign__input"></textarea>
-														</div>
-														<div class="sign__group">
-															<label for="affiliateLink">Affiliate Link (To track impressions/clicks): (3)</label>
-															<input type="text" name="affiliateLink" id="affiliateLink" class="sign__input" >
-														</div>
-														<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-														<input name="isBronzeAd" value="<%= isBronzeAd %>" style="display:none;">
-														<input name="isSilverAd" value="<%= isSilverAd %>" style="display:none;">
-														<input name="isGoldAd" value="<%= isGoldAd %>" style="display:none;">
-														<input name="homeState" value="<%= homeState %>" style="display:none;">
-														<button class="sign__btn" type="submit">Submit</button>
 													<% } %>
+												</form>
+											<% } else { %>
+												<div class="sec3">
+													<div class="submittedAdDescription">
+														<h1>Your Active Advertisement Details</h1>
+														<div>
+															<h3>Ad Title:</h3>
+															<span><%= ads[0].adTitle %></span>
+														</div>
+														<% if (!isBronzeAd) { %>
+															<div>
+																<h3>Ad Description:</h3>
+																<span><%= ads[0].adDescription %></span>
+															</div>
+														<% } %>
+														<div>
+															<h3>Ad Affiliate Link:</h3>
+															<span><%= ads[0].adAffiliateLink %></span>
+														</div>
+													</div>
 												</div>
-											</form>
+											<% } %>
 										</div>
 									</div>
 								</div>

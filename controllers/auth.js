@@ -279,6 +279,10 @@ exports.postSignin = (req, res, next) => {
 
 exports.postChangePassword = (req, res, next) => {
     const newPass = req.body.newpass
+    let count = 0
+    req.user.songs.forEach(song => {
+        count = count + song.votes
+    })
     bcrypt.compare(req.body.oldpass, req.user.password)
         .then(doMatch => {
             if (doMatch) {
@@ -288,9 +292,156 @@ exports.postChangePassword = (req, res, next) => {
                             .then(hashedPass => {
                                 user.password = hashedPass
                                 user.save()
-                                res.redirect('/profile')
+                                let url = '/profile'
+                                if (req.user.userType === 'Contestant') {
+                                  User.find({ name: req.user.name })
+                                    .then(user => {
+                                        Ad.find({ isGoldAd: true })
+                                            .then(goldAds => {
+                                                Ad.find({ isGoldAd: true, adHomeState: req.user.homeState })
+                                                    .then(goldAdsByState => {
+                                                        res.render('home/profile', {
+                                                            pageTitle: "Underdog Profile",
+                                                            userType: req.user.userType,
+                                                            username: req.user.name,
+                                                            email: req.user.email,
+                                                            preferredGenre: req.user.preferredGenre,
+                                                            errorMessage: '',
+                                                            successMessage: 'Password Updated Successfully!',
+                                                            instagram: req.user.instagram,
+                                                            tiktok: req.user.tiktok,
+                                                            bio: req.user.bio,
+                                                            votes: count,
+                                                            userProfileImage: req.user.userProfileImage,
+                                                            userSongs: user[0].songs,
+                                                            isPremiumUser: user[0].isPremiumUser,
+                                                            goldAds: goldAds,
+                                                            goldAdsByState: goldAdsByState,
+                                                            sessionId: '',
+                                                            currentSeason: currentSeason,
+                                                            ads: ''
+                                                        })
+                                                    })
+                                            })
+                                    })
+                                } else if (req.user.userType === 'RecordLabelCompany') {
+                                    res.render('home/recordlabelprofile', {
+                                        pageTitle: "Record Label Profile",
+                                        userType: req.user.userType,
+                                        username: req.user.name,
+                                        email: req.user.email,
+                                        preferredGenre: req.user.preferredGenre,
+                                        errorMessage: '',
+                                        successMessage: 'Password Updated Successfully',
+                                        recordLabel: req.user.recordLabel,
+                                        phoneNumber: req.user.phoneNumber,
+                                        companyAddress: req.user.companyAddress,
+                                        votes: count,
+                                        userProfileImage: req.user.userProfileImage,
+                                        contactedArtists: req.user.songs,
+                                        sessionId: '',
+                                        currentSeason: currentSeason,
+                                        ads: ''
+                                    })
+                                } else if (req.user.userType === 'Advertiser'){
+                                    Ad.find()
+                                        .then(allAds => {
+                                            res.render('home/advertiserprofile', {
+                                                pageTitle: "Advertiser Profile",
+                                                userType: req.user.userType,
+                                                username: req.user.name,
+                                                email: req.user.email,
+                                                ads: req.user.songs,
+                                                allAds: allAds,
+                                                errorMessage: '',
+                                                successMessage: 'Password Updated Successfully',
+                                                phoneNumber: req.user.phoneNumber,
+                                                companyAddress: req.user.companyAddress,
+                                                sessionId: '',
+                                                isBronzeAd: req.user.isBronzeAd,
+                                                isSilverAd: req.user.isSilverAd,
+                                                isGoldAd: req.user.isGoldAd,
+                                                homeState: req.user.homeState,
+                                                currentSeason: currentSeason,
+                                            })
+                                        })
+                                }
                             })
                     })
+            } else {
+              if (req.user.userType === 'Contestant') {
+                User.find({ name: req.user.name })
+                  .then(user => {
+                      Ad.find({ isGoldAd: true })
+                          .then(goldAds => {
+                              Ad.find({ isGoldAd: true, adHomeState: req.user.homeState })
+                                  .then(goldAdsByState => {
+                                      res.render('home/profile', {
+                                          pageTitle: "Underdog Profile",
+                                          userType: req.user.userType,
+                                          username: req.user.name,
+                                          email: req.user.email,
+                                          preferredGenre: req.user.preferredGenre,
+                                          errorMessage: 'Old Password Incorrect or Passwords Do Not Match',
+                                          successMessage: '',
+                                          instagram: req.user.instagram,
+                                          tiktok: req.user.tiktok,
+                                          bio: req.user.bio,
+                                          votes: count,
+                                          userProfileImage: req.user.userProfileImage,
+                                          userSongs: user[0].songs,
+                                          isPremiumUser: user[0].isPremiumUser,
+                                          goldAds: goldAds,
+                                          goldAdsByState: goldAdsByState,
+                                          sessionId: '',
+                                          currentSeason: currentSeason,
+                                          ads: ''
+                                      })
+                                  })
+                          })
+                  })
+              } else if (req.user.userType === 'RecordLabelCompany') {
+                  res.render('home/recordlabelprofile', {
+                      pageTitle: "Record Label Profile",
+                      userType: req.user.userType,
+                      username: req.user.name,
+                      email: req.user.email,
+                      preferredGenre: req.user.preferredGenre,
+                      errorMessage: 'Old Password Incorrect or Passwords Do Not Match',
+                      successMessage: '',
+                      recordLabel: req.user.recordLabel,
+                      phoneNumber: req.user.phoneNumber,
+                      companyAddress: req.user.companyAddress,
+                      votes: count,
+                      userProfileImage: req.user.userProfileImage,
+                      contactedArtists: req.user.songs,
+                      sessionId: '',
+                      currentSeason: currentSeason,
+                      ads: ''
+                  })
+              } else if (req.user.userType === 'Advertiser'){
+                  Ad.find()
+                      .then(allAds => {
+                          res.render('home/advertiserprofile', {
+                              pageTitle: "Advertiser Profile",
+                              userType: req.user.userType,
+                              username: req.user.name,
+                              email: req.user.email,
+                              ads: req.user.songs,
+                              allAds: allAds,
+                              errorMessage: 'Old Password Incorrect or Passwords Do Not Match',
+                              successMessage: '',
+                              phoneNumber: req.user.phoneNumber,
+                              companyAddress: req.user.companyAddress,
+                              sessionId: '',
+                              isBronzeAd: req.user.isBronzeAd,
+                              isSilverAd: req.user.isSilverAd,
+                              isGoldAd: req.user.isGoldAd,
+                              homeState: req.user.homeState,
+                              currentSeason: currentSeason,
+                          })
+                      })
+              }
             }
         })
 

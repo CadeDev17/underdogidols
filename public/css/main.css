@@ -629,7 +629,7 @@ body::-webkit-scrollbar-thumb {
 .header__all {
   display: none;
 }
-@media (min-width: 400px) {
+@media (min-width: 350px) {
   .header__action {
     margin-left: 20px;
   }
@@ -638,6 +638,28 @@ body::-webkit-scrollbar-thumb {
   }
   .header__actions {
     margin-right: 44px;
+  }
+  .header {
+    width: 100vw;
+  }
+  .header__content {
+    padding: 0 30px;
+    width: 100vw;
+  }
+  .header__search {
+    padding: 0 30px;
+  }
+  .header__search button {
+    right: 75px;
+  }
+  .header__search button.close {
+    right: 30px;
+  }
+  .header__btn {
+    right: 30px;
+  }
+  .header__drop {
+    width: 260px;
   }
 }
 @media (min-width: 576px) {
@@ -675,6 +697,7 @@ body::-webkit-scrollbar-thumb {
   }
   .header__content {
     padding: 0 30px;
+    width: 100%;
   }
   .header__search {
     padding: 0 30px;
@@ -1327,6 +1350,7 @@ body::-webkit-scrollbar-thumb {
 }
 .main__carousel-wrap {
   position: relative;
+  margin-top: 20px;
 }
 .main__carousel .owl-dots {
   display: flex;
@@ -1659,6 +1683,73 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
   height: auto;
   border-radius: 8px;
+}
+@media (max-width: 400px) {
+  .auth-container a {
+    margin: 0 5px;
+  }
+  .header__action {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 24px;
+    position: relative;
+    margin-left: 15px;
+  }
+
+  .header__action--signin {
+    margin-right: 20px;
+  }
+
+  .header__action--search {
+    margin-right: 30px;
+  }
+
+  .main .row #season-album {
+    margin: 20px auto 0;
+  }
+
+  .main .row #season-albums {
+    margin: 20px 25px 0;
+  }
+
+
+  .main__carousel .owl-dots {
+    overflow: hidden;
+  }
+
+  .main__carousel .owl-dot span {
+    display: block;
+    height: 4px;
+    width: 10px;
+    border-radius: 2px;
+    background-color: #c0c0c0;
+    transition: 0.5s ease;
+  }
+
+  #sign-out {
+    width: 70px;
+  }
+
+  .sign__content #sign__form--container {
+    flex-direction: column;
+  }
+
+  #option-container .basic-advertisement,
+  #silver-container .silver-advertisement {
+    width: 95vw;
+    margin-top: 10px;
+  }
+
+  #option-container .sec3 {
+    width: 93vw;
+  }
+
+  #option-container .sec3 .submittedAdDescription div {
+    width: fit-content;
+  }
 }
 @media (min-width: 400px) {
   .main__list--dashbox .single-item__title {
@@ -2345,11 +2436,25 @@ body::-webkit-scrollbar-thumb {
   width: 135px;
 }
 
+.main #season-albums {
+  display: inline-flex;
+  margin: 20px 20px 0 0;
+  width: 135px;
+}
+
 #season-album div {
   width: 135px;
 }
 
 #season-album #song-season-details {
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 5px;
+  flex-direction: row;
+  width: 135px;
+}
+
+#season-albums #song-season-details {
   justify-content: center;
   align-items: flex-start;
   margin-top: 5px;
@@ -2863,11 +2968,13 @@ body::-webkit-scrollbar-thumb {
   z-index: 2;
 }
 .artist__cover img {
-  width: 100%;
-  height: 100%;
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
   display: block;
   position: relative;
   z-index: 1;
+  border-radius: 10px;
 }
 .artist__title {
   z-index: 3;
@@ -2907,7 +3014,6 @@ body::-webkit-scrollbar-thumb {
   overflow: hidden;
   padding: 20px;
   height: 300px;
-  border: 2px solid red;
 }
 
 .event {
@@ -2921,7 +3027,6 @@ body::-webkit-scrollbar-thumb {
   position: relative;
   overflow: hidden;
   padding: 20px;
-  height: 300px;
 }
 .event:before {
   content: '';
@@ -3758,6 +3863,7 @@ body::-webkit-scrollbar-thumb {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 50px;
 }
 .partners__img span {
   -webkit-filter: grayscale(1);
@@ -5687,6 +5793,19 @@ body::-webkit-scrollbar-thumb {
   padding: 30px 20px;
   position: relative;
   width: 100%;
+  border: 3px solid #222227;
+}
+
+.signin__form {
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  padding: 30px 20px;
+  position: relative;
+  width: 100%;
   max-width: 420px;
   border: 3px solid #222227;
 }
@@ -5722,23 +5841,45 @@ body::-webkit-scrollbar-thumb {
 }
 
 #sign__form--container {
-  max-width: 100%;
+  width: 100%;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-}
-
-#sign__form--container .sec1 {
-  margin-right: 30px;
 }
 
 #sign__form--container .sec1,
 #sign__form--container .sec2 {
-  width: 65%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.sec3 {
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  padding: 30px 20px;
+  position: relative;
+  width: 100%;
+  border: 3px solid #222227;
+}
+
+.submittedAdDescription h1{
+  text-align: center;
+}
+
+.submittedAdDescription h3 {
+  margin: 0;
+  border-bottom: 2px solid #8c32c1;
+  width: fit-content;
+}
+
+.submittedAdDescription div {
+  margin-bottom: 20px;
 }
 
 
@@ -6042,7 +6183,8 @@ body::-webkit-scrollbar-thumb {
   border-radius: 10px;
   width: fit-content;
   margin: 0 auto;
-  color: whitesmoke;
+  color: black;
+  background-color: green;
 }
 
 .select__dropdown {

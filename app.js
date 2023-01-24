@@ -83,7 +83,10 @@ app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken()
 
   if (req.session.userType === 'Advertiser') {
-    res.locals.isGoldAd = req.session.user.isGoldAd
+    User.find({ name: req.session.user.name })
+      .then(user => {
+        res.locals.isGoldAd = user[0].isGoldAd
+      })
   } else {
     res.locals.isGoldAd = false
   }

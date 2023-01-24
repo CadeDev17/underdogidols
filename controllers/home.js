@@ -343,6 +343,7 @@ exports.getProfile = (req, res, next) => {
                                     email: req.user.email,
                                     preferredGenre: req.user.preferredGenre,
                                     errorMessage: '',
+                                    successMessage: '',
                                     instagram: req.user.instagram,
                                     tiktok: req.user.tiktok,
                                     bio: req.user.bio,
@@ -367,6 +368,7 @@ exports.getProfile = (req, res, next) => {
             email: req.user.email,
             preferredGenre: req.user.preferredGenre,
             errorMessage: '',
+            successMessage: '',
             recordLabel: req.user.recordLabel,
             phoneNumber: req.user.phoneNumber,
             companyAddress: req.user.companyAddress,
@@ -388,6 +390,7 @@ exports.getProfile = (req, res, next) => {
                     ads: req.user.songs,
                     allAds: allAds,
                     errorMessage: '',
+                    successMessage: '',
                     phoneNumber: req.user.phoneNumber,
                     companyAddress: req.user.companyAddress,
                     sessionId: '',
@@ -668,7 +671,7 @@ exports.getSeason = (req, res, next) => {
         Song.find({ season: seasonNumber })
             .then(songs => {
                     let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
-                    let topFiveSongs = topSongs.slice(0, 5)
+                    let topFiveSongs = topSongs.slice(0, 6)
                     res.render('home/season', {
                         pageTitle: 'UnderdogIdols Seasons',
                         topFiveSongs: topFiveSongs,
@@ -990,27 +993,31 @@ exports.postGetCheckout = async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      console.log(errors.array());
-      return Ad.find({ isGoldAd: true, adHomeState: req.user.homeState })
+      return Ad.find({ isGoldAd: true })
                 .then(goldAds => {
-                    res.status(422).render('home/profile', {
-                    pageTitle: "Underdog Profile",
-                    username: user.name,
-                    email: user.email,
-                    preferredGenre: user.preferredGenre,
-                    instagram: user.instagram,
-                    tiktok: user.tiktok,
-                    bio: user.bio,
-                    userProfileImage: user.userProfileImage,
-                    votes: user.votes,
-                    errorMessage: errors.array()[0].msg,
-                    userSongs: user.songs,
-                    currentSeason: currentSeason,
-                    goldAds: user.userType === "Contestant" ? goldAds : '',
-                    isPremiumUser: req.user.isPremiumUser,
-                    ads: ''
-                    })
-                });
+                    Ad.find({ isGoldAd: true, adHomeState: req.user.homeState })
+                        .then(goldAdsByState => {
+                            res.status(422).render('home/profile', {
+                            pageTitle: "Underdog Profile",
+                            username: user.name,
+                            email: user.email,
+                            preferredGenre: user.preferredGenre,
+                            instagram: user.instagram,
+                            tiktok: user.tiktok,
+                            bio: user.bio,
+                            userProfileImage: user.userProfileImage,
+                            votes: user.votes,
+                            errorMessage: errors.array()[0].msg,
+                            successMessage: '',
+                            userSongs: user.songs,
+                            currentSeason: currentSeason,
+                            goldAds: user.userType === "Contestant" ? goldAds : '',
+                            goldAdsByState: user.userType === "Contestant" ? goldAdsByState : '',
+                            isPremiumUser: req.user.isPremiumUser,
+                            ads: ''
+                            })
+                        });
+                })
     } else if (hasAlreadyUploaded.length > 0) {
         return Ad.find({ isGoldAd: true, adHomeState: req.user.homeState })
             .then(goldAds => {
@@ -1025,6 +1032,7 @@ exports.postGetCheckout = async (req, res, next) => {
                 userProfileImage: user.userProfileImage,
                 votes: user.votes,
                 errorMessage: 'Can only upload one song per season.',
+                successMessage: '',
                 userSongs: user.songs,
                 currentSeason: currentSeason,
                 goldAds: user.userType === "Contestant" ? goldAds : '',
@@ -1129,25 +1137,6 @@ exports.getCheckoutSuccess = (req, res, next) => {
     let title = req.query.title
     let youtubeSongUrl = req.query.songUrl
     let genre = req.query.genre
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      console.log(errors.array());
-      return res.status(422).render('home/profile', {
-        pageTitle: "Underdog Profile",
-        username: user.name,
-        email: user.email,
-        preferredGenre: user.preferredGenre,
-        instagram: user.instagram,
-        tiktok: user.tiktok,
-        bio: user.bio,
-        userProfileImage: user.userProfileImage,
-        votes: user.votes,
-        errorMessage: errors.array()[0].msg,
-        userSongs: user.songs,
-        currentSeason: currentSeason
-      });
-    }
 
 
     if (youtubeSongUrl) {

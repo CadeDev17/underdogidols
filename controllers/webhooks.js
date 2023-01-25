@@ -30,7 +30,9 @@ exports.handleWebhooks = (request, response) => {
     
     response.send();
 }
-
+// jeremy if youre looking at this, i havent changed the values here yet because 
+// i would have to change the entire event that i listen for hen stripe sends the webhook
+// will likely be looking more into this in the future in order to get it changed.
 const handleSuccessfulPayments = (chargeSucceeded) => {
     let email = chargeSucceeded.billing_details.email
     let amountCaptured = chargeSucceeded.amount_captured

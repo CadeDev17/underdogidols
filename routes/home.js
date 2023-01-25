@@ -75,8 +75,8 @@ router.post('/createAdvertisement',
       .isString(),
     body('adTitle')
     .isString()
-    .isLength({ min: 3, max: 12 })
-    .withMessage('Advertisement title must be between 3-12 characters')
+    .isLength({ min: 3, max: 15 })
+    .withMessage('Advertisement title must be between 3-15 characters')
     .trim(),
     body('adDescription')
       .isLength({ max: 30 })

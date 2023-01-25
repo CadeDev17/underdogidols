@@ -42,9 +42,7 @@ $(document).ready(function () {
 	$('.voteBtn').on('click', function(event) {
 		event.preventDefault()
 		const songName = event.currentTarget.id
-		const csrfValue = $('#csrf')[0].defaultValue
 
-		axios.defaults.headers.post['X-CSRF-Token'] = csrfValue
 		axios.post(`http://localhost:3000/cast-vote/${songName}`)
 			.then(response => {
 				window.location.reload()

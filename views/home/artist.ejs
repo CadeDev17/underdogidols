@@ -28,7 +28,6 @@
 												<form action="/contact/<%= artist.name %>" method="POST">
 													<label for="message">Type your message here:</label>
 													<textarea name="message" id="message"></textarea>
-													<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 													<button class="send__btn" id="send-artist-email" type="submit">Send Message</button>
 												</form>
 											</li>
@@ -39,7 +38,6 @@
 													<form action="/contact/<%= artist.name %>" method="POST">
 														<label for="message">Type your message here:</label>
 														<textarea name="message" id="message"></textarea>
-														<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 														<button class="send__btn" id="send-artist-email" type="submit">Send Message</button>
 													</form>
 												</li>

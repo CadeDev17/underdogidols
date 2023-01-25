@@ -26,8 +26,6 @@ const store = new MongoDBStore({
   collection: 'sessions'
 });
 
-const csrfProtection = csrf()
-
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -68,8 +66,6 @@ app.use(
     store: store
   })
 );
-  
-app.use(csrfProtection)
 
 app.use((req, res, next) => {
   if (req.session.passport){
@@ -79,8 +75,6 @@ app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn
     res.locals.userTypeLocals = req.session.userType
   }
-
-  res.locals.csrfToken = req.csrfToken()
 
   if (req.session.userType === 'Advertiser') {
     User.find({ name: req.session.user.name })

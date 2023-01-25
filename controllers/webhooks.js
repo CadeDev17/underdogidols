@@ -16,6 +16,7 @@ exports.handleWebhooks = (request, response) => {
         return;
     }
     // Handles the event
+    console.log(event)
     switch (event.type) {
         case 'charge.succeeded':
             const chargeSucceeded = event.data.object;

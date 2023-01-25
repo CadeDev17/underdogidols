@@ -35,7 +35,6 @@
                             <div class="single-song-actions">
                                 <a href="/artist/<%= artist.name %>" class="single-song-buttons">More About This Artist</a>
                                 <form action="/cast-vote/<%= song.songTitle %>" method="POST">
-									<input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                     <button class="single-song-buttons" id="voteBtn" type="submit">VOTE</button>
                                 </form>
                             </div>

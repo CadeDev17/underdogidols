@@ -15,14 +15,10 @@ const User = require('./models/user')
 const homeRoutes = require('./routes/home')
 const authRoutes = require('./routes/auth')
 const webhookRoutes = require('./routes/webhooks')
-
-
-const MONGODB_URI =
-  'mongodb+srv://UnderdogIdols:Yko35961@underdogidols.qzsdy10.mongodb.net/home';
   
 const app = express();
 const store = new MongoDBStore({
-  uri: MONGODB_URI,
+  uri: process.env.MONGODB_URI,
   collection: 'sessions'
 });
 
@@ -161,7 +157,7 @@ passport.deserializeUser(function(id, done) {
 })
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(process.env.MONGODB_URI)
   .then(result => {
     app.listen(process.env.PORT || 3000);
   })

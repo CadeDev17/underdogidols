@@ -4,25 +4,30 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   name: {
-    type: String
+    type: String,
+    index: true
   },
   email: {
-    type: String
+    type: String,
+    index: true
   },
   password: {
     type: String
   },
   userType: {
-    type: String
+    type: String,
+    index: true
   },
   homeState: {
-    type: String
+    type: String,
+    index: true
   },
   userProfileImage: {
     type: String
   },
   preferredGenre: {
-    type: String
+    type: String,
+    index: true
   },
   instagram: {
     type: String
@@ -66,8 +71,14 @@ const userSchema = new Schema({
   fanLoggedIn: {
     type: Boolean
   },
-  resetToken: String,
-  resetTokenExpiration: Date,
+  resetToken: {
+    type: String,
+    index: true
+  },
+  resetTokenExpiration: {
+    type: Date,
+    index: true
+  },
   songs: [
     {
       songTitle: {

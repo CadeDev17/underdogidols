@@ -7,7 +7,8 @@ const adSchema = new Schema({
     type:String
   },
   adTitle: {
-    type: String
+    type: String,
+    index: true
   },
   adDescription: {
     type: String
@@ -26,10 +27,12 @@ const adSchema = new Schema({
     type: Boolean
   },
   isGoldAd: {
-    type: Boolean
+    type: Boolean,
+    index: true
   },
   adHomeState: {
-    type: String
+    type: String,
+    index: true
   }
 });
 

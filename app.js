@@ -7,7 +7,6 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const multer = require('multer')
 const passport = require('passport')
 const facebookStrategy = require('passport-facebook').Strategy
-const csrf = require('csurf')
 
 
 
@@ -110,7 +109,7 @@ app.use(passport.session())
 passport.use(new facebookStrategy({
   clientID: '661182905697592',
   clientSecret: '5ce0981ec008eaf2f942944d6ae9e417',
-  callbackURL: 'http://localhost:3000/facebook/callback',
+  callbackURL: 'https://underdogidols.com/facebook/callback',
   profileFields: ['id', 'name', 'email']
 },
 function(token, refreshToken, profile, done) {

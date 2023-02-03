@@ -8,9 +8,7 @@ const sendgridTransport = require('nodemailer-sendgrid-transport');
 const User = require('../models/user');
 const Song = require('../models/song')
 const Ad = require('../models/ad')
-const { isContext } = require('vm');
 
-const PREMIUM_SUBSCRIPTION = 'prod_N0ndsPTMEa8OqO'
 const currentSeason = 2
 
 const transporter = nodemailer.createTransport(

@@ -43,7 +43,7 @@ $(document).ready(function () {
 		event.preventDefault()
 		const songName = event.currentTarget.id
 
-		axios.post(`http://localhost:3000/cast-vote/${songName}`)
+		axios.post(`https://underdogidols.com/cast-vote/${songName}`)
 			.then(response => {
 				window.location.reload()
 				document.body.innerHTML = response.data

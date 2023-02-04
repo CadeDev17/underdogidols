@@ -711,22 +711,26 @@ exports.getVoting = (req, res, next) => {
                 .then(songs => {
                     let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
                     let topFiveSongs = topSongs.slice(0, 5)
-                    res.render('home/voting', {
-                        pageTitle: 'UnderdogIdols Voting',
-                        songs: songs,
-                        selectedByGenre: false,
-                        topFiveSongs: topFiveSongs,
-                        userVotedSongTitles: userVotedSongTitles,
-                        artists: artists,
-                        errorMessage: '',
-                        ads: '',
-                        currentPage: page,
-                        hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
-                        hasPreviousPage: page > 1,
-                        nextPage: page + 1,
-                        previousPage: page - 1,
-                        lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
-                    })
+                    Ad.find()
+                        .then(ads => {
+                            res.render('home/voting', {
+                                pageTitle: 'UnderdogIdols Voting',
+                                songs: songs,
+                                selectedByGenre: false,
+                                currentSeason: 2,
+                                topFiveSongs: topFiveSongs,
+                                userVotedSongTitles: userVotedSongTitles,
+                                artists: artists,
+                                errorMessage: '',
+                                ads: ads,
+                                currentPage: page,
+                                hasNextPage: ITEMS_PER_PAGE * page < totalSongs,
+                                hasPreviousPage: page > 1,
+                                nextPage: page + 1,
+                                previousPage: page - 1,
+                                lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
+                            })
+                        })
             })
         })
 }

@@ -28,7 +28,7 @@ router.get('/seasons', homeController.getSeasons)
 router.get('/season/:seasonNumber', homeController.getSeason)
 
 
-router.get('/profile', homeController.getProfile)
+router.get('/profile', isAuth, homeController.getProfile)
 router.post('/edit-profile', homeController.postEditProfile)
 
 router.get('/news', homeController.getNews)

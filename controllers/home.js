@@ -894,6 +894,7 @@ exports.getSongForVoting = (req, res, next) => {
                             artist: artist[0],
                             song: song[0],
                             youtubeSongId: song[0].youtubeSongId,
+                            selectedByGenre: false,
                             ads: ''
                         })
                     }
@@ -1257,7 +1258,8 @@ exports.createAdvertisement = (req, res, next) => {
 
 exports.getAbout = (req, res, next) => {
     res.render('home/about', {
-        pageTitle: "About UnderdogIdols"
+        pageTitle: "About UnderdogIdols",
+         ads: ''
     })
 }
 

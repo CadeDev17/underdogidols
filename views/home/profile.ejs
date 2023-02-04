@@ -218,7 +218,7 @@
 															<% userSongs.forEach(song => { %>
 																<tr>	
 																	<td>
-																		<div class="main__table-text"><a href="#"><%= song.songTitle %></a></div>
+																		<div class="main__table-text"><a href="/release/<%= song.songTitle %>/<%= song.artistName %>"><%= song.songTitle %></a></div>
 																	</td>
 																	<td>
 																		<div class="main__table-text"><%= song.dateCreated %></div>

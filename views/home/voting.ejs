@@ -15,56 +15,65 @@
 
 				<section class="row row--grid">
 					<div class="col-12 col-xl-8">
-						<div class="row row--grid">
+						<div class="row row--grid" id="hero">
 							<!-- title -->
 							<div class="col-12">
-								<div class="main__title">
-									<h2><a href="#">Premium Ad Space</a></h2>
+								<div class="main__title--releases">
+									<h2>Gold Sponsors</h2>
 								</div>
 							</div>
 							<!-- end title -->
-	
-							<div class="col-12 col-md-6">
-                                <div class="event" data-bg="images/logo.png">
-                                    <span class="event__date">Premium Ad Space</span>
-                                    <span class="event__time">8:00 pm EST</span>
-                                    <h3 class="event__title"><a href="event.html">Underdog Idol Selection</a></h3>
-                                    <p class="event__address">Who will be the next underdog idol to make their dreams come true?</p>
-                                </div>
-                            </div>
-							<div class="col-12 col-md-6">
-                                <div class="event" data-bg="images/logo.png">
-                                    <span class="event__date">Premium Ad Space</span>
-                                    <span class="event__time">11:59 pm EST</span>
-                                    <h3 class="event__title"><a href="event.html">All uploads are FINAL</a></h3>
-                                    <p class="event__address">Make sure you have your song uploaded for this months competition, uploads after this date will be used for next months competition.</p>
-                                </div>
-                            </div>
+
+							<div class="premiumAd--releases owl-carousel" id="hero">
+								<% ads.forEach(ad => { %>
+									<% if (ad.isGoldAd) { %>
+										<div class="hero__slide-contestant" data-bg="img/home/slide1.jpg">
+											<h1 class="hero__title--contestant"><%= ad.adTitle %></h1>
+											<p class="hero__text"><%= ad.adDescription %></p>
+											<div class="hero__btns">
+												<a href="<%= ad.adAffiliateLink %>" class="hero__btn hero__btn--green">Contact Us</a>
+											</div>
+										</div>
+									<% } %>
+								<% }) %>
+							</div>
 						</div>
 					</div>
 	
 					<div class="col-12 col-xl-4">
 						<div class="row row--grid">
-							<!-- title -->
 							<div class="col-12">
-								<div class="main__title">
-									<h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.65,2.24a1,1,0,0,0-.8-.23l-13,2A1,1,0,0,0,7,5V15.35A3.45,3.45,0,0,0,5.5,15,3.5,3.5,0,1,0,9,18.5V10.86L20,9.17v4.18A3.45,3.45,0,0,0,18.5,13,3.5,3.5,0,1,0,22,16.5V3A1,1,0,0,0,21.65,2.24ZM5.5,20A1.5,1.5,0,1,1,7,18.5,1.5,1.5,0,0,1,5.5,20Zm13-2A1.5,1.5,0,1,1,20,16.5,1.5,1.5,0,0,1,18.5,18ZM20,7.14,9,8.83v-3L20,4.17Z"/></svg><a href="#">Top Hits Season 1</a></h2>
-								</div>
-							</div>
-							<!-- end title -->
-
-							<div class="col-12">
-								<ul class="main__list">
-									<% for (let topSong of topFiveSongs) { %>
-										<li class="single-item">
-											<div class="single-item__title">
-												<h4><a href="/release/<%= topSong.songTitle %>/<%= topSong.artistName %>"><%= topSong.songTitle %></a></h4>
-												<span><a href="/artist/<%= topSong.artistName %>"><%= topSong.artistName %></a></span>
+								<div class="row row--grid">
+									<!-- title -->
+									<% if (selectedByGenre) { %>
+										<div class="col-12">
+											<div class="main__title">
+												<h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.65,2.24a1,1,0,0,0-.8-.23l-13,2A1,1,0,0,0,7,5V15.35A3.45,3.45,0,0,0,5.5,15,3.5,3.5,0,1,0,9,18.5V10.86L20,9.17v4.18A3.45,3.45,0,0,0,18.5,13,3.5,3.5,0,1,0,22,16.5V3A1,1,0,0,0,21.65,2.24ZM5.5,20A1.5,1.5,0,1,1,7,18.5,1.5,1.5,0,0,1,5.5,20Zm13-2A1.5,1.5,0,1,1,20,16.5,1.5,1.5,0,0,1,18.5,18ZM20,7.14,9,8.83v-3L20,4.17Z"/></svg><a href="#">Top <%= genreSelected %> Hits of Season <%= currentSeason %></a></h2>
 											</div>
-											<span class="single-item__time">Votes: <%= topSong.votes %></span>
-										</li>
+										</div>
+									<% } else { %>
+										<div class="col-12">
+											<div class="main__title">
+												<h2><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.65,2.24a1,1,0,0,0-.8-.23l-13,2A1,1,0,0,0,7,5V15.35A3.45,3.45,0,0,0,5.5,15,3.5,3.5,0,1,0,9,18.5V10.86L20,9.17v4.18A3.45,3.45,0,0,0,18.5,13,3.5,3.5,0,1,0,22,16.5V3A1,1,0,0,0,21.65,2.24ZM5.5,20A1.5,1.5,0,1,1,7,18.5,1.5,1.5,0,0,1,5.5,20Zm13-2A1.5,1.5,0,1,1,20,16.5,1.5,1.5,0,0,1,18.5,18ZM20,7.14,9,8.83v-3L20,4.17Z"/></svg><a href="#">Top Hits of Season <%= currentSeason %></a></h2>
+											</div>
+										</div>
 									<% } %>
-								</ul>
+									<!-- end title -->
+			
+									<div class="col-12">
+										<ul class="main__list">
+											<% topFiveSongs.forEach(topSong => { %>
+												<li class="single-item">
+													<div class="single-item__title">
+														<h4><a href="/release/<%= topSong.songTitle %>/<%= topSong.artistName %>"><%= topSong.songTitle %></a></h4>
+														<span><a href="/artist/<%= topSong.artistName %>"><%= topSong.artistName %></a></span>
+													</div>
+													<span class="single-item__time top-votes">Votes: <%= topSong.votes %></span>
+												</li>
+											<% }) %>
+										</ul>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

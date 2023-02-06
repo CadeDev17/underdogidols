@@ -533,7 +533,7 @@ exports.postForgot = (req, res, next) => {
                 });
                 transporter.sendMail({
                   to: email,
-                  from: 'theunderdogidols@gmail.com',
+                  from: 'supprtunderdogidols@gmail.com',
                   subject: 'Password Reset',
                   html: `
                     <p>You requested a password reset</p>

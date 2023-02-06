@@ -1269,12 +1269,48 @@ exports.getAbout = (req, res, next) => {
 
 exports.getPricing = (req, res, next) => {
     res.render('home/pricing', {
-        pageTitle: "Underdog Pricing"
+        pageTitle: "Underdog Pricing",
+        ads: ''
     })
+}
+exports.getHelpTicket = (req, res, next) => {
+    res.render('home/help-ticket', {
+        pageTitle: "Underdog Pricing",
+        ads: '',
+        errorMessage: ''
+    })
+}
+
+exports.postHelpTicket = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).render('home/help-ticket', {
+            pageTitle: 'Underdog Help-Ticket',
+            ads: '',
+            errorMessage: errors.array()[0].msg
+        });
+    }
+
+
+    res.render('home/help-ticket', {
+        pageTitle: "Underdog Help-Ticket",
+        ads: '',
+        errorMessage: ''
+    })
+    transporter.sendMail({
+        to: 'decryptr22@gmail.com',
+        from: 'theunderdogidols@gmail.com',
+        subject: 'Record Label Message',
+        html: `
+          <p>${req.body.email} - ${req.body.issue}</p>
+        `
+      });
 }
 
 exports.getPrivacy = (req, res, next) => {
     res.render('home/privacy', {
-        pageTitle: "Privacy Policy"
+        pageTitle: "Privacy Policy",
+        ads: '',
+        errorMessage: ''
     })
 }

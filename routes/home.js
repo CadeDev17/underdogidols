@@ -92,6 +92,21 @@ router.get('/about', homeController.getAbout)
 
 router.get('/pricing', homeController.getPricing)
 
+router.get('/help-ticket', homeController.getHelpTicket)
+router.post('/help-ticket', 
+  [
+    body('email')
+      .isString()
+      .isEmail()
+      .withMessage('Please provide a valid email.'),
+    body('issue')
+      .isString()
+      .isLength({ min: 10 })
+      .withMessage('Please provide more detail within your ticket issue (At least 10 characters long).')
+  ], 
+  homeController.postHelpTicket
+)
+
 router.get('/privacy', homeController.getPrivacy)
 
 

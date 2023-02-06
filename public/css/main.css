@@ -1290,7 +1290,7 @@ body::-webkit-scrollbar-thumb {
 }
 .main__title ol h4 {
   font-size: 16px;
-  color: #fff;
+  color: #8c32c1;
   display: inline-block;
   margin-bottom: 0;
   margin-top: 20px;
@@ -1300,7 +1300,7 @@ body::-webkit-scrollbar-thumb {
 .main__title ol li {
   font-size: 16px;
   line-height: 24px;
-  color: #c0c0c0;
+  color: black;
   position: relative;
 }
 .main__title ol li b {
@@ -6183,7 +6183,8 @@ body::-webkit-scrollbar-thumb {
   border-radius: 10px;
   width: fit-content;
   margin: 0 auto;
-  color: black;
+  color: white;
+  padding: 4px 8px;
   background-color: green;
 }
 

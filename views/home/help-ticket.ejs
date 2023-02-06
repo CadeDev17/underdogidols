@@ -1,0 +1,64 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+	<!-- main content -->
+	<main class="main">
+		<div class="container-fluid">
+			<div class="row row--grid">
+				<!-- breadcrumb -->
+				<div class="col-12">
+					<ul class="breadcrumb">
+						<li class="breadcrumb__item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb__item breadcrumb__item--active">help-ticket</li>
+					</ul>
+				</div>
+				<!-- end breadcrumb -->
+
+				<!-- title -->
+				<div class="col-12">
+					<div class="main__title">
+						<h1>Submit a help ticket</h1>
+						<!-- sign in -->
+				<div class="col-12">
+					<div class="sign">
+						<% if (errorMessage) { %>
+							<div class="sign__error"><%= errorMessage %></div>
+						<% } %>
+						<div class="sign__content">
+							<!-- authorization form -->
+							<form action="/help-ticket" method="POST" class="signin__form">
+								<a href="/" class="sign__logo">
+									<img src="images/logo.png" alt="">
+								</a>
+
+								<div class="sign__group">
+                                    <label for="email">Your Email</label>
+									<input type="text" name="email" id="email" class="sign__input" placeholder="Email">
+								</div>
+
+								<div class="sign__group">
+                                    <label for="issue">Issue</label>
+                                    <textarea type="text" name="issue" id="issue" class="sign__input" placeholder="What is the problem you are experiencing?"></textarea>
+                                </div>
+								
+								<button class="sign__btn" type="submit">Submit Help-Ticket</button>
+
+								<span class="sign__delimiter">or</span>
+
+								<span class="sign__text">Question regarding contestants? <a href="/pricing">Read here!</a></span>
+
+								<span class="sign__text"><a href="/terms">Terms & Conditions</a></span>
+								<span class="sign__text"><a href="/privacy">Privacy Policy</a></span>
+							</form>
+							<!-- end authorization form -->
+						</div>
+					</div>
+				</div>
+				<!-- end sign in -->
+					</div>
+				</div>
+				<!-- end title -->
+			</div>
+		</div>
+	</main>
+	<!-- end main content -->
+<%- include('../includes/end.ejs', {ads: ads}) %>

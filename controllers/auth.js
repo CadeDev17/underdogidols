@@ -516,7 +516,8 @@ exports.postForgot = (req, res, next) => {
                     res.render('auth/forgot', {
                         pageTitle: "Forgot Password",
                         errorMessage: 'Email not connected to any account.',
-                        successMessage: ''
+                        successMessage: '',
+                        ads: ''
                     })
                 }
                 userFound.resetToken = token;
@@ -527,7 +528,8 @@ exports.postForgot = (req, res, next) => {
                 res.render('auth/forgot', {
                     pageTitle: 'Forgot Password',
                     errorMessage:'',
-                    successMessage: 'Check the email associated with your account.'
+                    successMessage: 'Check the email associated with your account.',
+                    ads: ''
                 });
                 transporter.sendMail({
                   to: email,

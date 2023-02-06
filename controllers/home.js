@@ -1287,7 +1287,8 @@ exports.postHelpTicket = (req, res, next) => {
         return res.status(422).render('home/help-ticket', {
             pageTitle: 'Underdog Help-Ticket',
             ads: '',
-            errorMessage: errors.array()[0].msg
+            errorMessage: errors.array()[0].msg,
+            successMessage: ''
         });
     }
 

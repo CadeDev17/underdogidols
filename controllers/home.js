@@ -315,7 +315,7 @@ exports.postContactArtist = (req, res, next) => {
             })
             transporter.sendMail({
                 to: 'decryptr22@gmail.com',
-                from: 'theunderdogidols@gmail.com',
+                from: 'supprtunderdogidols@gmail.com',
                 subject: 'Record Label Message',
                 html: `
                   <p>${message}</p>
@@ -1295,7 +1295,8 @@ exports.postHelpTicket = (req, res, next) => {
     res.render('home/help-ticket', {
         pageTitle: "Underdog Help-Ticket",
         ads: '',
-        errorMessage: ''
+        errorMessage: '',
+        successMessage: 'Ticket submitted! We will reach out to you shortly.'
     })
     transporter.sendMail({
         to: 'decryptr22@gmail.com',

@@ -177,10 +177,10 @@
 																<h4><%= song.songTitle %></h4>
 															</div>
 															<% if (song.season === currentSeason && isPremiumUser) { %>
-																<a class="single-item__export copy-link" href="http:/localhost:3000/voting/<%= song.songTitle %>/<%= song.artistName %>">Promote Song on Social Media</a>
+																<a class="single-item__export copy-link" href="https://underdogidols.com/voting/<%= song.songTitle %>/<%= song.artistName %>">Promote Song on Social Media</a>
 															<% } else if (song.season === currentSeason) { %>
 																<!-- <p class="single-item__export">Votes: <%= song.votes %></p> -->
-																<a class="single-item__export copy-link" href="http:/localhost:3000/voting/<%= song.songTitle %>/<%= song.artistName %>">Promote Song on Social Media</a>
+																<a class="single-item__export copy-link" href="https://underdogidols.com/voting/<%= song.songTitle %>/<%= song.artistName %>">Promote Song on Social Media</a>
 															<% } else { %>
 																<p class="single-item__export">Votes: <%= song.votes %></p>
 															<% } %>

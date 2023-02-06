@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto')
@@ -15,7 +16,7 @@ const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
       api_key:
-        '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'
+        process.env.NODEMAILER_API_KEY
     }
   })
 );

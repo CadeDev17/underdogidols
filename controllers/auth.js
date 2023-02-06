@@ -590,6 +590,7 @@ exports.getNewPassword = (req, res, next) => {
       res.render('auth/new-password', {
         pageTitle: 'New Password',
         errorMessage: '',
+        userType: user.userType,
         userId: user._id.toString(),
         passwordToken: token
       });

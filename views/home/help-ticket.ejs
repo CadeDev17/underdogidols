@@ -22,7 +22,9 @@
 					<div class="sign">
 						<% if (errorMessage) { %>
 							<div class="sign__error"><%= errorMessage %></div>
-						<% } %>
+						<% } else if (successMessage) { %>
+                            <div class="sign__error"><%= successMessage %></div>
+                        <% } %>
 						<div class="sign__content">
 							<!-- authorization form -->
 							<form action="/help-ticket" method="POST" class="signin__form">

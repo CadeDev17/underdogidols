@@ -1277,7 +1277,8 @@ exports.getHelpTicket = (req, res, next) => {
     res.render('home/help-ticket', {
         pageTitle: "Underdog Pricing",
         ads: '',
-        errorMessage: ''
+        errorMessage: '',
+        successMessage: ''
     })
 }
 

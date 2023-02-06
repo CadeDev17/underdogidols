@@ -1302,7 +1302,7 @@ exports.postHelpTicket = (req, res, next) => {
     })
     transporter.sendMail({
         to: 'decryptr22@gmail.com',
-        from: 'supprtunderdogidols.com',
+        from: 'supprtunderdogidols@gmail.com',
         subject: 'Record Label Message',
         html: `
           <p>${req.body.email} - ${req.body.issue}</p>

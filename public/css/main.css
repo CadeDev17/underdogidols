@@ -4982,7 +4982,7 @@ body::-webkit-scrollbar-thumb {
   font-size: 16px;
   line-height: 26px;
   font-weight: 400;
-  color: black;
+  color: white;
   margin-bottom: 20px;
 }
 .article__content p b {

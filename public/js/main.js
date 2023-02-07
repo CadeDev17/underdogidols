@@ -40,7 +40,6 @@ $(document).ready(function () {
 	Vote Button
 	==============================*/
 	$('.voteBtn').on('click', function(event) {
-		event.preventDefault()
 		const songName = event.currentTarget.id
 
 		axios.post(`https://underdogidols.com/cast-vote/${songName}`)

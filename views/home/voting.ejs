@@ -24,7 +24,7 @@
 							<!-- end title -->
 
 							<div class="premiumAd--releases owl-carousel" id="hero">
-								<% ads.forEach(ad => { %>
+								<% for (ad of ads) { %>
 									<% if (ad.isGoldAd) { %>
 										<div class="hero__slide-contestant" data-bg="img/home/slide1.jpg">
 											<h1 class="hero__title--contestant"><%= ad.adTitle %></h1>

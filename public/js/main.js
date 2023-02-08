@@ -47,6 +47,9 @@ $(document).ready(function () {
 				window.location.reload()
 				document.body.innerHTML = response.data
 			})
+			.catch(error => {
+				console.error(error.response.data)
+			})
 		
 	})
 

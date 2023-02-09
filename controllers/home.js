@@ -829,7 +829,6 @@ exports.postGetVotableBySongName = (req, res, next) => {
                                 res.render('home/voting', {
                                     pageTitle: "Underdog Performances",
                                     errorMessage: '',
-                                    selectedByGenre: true,
                                     genreSelected: '',
                                     songs: selectedSong,
                                     ads: ads,
@@ -865,7 +864,7 @@ exports.postGetVotableBySongName = (req, res, next) => {
                                 res.render('home/voting', {
                                     pageTitle: "Underdog Performances",
                                     errorMessage: '',
-                                    selectedByGenre: false,
+                                    genreSelected: '',
                                     songs: songs,
                                     ads: ads,
                                     currentSeason: currentSeason,
@@ -897,7 +896,7 @@ exports.getSongForVoting = (req, res, next) => {
                             artist: artist[0],
                             song: song[0],
                             youtubeSongId: song[0].youtubeSongId,
-                            selectedByGenre: false,
+                            genreSelected: '',
                             ads: ''
                         })
                     }
@@ -935,7 +934,7 @@ exports.postCastVote = (req, res, next) => {
                         let topFiveSongs = topSongs.slice(0, 5)
                         res.render('home/voting', {
                             pageTitle: 'UnderdogIdols Voting',
-                            selectedByGenre: true,
+                            genreSelected: '',
                             songs: songs,
                             topFiveSongs: topFiveSongs,
                             userVotedSongTitles: userVotedSongTitles,
@@ -959,7 +958,7 @@ exports.postCastVote = (req, res, next) => {
                                 let topFiveSongs = topSongs.slice(0, 5)
                                 res.render('home/voting', {
                                     pageTitle: 'UnderdogIdols Voting',
-                                    selectedByGenre: true,
+                                    genreSelected: '',
                                     songs: songs,
                                     topFiveSongs: topFiveSongs,
                                     userVotedSongTitles: userVotedSongTitles,
@@ -974,7 +973,7 @@ exports.postCastVote = (req, res, next) => {
                                 let topFiveSongs = topSongs.slice(0, 5)
                                 res.render('home/voting', {
                                     pageTitle: 'UnderdogIdols Voting',
-                                    selectedByGenre: true,
+                                    genreSelected: '',
                                     songs: songs,
                                     topFiveSongs: topFiveSongs,
                                     userVotedSongTitles: userVotedSongTitles,

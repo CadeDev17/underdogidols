@@ -716,7 +716,7 @@ exports.getVoting = (req, res, next) => {
                             res.render('home/voting', {
                                 pageTitle: 'UnderdogIdols Voting',
                                 songs: songs,
-                                selectedByGenre: false,
+                                genreSelected: '',
                                 currentSeason: 2,
                                 topFiveSongs: topFiveSongs,
                                 userVotedSongTitles: userVotedSongTitles,
@@ -755,7 +755,6 @@ exports.postGetVotableByGenre = (req, res, next) => {
                         res.render('home/voting', {
                             pageTitle: "Underdog Performances",
                             errorMessage: '',
-                            genreSelected: true,
                             genreSelected: selectedGenre,
                             songs: allSongs,
                             ads: ads,

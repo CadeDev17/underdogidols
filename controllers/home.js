@@ -755,7 +755,7 @@ exports.postGetVotableByGenre = (req, res, next) => {
                         res.render('home/voting', {
                             pageTitle: "Underdog Performances",
                             errorMessage: '',
-                            selectedByGenre: true,
+                            genreSelected: true,
                             genreSelected: selectedGenre,
                             songs: allSongs,
                             ads: ads,
@@ -790,7 +790,7 @@ exports.postGetVotableByGenre = (req, res, next) => {
                                 res.render('home/voting', {
                                     pageTitle: "Underdog Performances",
                                     errorMessage: '',
-                                    selectedByGenre: false,
+                                    genreSelected: selectedGenre,
                                     songs: songs,
                                     ads: ads,
                                     currentSeason: currentSeason,

@@ -1031,7 +1031,7 @@ exports.getSongForVoting = (req, res, next) => {
             Song.find({ songTitle: songName })
                 .then(song => {
                     if (song) {
-                        res.render('home/votesong', {
+                        res.render('home/singlesongvoting', {
                             pageTitle: "Underdog Voting",
                             artist: artist[0],
                             song: song[0],

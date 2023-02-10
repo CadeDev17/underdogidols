@@ -217,8 +217,10 @@ exports.postSignup = (req, res, next) => {
       res.redirect('/signin')
   })
   .catch(err => {
-      const error = new Error(err);
-  })
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 }
 
 exports.getSignin = (req, res, next) => {
@@ -266,13 +268,15 @@ exports.postSignin = (req, res, next) => {
                 });
             })
             .catch(err => {
-            res.redirect('/profile');
+              const error = new Error(err);
+              error.httpStatusCode = 500;
+              return next(error);
             });
         })
         .catch(err => {
-        const error = new Error(err);
-        error.httpStatusCode = 500;
-        return next(error);
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
         });
 }
 
@@ -321,6 +325,11 @@ exports.postChangePassword = (req, res, next) => {
                                                             ads: ''
                                                         })
                                                     })
+                                                    .catch(err => {
+                                                      const error = new Error(err);
+                                                      error.httpStatusCode = 500;
+                                                      return next(error);
+                                                    });
                                             })
                                     })
                                 } else if (req.user.userType === 'RecordLabelCompany') {
@@ -364,6 +373,11 @@ exports.postChangePassword = (req, res, next) => {
                                                 currentSeason: currentSeason,
                                             })
                                         })
+                                        .catch(err => {
+                                          const error = new Error(err);
+                                          error.httpStatusCode = 500;
+                                          return next(error);
+                                        });
                                 }
                             })
                     })
@@ -397,6 +411,11 @@ exports.postChangePassword = (req, res, next) => {
                                           ads: ''
                                       })
                                   })
+                                  .catch(err => {
+                                    const error = new Error(err);
+                                    error.httpStatusCode = 500;
+                                    return next(error);
+                                  });
                           })
                   })
               } else if (req.user.userType === 'RecordLabelCompany') {
@@ -440,6 +459,11 @@ exports.postChangePassword = (req, res, next) => {
                               currentSeason: currentSeason,
                           })
                       })
+                      .catch(err => {
+                        const error = new Error(err);
+                        error.httpStatusCode = 500;
+                        return next(error);
+                      });
               }
             }
         })
@@ -470,6 +494,11 @@ exports.postEditSong = (req, res, next) => {
         res.redirect('/profile')
       })
     })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 }
 
 exports.postEditAd = (req, res, next) => {
@@ -492,6 +521,11 @@ exports.postEditAd = (req, res, next) => {
       user[0].save()
       res.redirect('/profile')
     })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 }
 
 exports.getForgot = (req, res, next) => {
@@ -543,8 +577,10 @@ exports.postForgot = (req, res, next) => {
                 });
             })
             .catch(err => {
-                console.log(err)
-            })
+              const error = new Error(err);
+              error.httpStatusCode = 500;
+              return next(error);
+            });
     })
 }
 
@@ -578,7 +614,9 @@ exports.postReset = (req, res, next) => {
           });
         })
         .catch(err => {
-          new Error(err);
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
         });
     });
   };
@@ -595,7 +633,9 @@ exports.getNewPassword = (req, res, next) => {
       });
     })
     .catch(err => {
-      new Error(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
 };
 
@@ -624,6 +664,8 @@ exports.postNewPassword = (req, res, next) => {
       res.redirect('/signin');
     })
     .catch(err => {
-      new Error(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
 };

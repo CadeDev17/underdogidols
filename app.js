@@ -14,6 +14,7 @@ const User = require('./models/user')
 const homeRoutes = require('./routes/home')
 const authRoutes = require('./routes/auth')
 const webhookRoutes = require('./routes/webhooks')
+const errorController = require('./controllers/errors')
   
 const app = express();
 const store = new MongoDBStore({
@@ -102,6 +103,8 @@ app.use((req, res, next) => {
 app.use(homeRoutes)
 app.use(authRoutes)
 app.use(webhookRoutes)
+app.get('/500', errorController.get500);
+app.use(errorController.get404);
 
 app.use(passport.initialize())
 app.use(passport.session())

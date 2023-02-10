@@ -43,6 +43,11 @@ function scheduleReset() {
                     advertiser.contactsAvailable = 10
                 }
             })
+            .catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+              });
         // schedule the next variable reset
         scheduleReset();
     }, t);
@@ -73,7 +78,12 @@ exports.getIndex = (req, res, next) => {
                             artists: artists,
                             ads: ''
                         })
-                })
+                    })
+                    .catch(err => {
+                        const error = new Error(err);
+                        error.httpStatusCode = 500;
+                        return next(error);
+                      });
             })
     } else {
         User.find()
@@ -94,6 +104,11 @@ exports.getIndex = (req, res, next) => {
                                     artists: artists
                                 })
                             })
+                            .catch(err => {
+                                const error = new Error(err);
+                                error.httpStatusCode = 500;
+                                return next(error);
+                              });
                 })
             })
     }
@@ -130,6 +145,11 @@ exports.getArtists = (req, res, next) => {
                         lastPage: Math.ceil(totalArtists / ITEMS_PER_PAGE)
                     })
                 })
+                .catch(err => {
+                    const error = new Error(err);
+                    error.httpStatusCode = 500;
+                    return next(error);
+                  });
         })
 }
 
@@ -151,6 +171,11 @@ exports.postGetArtistsByName = (req, res, next) => {
                             currentSeason: currentSeason
                         })
                     })
+                    .catch(err => {
+                        const error = new Error(err);
+                        error.httpStatusCode = 500;
+                        return next(error);
+                      });
             })
     } else {
         User.find({ userType: 'Contestant' })
@@ -178,6 +203,11 @@ exports.postGetArtistsByName = (req, res, next) => {
                             lastPage: Math.ceil(totalArtists / ITEMS_PER_PAGE)
                         })
                     })
+                    .catch(err => {
+                        const error = new Error(err);
+                        error.httpStatusCode = 500;
+                        return next(error);
+                      });
             })
     }
 }
@@ -206,6 +236,11 @@ exports.postGetArtistsByGenre = (req, res, next) => {
                             lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                         })
                     })
+                    .catch(err => {
+                        const error = new Error(err);
+                        error.httpStatusCode = 500;
+                        return next(error);
+                      });
             })
     } else {
         User.find({ userType: 'Contestant' })
@@ -233,6 +268,11 @@ exports.postGetArtistsByGenre = (req, res, next) => {
                         lastPage: Math.ceil(totalArtists / ITEMS_PER_PAGE)
                     })
                 })
+                .catch(err => {
+                    const error = new Error(err);
+                    error.httpStatusCode = 500;
+                    return next(error);
+                  });
         })
     }
 }
@@ -248,6 +288,11 @@ exports.getLocalArtists = (req, res, next) => {
                         ads: ads
                     })
                 })
+                .catch(err => {
+                    const error = new Error(err);
+                    error.httpStatusCode = 500;
+                    return next(error);
+                  });
         })
 }
 
@@ -269,6 +314,11 @@ exports.getArtist = (req, res, next) => {
                             ads: ''
                         })
                     })
+                    .catch(err => {
+                        const error = new Error(err);
+                        error.httpStatusCode = 500;
+                        return next(error);
+                      });
             })
     } else {
         User.findOne({ name: artistName })
@@ -283,6 +333,11 @@ exports.getArtist = (req, res, next) => {
                     ads: ''
                 })
             })
+            .catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+              });
     }
 
 }
@@ -322,6 +377,11 @@ exports.postContactArtist = (req, res, next) => {
                 `
               });
         })
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+          });
 }
 
 exports.getProfile = (req, res, next) => {
@@ -358,6 +418,11 @@ exports.getProfile = (req, res, next) => {
                                     ads: ''
                                 })
                             })
+                            .catch(err => {
+                                const error = new Error(err);
+                                error.httpStatusCode = 500;
+                                return next(error);
+                              });
                     })
             })
     } else if (req.user.userType === 'RecordLabelCompany') {
@@ -401,6 +466,11 @@ exports.getProfile = (req, res, next) => {
                     currentSeason: currentSeason,
                 })
             })
+            .catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+              });
     }
 }
 
@@ -446,10 +516,10 @@ exports.postEditProfile = (req, res, next) => {
                 });
         })
         .catch(err => {
-            if (err){
-                console.log(err)
-            }
-        });
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+          });
   }
 
 exports.getReleases = (req, res, next) => {
@@ -486,6 +556,11 @@ exports.getReleases = (req, res, next) => {
                                 lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                             })
                         })
+                        .catch(err => {
+                            const error = new Error(err);
+                            error.httpStatusCode = 500;
+                            return next(error);
+                          });
                 })
         })
 }
@@ -517,6 +592,11 @@ exports.postGetReleasesByGenre = (req, res, next) => {
                             lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                         })
                     })
+                    .catch(err => {
+                        const error = new Error(err);
+                        error.httpStatusCode = 500;
+                        return next(error);
+                      });
             })
     } else {
         Song.find({ season: currentSeason })
@@ -549,6 +629,11 @@ exports.postGetReleasesByGenre = (req, res, next) => {
                                     lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                                 })
                             })
+                            .catch(err => {
+                                const error = new Error(err);
+                                error.httpStatusCode = 500;
+                                return next(error);
+                              });
                     })
             })
     }
@@ -583,6 +668,11 @@ exports.postGetReleasesBySongName = (req, res, next) => {
                                     lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                                 })
                             })
+                            .catch(err => {
+                                const error = new Error(err);
+                                error.httpStatusCode = 500;
+                                return next(error);
+                              });
                     })
             })
     } else {
@@ -616,6 +706,11 @@ exports.postGetReleasesBySongName = (req, res, next) => {
                                     lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                                 })
                             })
+                            .catch(err => {
+                                const error = new Error(err);
+                                error.httpStatusCode = 500;
+                                return next(error);
+                              });
                     })
             })
     }
@@ -636,6 +731,11 @@ exports.getLocalReleases = (req, res, next) => {
                 ads: ''
             })
         })
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+          });
 }
 
 exports.getRelease = (req, res, next) => {
@@ -654,6 +754,11 @@ exports.getRelease = (req, res, next) => {
                         })
                     }
                 })
+                .catch(err => {
+                    const error = new Error(err);
+                    error.httpStatusCode = 500;
+                    return next(error);
+                  });
         })
 }
 
@@ -680,7 +785,12 @@ exports.getSeason = (req, res, next) => {
                         ads: ''
                     })
                 })
-        })
+            })
+            .catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+              });
 }
 
 exports.getNews = (req, res, next) => {
@@ -732,6 +842,11 @@ exports.getVoting = (req, res, next) => {
                                 lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                             })
                         })
+                        .catch(err => {
+                            const error = new Error(err);
+                            error.httpStatusCode = 500;
+                            return next(error);
+                          });
             })
         })
 }
@@ -771,6 +886,11 @@ exports.postGetVotableByGenre = (req, res, next) => {
                             lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                         })
                     })
+                    .catch(err => {
+                        const error = new Error(err);
+                        error.httpStatusCode = 500;
+                        return next(error);
+                      });
             })
     } else {
         Song.find({ season: currentSeason })
@@ -806,6 +926,11 @@ exports.postGetVotableByGenre = (req, res, next) => {
                                     lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                                 })
                             })
+                            .catch(err => {
+                                const error = new Error(err);
+                                error.httpStatusCode = 500;
+                                return next(error);
+                              });
                     })
             })
     }
@@ -847,6 +972,11 @@ exports.postGetVotableBySongName = (req, res, next) => {
                                     lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                                 })
                             })
+                            .catch(err => {
+                                const error = new Error(err);
+                                error.httpStatusCode = 500;
+                                return next(error);
+                            });
                     })
             })
     } else {
@@ -883,6 +1013,11 @@ exports.postGetVotableBySongName = (req, res, next) => {
                                     lastPage: Math.ceil(totalSongs / ITEMS_PER_PAGE)
                                 })
                             })
+                            .catch(err => {
+                                const error = new Error(err);
+                                error.httpStatusCode = 500;
+                                return next(error);
+                            });
                     })
             })
     }
@@ -907,6 +1042,11 @@ exports.getSongForVoting = (req, res, next) => {
                         })
                     }
                 })
+                .catch(err => {
+                    const error = new Error(err);
+                    error.httpStatusCode = 500;
+                    return next(error);
+                });
         })
 }
 
@@ -992,6 +1132,11 @@ exports.postCastVote = (req, res, next) => {
                                 })
                             }
                         })
+                        .catch(err => {
+                            const error = new Error(err);
+                            error.httpStatusCode = 500;
+                            return next(error);
+                        });
                 })  
         })
 }
@@ -1029,6 +1174,11 @@ exports.postGetCheckout = async (req, res, next) => {
                             isPremiumUser: req.user.isPremiumUser,
                             ads: ''
                             })
+                        })
+                        .catch(err => {
+                            const error = new Error(err);
+                            error.httpStatusCode = 500;
+                            return next(error);
                         });
                 })
     } else if (hasAlreadyUploaded.length > 0) {
@@ -1053,6 +1203,11 @@ exports.postGetCheckout = async (req, res, next) => {
                 ads: ''
                 })
             })
+            .catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+            });
     } else {
         if (req.user.isPremiumUser) {
             res.redirect(`/checkout/success?&title=${title}&songUrl=${songUrl}&genre=${genre}`)
@@ -1180,9 +1335,9 @@ exports.getCheckoutSuccess = (req, res, next) => {
                 res.redirect('/profile');
             })
             .catch(err => {
-                if (err) {
-                console.log(err)
-                }
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
             });
         } else {
             user.save()
@@ -1225,6 +1380,11 @@ exports.createAdvertisement = (req, res, next) => {
                 })
                 return
             })
+            .catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+            });
     } else if (isBronzeAd) {
         const ad = new Ad({
             adLogo: req.file ? req.file.path : 'images/logo.png',

@@ -718,7 +718,7 @@ exports.getVoting = (req, res, next) => {
                                 songs: songs,
                                 selectedByGenre: false,
                                 genreSelected: '',
-                                currentSeason: 2,
+                                currentSeason: currentSeason,
                                 topFiveSongs: topFiveSongs,
                                 userVotedSongTitles: userVotedSongTitles,
                                 artists: artists,
@@ -902,6 +902,7 @@ exports.getSongForVoting = (req, res, next) => {
                             song: song[0],
                             youtubeSongId: song[0].youtubeSongId,
                             selectedByGenre: false,
+                            currentSeason: currentSeason,
                             ads: ''
                         })
                     }
@@ -940,6 +941,7 @@ exports.postCastVote = (req, res, next) => {
                         res.render('home/voting', {
                             pageTitle: 'UnderdogIdols Voting',
                             selectedByGenre: true,
+                            currentSeason: currentSeason,
                             genreSelected: '',
                             songs: songs,
                             topFiveSongs: topFiveSongs,
@@ -965,6 +967,7 @@ exports.postCastVote = (req, res, next) => {
                                 res.render('home/voting', {
                                     pageTitle: 'UnderdogIdols Voting',
                                     selectedByGenre: true,
+                                    currentSeason: currentSeason,
                                     genreSelected: '',
                                     songs: songs,
                                     topFiveSongs: topFiveSongs,
@@ -979,6 +982,7 @@ exports.postCastVote = (req, res, next) => {
                                 res.render('home/voting', {
                                     pageTitle: 'UnderdogIdols Voting',
                                     selectedByGenre: true,
+                                    currentSeason: currentSeason,
                                     genreSelected: '',
                                     songs: songs,
                                     topFiveSongs: topFiveSongs,

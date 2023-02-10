@@ -717,6 +717,7 @@ exports.getVoting = (req, res, next) => {
                                 pageTitle: 'UnderdogIdols Voting',
                                 songs: songs,
                                 selectedByGenre: false,
+                                genreSelected: '',
                                 currentSeason: 2,
                                 topFiveSongs: topFiveSongs,
                                 userVotedSongTitles: userVotedSongTitles,
@@ -791,6 +792,7 @@ exports.postGetVotableByGenre = (req, res, next) => {
                                     pageTitle: "Underdog Performances",
                                     errorMessage: '',
                                     selectedByGenre: false,
+                                    genreSelected: '',
                                     songs: songs,
                                     ads: ads,
                                     currentSeason: currentSeason,
@@ -867,6 +869,7 @@ exports.postGetVotableBySongName = (req, res, next) => {
                                     pageTitle: "Underdog Performances",
                                     errorMessage: '',
                                     selectedByGenre: false,
+                                    genreSelected: '',
                                     songs: songs,
                                     ads: ads,
                                     currentSeason: currentSeason,
@@ -937,6 +940,7 @@ exports.postCastVote = (req, res, next) => {
                         res.render('home/voting', {
                             pageTitle: 'UnderdogIdols Voting',
                             selectedByGenre: true,
+                            genreSelected: '',
                             songs: songs,
                             topFiveSongs: topFiveSongs,
                             userVotedSongTitles: userVotedSongTitles,
@@ -961,6 +965,7 @@ exports.postCastVote = (req, res, next) => {
                                 res.render('home/voting', {
                                     pageTitle: 'UnderdogIdols Voting',
                                     selectedByGenre: true,
+                                    genreSelected: '',
                                     songs: songs,
                                     topFiveSongs: topFiveSongs,
                                     userVotedSongTitles: userVotedSongTitles,
@@ -969,13 +974,12 @@ exports.postCastVote = (req, res, next) => {
                                 })
                             } else {
                                 // If the song HAS been voted on previously, then just re-render the voting page
-                                // (I'm fairly certain that the error check for this will catch above in the Song.find() logic
-                                // so this may not even get read at all...)
                                 let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
                                 let topFiveSongs = topSongs.slice(0, 5)
                                 res.render('home/voting', {
                                     pageTitle: 'UnderdogIdols Voting',
                                     selectedByGenre: true,
+                                    genreSelected: '',
                                     songs: songs,
                                     topFiveSongs: topFiveSongs,
                                     userVotedSongTitles: userVotedSongTitles,

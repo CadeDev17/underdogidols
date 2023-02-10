@@ -36,7 +36,7 @@ router.get('/news', homeController.getNews)
 router.get('/voting',  isFan, homeController.getVoting)
 router.post('/votable-by-songname', isFan, homeController.postGetVotableBySongName)
 router.post('/votable-by-genre', isFan, homeController.postGetVotableByGenre)
-router.get('/voting/:songName/:artistName', isFan, homeController.getSongForVoting)
+router.get('/voting/:songName/:artistName', homeController.getSongForVoting)
 router.post('/cast-vote/:songName', homeController.postCastVote)
 
 router.post('/checkout',

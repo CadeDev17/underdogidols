@@ -103,8 +103,7 @@ app.use((req, res, next) => {
 app.use(homeRoutes)
 app.use(authRoutes)
 app.use(webhookRoutes)
-app.get('/500', errorController.get500);
-app.use(errorController.get404);
+
 
 app.use(passport.initialize())
 app.use(passport.session())
@@ -157,6 +156,9 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(id, done) {
   return done(null, id)
 })
+
+app.get('/500', errorController.get500);
+app.use(errorController.get404);
 
 mongoose
   .connect(process.env.MONGODB_URI)

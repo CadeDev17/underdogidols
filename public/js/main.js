@@ -44,11 +44,12 @@ $(document).ready(function () {
 
 		axios.post(`https://underdogidols.com/cast-vote/${songName}`)
 			.then(response => {
+				console.log(response)
 				window.location.reload()
 				return document.body.innerHTML = response.data
 			})
 			.catch(error => {
-				console.error(error.response.data)
+				//console.error(error.response.data)
 			})
 		
 	})

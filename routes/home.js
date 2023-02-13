@@ -13,7 +13,7 @@ router.get('/artists', isAuth, homeController.getArtists)
 router.post('/artists-by-name', isAuth, homeController.postGetArtistsByName)
 router.post('/artists-by-genre', isAuth, homeController.postGetArtistsByGenre)
 router.get('/localArtists', isAuth, homeController.getLocalArtists)
-router.get('/artist/:artistName', isAuth, homeController.getArtist)
+router.get('/artist/:artistName', homeController.getArtist)
 router.post('/contact/:artistName', homeController.postContactArtist)
 
 
@@ -21,7 +21,7 @@ router.get('/releases', isAuth, homeController.getReleases)
 router.post('/releases-by-songname', isAuth, homeController.postGetReleasesBySongName)
 router.post('/releases-by-genre', isAuth, homeController.postGetReleasesByGenre)
 router.get('/localReleases', isAuth, homeController.getLocalReleases)
-router.get('/release/:songName/:artistName', isAuth, homeController.getRelease)
+router.get('/release/:songName/:artistName', homeController.getRelease)
 
 
 router.get('/seasons', homeController.getSeasons)

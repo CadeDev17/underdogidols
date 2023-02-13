@@ -8,7 +8,7 @@ const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
-const currentSeason = 2
+const currentSeason = 1
 const nextSeason = currentSeason + 1
 const previousSeason = currentSeason - 1
 
@@ -1321,7 +1321,7 @@ exports.getCheckoutSuccess = (req, res, next) => {
                 songTitle: title,
                 youtubeSongId: youtubeSongId,
                 songGenre: genre,
-                season: user.isPremiumUser ? currentSeason : nextSeason,
+                season: user.isPremiumUser ? currentSeason : currentSeason,
                 votes: 0,
                 dateCreated: new Date(),
                 artistName: user.name,

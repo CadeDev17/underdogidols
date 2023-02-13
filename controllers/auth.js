@@ -10,7 +10,7 @@ const User = require('../models/user');
 const Song = require('../models/song')
 const Ad = require('../models/ad')
 
-const currentSeason = 2
+const currentSeason = 1
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({

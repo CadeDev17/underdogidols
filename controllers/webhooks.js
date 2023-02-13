@@ -63,5 +63,23 @@ const handleSuccessfulPayments = (chargeSucceeded) => {
 }
 
 const handleDeletedSubscription = (subscriptionDeleted) => {
-    console.log(subscriptionDeleted)
+    let email = chargeSucceeded.billing_details.email
+    let amountCaptured = chargeSucceeded.amount_captured
+    User.find({ email: email })
+        .then(user => {
+            if (user.userType === 'Contestant') {
+                user.isPremiumUser = false
+            }
+            if (user.userType === 'Advertiser') {
+                user.isBronzeAd = false
+                user.isSilverAd = false
+                user.isGoldAd = false
+            }
+            user[0].save()
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+          });
 }

@@ -370,7 +370,7 @@ exports.postContactArtist = (req, res, next) => {
                 ads: ''
             })
             transporter.sendMail({
-                to: 'decryptr22@gmail.com',
+                to: artist.email,
                 from: 'supprtunderdogidols@gmail.com',
                 subject: 'Record Label Message',
                 html: `
@@ -1469,7 +1469,7 @@ exports.postHelpTicket = (req, res, next) => {
         successMessage: 'Ticket submitted! We will reach out to you shortly.'
     })
     transporter.sendMail({
-        to: 'decryptr22@gmail.com',
+        to: 'info@underdogidols.com',
         from: 'supprtunderdogidols@gmail.com',
         subject: 'Record Label Message',
         html: `

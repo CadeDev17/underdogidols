@@ -1258,7 +1258,7 @@ exports.postGetAdCheckout = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: [
                 {
-                  price: 'price_1MRfYIGUljPyCRPOib7Ti5eB',
+                  price: 'price_1Mb3HgGUljPyCRPOBgKwPeOV',
                   quantity: 1,
                 },
               ],
@@ -1273,7 +1273,7 @@ exports.postGetAdCheckout = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: [
                 {
-                  price: 'price_1MRfZwGUljPyCRPOotPqUOsL',
+                  price: 'price_1Mb3GoGUljPyCRPOeS28lL8m',
                   quantity: 1,
                 },
               ],
@@ -1288,7 +1288,7 @@ exports.postGetAdCheckout = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: [
                 {
-                  price: 'price_1MRfbNGUljPyCRPOWvMBr2vf',
+                  price: 'price_1Mb3FiGUljPyCRPOiaGv3YIC',
                   quantity: 1,
                 },
               ],

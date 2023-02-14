@@ -298,7 +298,8 @@ exports.getLocalArtists = (req, res, next) => {
 
 exports.getArtist = (req, res, next) => {
     const artistName = req.params.artistName
-    if (req.user.userType === 'Advertiser') {
+    let userType = req.session.passport ? req.session.passport.user[0].userType : req.user.userType
+    if (userType === 'Advertiser') {
         User.findOne({ name: req.user.name })
             .then(advertiser => {
                 console.log(advertiser)
@@ -326,7 +327,7 @@ exports.getArtist = (req, res, next) => {
                 res.render('home/artist', {
                     pageTitle: "Underdog Artist",
                     artist: artist,
-                    userType: req.user.userType ? req.user.userType : '' ,
+                    userType: userType,
                     errorMessage: '',
                     successMessage: '',
                     advertiserContactsAvailable: 20,

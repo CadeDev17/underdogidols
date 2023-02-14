@@ -477,6 +477,7 @@ exports.getProfile = (req, res, next) => {
 
 exports.postEditProfile = (req, res, next) => {
     const userId = req.user._id.toString()
+    console.log(req.body.name)
     
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -499,8 +500,6 @@ exports.postEditProfile = (req, res, next) => {
             if (user._id.toString() !== req.user._id.toString()) {
                 return res.redirect('/profile');
             }
-            user.name = req.body.name;
-            user.email = req.body.email;
             user.instagram = req.body.instagram;
             user.tiktok = req.body.tiktok;
             user.recordLabel = req.body.recordLabel

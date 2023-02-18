@@ -46,7 +46,6 @@ $(document).ready(function () {
 			.then(response => {
 				// comment out reload and test response.data
 				// console.log the data
-				window.location.reload()
 				return document.body.innerHTML = response.data
 			})
 			.catch(error => {

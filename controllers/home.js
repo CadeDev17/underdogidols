@@ -298,7 +298,7 @@ exports.getLocalArtists = (req, res, next) => {
 
 exports.getArtist = (req, res, next) => {
     const artistName = req.params.artistName
-    let userType = req.session.passport ? req.session.passport.user[0].userType : req.user.userType
+    let userType = req.session.passport ? req.session.passport.user[0].userType : req.user ? req.user.userType : ''
     if (userType === 'Advertiser') {
         User.findOne({ name: req.user.name })
             .then(advertiser => {

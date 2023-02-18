@@ -44,6 +44,8 @@ $(document).ready(function () {
 
 		axios.post(`https://underdogidols.com/cast-vote/${songName}`)
 			.then(response => {
+				// comment out reload and test response.data
+				// console.log the data
 				window.location.reload()
 				return document.body.innerHTML = response.data
 			})

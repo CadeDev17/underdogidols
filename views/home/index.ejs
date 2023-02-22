@@ -6,7 +6,7 @@
 			<!-- releases -->
 			<section class="row row--grid">
 
-				<iframe width="1000" height="615" style="margin: 50px auto 0;" src="https://www.youtube.com/embed/kpEevqBgQzM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				<iframe width="1000" height="615" style="margin: 50px auto 0;" src="https://www.youtube.com/embed/kpEevqBgQzM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
 
 				<!-- title -->
 				<div class="col-12">
@@ -24,7 +24,7 @@
 							<% mostRecentSongs.forEach(song => { %>
 								<div class="album__title release__cover" id="song-season-details">
 									<div class="album__cover">
-										<iframe width="560" height="315" src="https://www.youtube.com/embed/<%= song.youtubeSongId %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+										<iframe width="560" height="315" src="https://www.youtube.com/embed/<%= song.youtubeSongId %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
 									</div>
 									<div class="release__cover--details">
 										<h3><a href="/release/<%= song.songTitle %>/<%= song.artistName %>"><%= song.songTitle %></a></h3>

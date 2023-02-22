@@ -5842,9 +5842,15 @@ body::-webkit-scrollbar-thumb {
 
 #sign__form--container {
   width: 100%;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+}
+
+#sign__form--container .sec-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
 }
 
 #sign__form--container .sec1,
@@ -5852,7 +5858,7 @@ body::-webkit-scrollbar-thumb {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .sec3 {
@@ -5975,7 +5981,7 @@ body::-webkit-scrollbar-thumb {
   width: auto;
 }
 .sign__logo img {
-  width: 150px;
+  width: 250px;
 }
 .sign__title {
   font-size: 16px;
@@ -6223,6 +6229,25 @@ body::-webkit-scrollbar-thumb {
   margin: 15px auto;
 }
 
+.signup__btn {
+  width: 300px;
+  height: 50px;
+  border-radius: 12px;
+  background-color: #8c32c1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 14px;
+  position: relative;
+  z-index: 2;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  margin: 15px auto;
+}
+
 .send__btn {
   width: 50%;
   height: 25px;
@@ -6245,6 +6270,12 @@ body::-webkit-scrollbar-thumb {
   color: #fff;
   background-color: #222227;
 }
+
+.signup__btn:hover {
+  color: #fff;
+  background-color: #222227;
+}
+
 .sign__text {
   margin-top: 15px;
   font-size: 14px;

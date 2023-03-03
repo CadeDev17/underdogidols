@@ -6427,6 +6427,11 @@ body::-webkit-scrollbar-thumb {
 .sign__radio input:checked + label:before {
   border-color: #8c32c1;
 }
+@media (max-width: 400px) {
+  #sign__form--container .sec-container {
+    flex-direction: column;
+  }
+}
 @media (min-width: 576px) {
   .sign__form {
     padding: 40px;

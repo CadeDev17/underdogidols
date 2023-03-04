@@ -8,7 +8,7 @@ const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
-const currentSeason = 1
+const currentSeason = 2
 const nextSeason = currentSeason + 1
 const previousSeason = currentSeason - 1
 

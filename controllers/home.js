@@ -88,6 +88,7 @@ exports.getIndex = (req, res, next) => {
     } else {
         User.find()
             .then(artists => {
+                let reversedArtists = artists.reverse()
                 Song.find({ season: currentSeason })
                     .then(songs => {
                         let topSongs = songs.sort((song1, song2) => (song1.votes < song2.votes) ? 1 : (song1.votes > song2.votes) ? -1 : 0);
@@ -101,7 +102,7 @@ exports.getIndex = (req, res, next) => {
                                     mostRecentSongs: mostRecentSongs,
                                     topFiveSongs: topFiveSongs,
                                     ads: ads,
-                                    artists: artists
+                                    artists: reversedArtists
                                 })
                             })
                             .catch(err => {

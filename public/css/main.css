@@ -862,6 +862,44 @@ body::-webkit-scrollbar-thumb {
   transition: 0.4s ease;
   position: relative;
 }
+.sidebar__nav-profile-item {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.sidebar__nav-profile:hover {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: whitesmoke;
+  font-family: 'Inter', sans-serif;
+  transition: 0.4s ease;
+  position: relative;
+  width: 90%;
+  background-color: #8c32c1;
+  border-radius: 10px;
+}
+
+.sidebar__nav-profile {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: black;
+  font-family: 'Inter', sans-serif;
+  transition: 0.4s ease;
+  position: relative;
+  width: 90%;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  border: 2px solid #8c32c1;
+}
 .sidebar__nav-link svg {
   fill: black;
   width: 22px;

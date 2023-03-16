@@ -1322,7 +1322,7 @@ exports.getCheckoutSuccess = (req, res, next) => {
                 songTitle: title,
                 youtubeSongId: youtubeSongId,
                 songGenre: genre,
-                season: user.isPremiumUser ? currentSeason : currentSeason,
+                season: user.isPremiumUser ? currentSeason : nextSeason,
                 votes: 0,
                 dateCreated: new Date(),
                 artistName: user.name,
